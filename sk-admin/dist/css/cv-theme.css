@@ -1,0 +1,32 @@
+nav>.nav>li>a:hover {
+    background-color: #3180B3;
+}
+nav.navbar-default {
+    border: none;
+    box-shadow: 0px 1px 5px #848181;
+    position: fixed;
+    width: 100vw;
+    top:0px;
+    background-color: #004d7f;
+}
+
+.navbar-brand svg{
+    display: table-cell;
+    vertical-align: middle;
+}
+.navbar-brand {
+    display: table;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    padding-left: 2em;
+}
+nav.navbar-default>.nav>li>a {
+    color: white;
+}
+nav>.nav .open>a, nav>.nav .open>a:focus, nav>.nav .open>a:hover {
+    background-color: #3180B3;
+    border-color: #337ab7;
+}
+#page-wrapper {
+    margin-top: 50px;
+}
