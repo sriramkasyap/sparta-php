@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site_config>
+    <config>
+        <config_id>1</config_id>
+        <config_name>title</config_name>
+        <config_value>Sriram Kasyap</config_value>
+    </config>
+    <config>
+        <config_id>2</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>3</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>4</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>5</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>6</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>7</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>8</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>9</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+    <config>
+        <config_id>10</config_id>
+        <config_name></config_name>
+        <config_value></config_value>
+    </config>
+</site_config>
