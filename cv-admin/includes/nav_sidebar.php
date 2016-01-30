@@ -12,7 +12,7 @@
                 </div>
             </li>
             <?php 
-                $link = connect_db('sk_cms');
+                $link = connect_db('cv_cms');
                 $all_sidebar_query = "SELECT * FROM `admin_sidenav_items` ORDER BY `sidenav_pos` ASC";
                 $sidebar_result = mysqli_query($link, $all_sidebar_query);
                 while($sidebar_row = mysqli_fetch_assoc($sidebar_result)) {

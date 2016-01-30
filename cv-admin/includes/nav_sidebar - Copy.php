@@ -15,7 +15,7 @@
             </li>
 -->
             <?php 
-                connect_db('sk_cms');
+                connect_db('cv_cms');
                 $all_sidebar_query = "SELECT * FROM `sidenav_items`";
                 $sidebar_result = mysqli_query($link, $query);
                 while($sidebar_row = mysqli_fetch_assoc($sidebar_result)) {
