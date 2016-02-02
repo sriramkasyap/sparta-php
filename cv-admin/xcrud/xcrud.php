@@ -9480,9 +9480,11 @@ class Xcrud
         if (Xcrud_config::$load_jcrop)
             $out .= '<link href="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
                 '/jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />';
-        $out .= '<link href="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
+            $out .= '<link href="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
             '/timepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css" /><link href="' . Xcrud_config::$scripts_url .
             '/' . Xcrud_config::$themes_uri . '/' . Xcrud_config::$theme . '/xcrud.css" rel="stylesheet" type="text/css" />';
+        
+        
         return $out;
     }
     public static function load_js()
@@ -9536,8 +9538,10 @@ class Xcrud
         if (Xcrud_config::$load_bootstrap)
             $out .= '<script src="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
                 '/bootstrap/js/bootstrap.min.js"></script>';
-        $out .= '<script src="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
+            $out .= '<script src="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
             '/timepicker/jquery-ui-timepicker-addon.js"></script>';
+            $out .= '<script src="' . Xcrud_config::$scripts_url . '/' . Xcrud_config::$plugins_uri .
+            '/datepicker/jquery.ui.datepicker-en.js"></script>';
         if (Xcrud_config::$editor_url)
             $out .= '<script src="' . Xcrud_config::$editor_url . '"></script>';
         if (Xcrud_config::$load_googlemap)
