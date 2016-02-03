@@ -1,21 +1,34 @@
 <?php 
-    $source = $_GET['source'];
-    switch($source) {
-        case 'add':
-            $page['title'] = 'add new page';
-            $page['url'] = 'includes/add_page.php';
-            $page['heading'] = 'Add New Page';
-            break;
-        case 'edit' :
-            $page['title'] = 'Edit page';
-            $page['url'] = 'includes/edit_page.php?edit=' . $_GET['edit'];
-            $page['heading'] = 'Edit Page';
-            break;
-        default : 
-            $page['title'] = 'Pages';
-            $page['url'] = 'includes/view_all_pages.php';
-            $page['heading'] = 'View All Pages';
-            break;
+    if(!isset($_GET['source'])) {
+        header("Location: index.php");
+    }
+    else {
+        require_once 'xcrud/xcrud.php';
+        $xcrud = Xcrud::get_instance();
+        $xcrud->table('site_pages');
+        $source = $_GET['source'];
+        switch($source) {
+            case 'add':
+                $page['title'] = 'add new page';
+                $page['data'] = $xcrud->render('create');
+                $page['heading'] = 'Add New Page';
+                break;
+            case 'edit' :
+                if(!isset($_GET['id'])) {
+                    header("Location: index.php");
+                }
+                else {
+                    $page['title'] = 'Edit page';
+                    $page['data'] =  $xcrud->render('edit',$_GET['id']);
+                    $page['heading'] = 'Edit Page';
+                    break;
+                }
+            default :
+                    $page['title'] = 'Pages';
+                    $page['data'] =  $xcrud->render('view');
+                    $page['heading'] = 'View All Pages';
+                    break;
+        }
     }
     
     include_once 'includes/functions.php';
@@ -37,7 +50,7 @@
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-               <?php include $page['url']; ?>
+               <?= $page['data'] ?>
                 
             </div>
             <!-- /.container-fluid -->

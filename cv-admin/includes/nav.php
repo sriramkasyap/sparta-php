@@ -1,11 +1,12 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
+        
         <a class="navbar-brand" href="index.php"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="50px" height="30px" viewBox="0 18 360 180" enable-background="new 0 18 360 180" xml:space="preserve">
 <g id="XMLID_1_">
@@ -16,9 +17,10 @@
 </g>
 </svg>
 </a>
+        
+        
     </div>
     <!-- /.navbar-header -->
-
     <ul class="nav navbar-top-links navbar-right">
         <?php include 'includes/nav_messages.php'; ?>
         <!-- /.dropdown -->
@@ -43,6 +45,7 @@
         </li>
         <!-- /.dropdown -->
     </ul>
+    
     <!-- /.navbar-top-links -->
 
     <?php include 'includes/nav_sidebar.php'; ?>
