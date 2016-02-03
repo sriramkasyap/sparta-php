@@ -5,28 +5,20 @@
     else {
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
-        $xcrud->table('site_pages');
+        $xcrud->table('site_posts');
         $source = $_GET['source'];
         switch($source) {
             case 'add':
-                $page['title'] = 'add new page';
+                $page['title'] = 'add new post';
                 $page['data'] = $xcrud->render('create');
-                $page['heading'] = 'Add New Page';
+                $page['heading'] = 'Add New post';
                 break;
-            case 'edit' :
-                if(!isset($_GET['id'])) {
-                    header("Location: index.php");
-                }
-                else {
-                    $page['title'] = 'Edit page';
-                    $page['data'] =  $xcrud->render('edit',$_GET['id']);
-                    $page['heading'] = 'Edit Page';
-                    break;
-                }
             default :
-                    $page['title'] = 'Pages';
-                    $page['data'] =  $xcrud->render('view');
-                    $page['heading'] = 'View All Pages';
+                    $page['title'] = 'post';
+                    $page['data'] =  $xcrud->columns('post_heading,page_id');
+                    $page['data'] =  $xcrud->unset_add();
+                    
+                    $page['heading'] = 'View All posts';
                     break;
         }
     }

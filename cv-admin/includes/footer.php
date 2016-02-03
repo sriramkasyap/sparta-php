@@ -1,19 +1,6 @@
  <!-- jQuery -->
 <!--    <script src="bower_components/jquery/dist/jquery.min.js"></script>-->
-
-    <script>
-        var head = document.getElementsByTagName('head')[0];
-        var js = document.createElement("script");
-
-        js.type = "text/javascript";
-
-        if (!window.jQuery)
-        {
-            js.src = "bower_components/jquery/dist/jquery.min.js";
-        }
-
-        head.appendChild(js);
-    </script>
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
