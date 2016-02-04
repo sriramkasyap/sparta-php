@@ -1,18 +1,18 @@
-<!DOCTYPE html>
 <?php 
     include 'includes/head.php';
+    
     include 'header.php';
+    
+    include 'about.php'; 
+
+    include 'services.php'; 
+
+    include 'portfolio.php'; 
+
+    include 'contact.php'; 
+
+    include 'footer.php'; 
 ?>
-
-<?php include 'about.php'; ?>
-
-<?php include 'services.php'; ?>
-
-<?php include 'portfolio.php'; ?>
-
-<?php include 'contact.php'; ?>
-
-<?php include 'footer.php'; ?>
 <!--
     <aside class="bg-dark">
         <div class="container text-center">
