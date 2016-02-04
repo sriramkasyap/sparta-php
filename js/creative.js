@@ -12,7 +12,7 @@
         var $anchor = $(this);
         $('html, body').stop().animate({
             scrollTop: ($($anchor.attr('href')).offset().top - 50)
-        }, 1250, 'easeInOutExpo');
+        }, 10000, 'easeInOutExpo');
         event.preventDefault();
     });
 
