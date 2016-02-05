@@ -37,7 +37,6 @@
     <meta name="<?= $meta['meta_name'] ?>" content="<?= $meta['meta_content'] ?>">
     <?php } ?>
     <title><?= $configs['title'] ?></title>
-    <!-- Bootstrap Core CSS -->
     <?php
         foreach($links as $link) {
     ?>
