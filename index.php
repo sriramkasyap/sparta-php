@@ -1,9 +1,11 @@
 <?php 
     include 'includes/site_config.php';
-    define(SITE, $site);
-    $page_self = explode('/',$_SERVER['REQUEST_URI']);
-    array_pop($page_self);
-    //print_r ($page_self);
+    
+    $request_array = explode('/',$_SERVER['REQUEST_URI']);
+    if(empty(end($request_array))) {
+        array_pop($request_array);
+    }
+    //print_r ($request_array);
     include 'includes/head.php';
 ?>
 <body id="page-top">
