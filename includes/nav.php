@@ -15,9 +15,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                <?php 
-                    include 'connect.php';
-                    $sql_topnav = 'SELECT `topnav_id`, `post_id`, `post_url`, `topnav_name`, `topnav_pos` FROM `site_topnav` JOIN `site_posts` USING (post_id) ORDER BY `topnav_pos` ASC';
-                    $result_topnav = mysqli_query($link, $sql_topnav);
+                    $sql_topnav = 'SELECT `topnav_id`, `post_id`, `post_url`, `topnav_name`, `topnav_pos` FROM `' . TABLE_PREFIX . 'topnav` JOIN `' . TABLE_PREFIX . 'posts` USING (post_id) ORDER BY `topnav_pos` ASC';
+                    $result_topnav = mysqli_query(connect_db(), $sql_topnav);
                     while($row_topnav = mysqli_fetch_assoc($result_topnav)) {
                 ?>
                 <li>

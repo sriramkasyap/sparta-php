@@ -1,25 +1,15 @@
 <?php 
-    include 'includes/connect.php';
-    //Fetch site configuration details from site_config table
-    $sql_config = 'SELECT * FROM `site_config`;';
-    $result_config = mysqli_query($link,$sql_config);
-    $configs = array();
-    while($row_config = mysqli_fetch_assoc($result_config)) {
-        $configs [$row_config['config_name']] = $row_config['config_content'];
-        
-    }
-    //print_r ($configs);
     // Fetch links from site_links table
-    $sql_link = 'SELECT * FROM `site_links`;';
-    $result_link = mysqli_query($link,$sql_link);
+    $sql_link = 'SELECT * FROM `' . TABLE_PREFIX . 'links`;';
+    $result_link = mysqli_query(connect_db(),$sql_link);
     $links = array();
     while($row_link = mysqli_fetch_assoc($result_link)) {
         $links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => $row_link['link_href']);
     }
     //print_r ($links);
     // Fetch meta tags from site_meta table
-    $sql_meta = 'SELECT * FROM `site_meta`;';
-    $result_meta = mysqli_query($link,$sql_meta);
+    $sql_meta = 'SELECT * FROM `' . TABLE_PREFIX . 'meta`;';
+    $result_meta = mysqli_query(connect_db(),$sql_meta);
     $metas = array();
     while($row_meta = mysqli_fetch_assoc($result_meta)) {
         $metas[] = array('meta_name' => $row_meta['meta_name'], 'meta_content' => $row_meta['meta_content']);
@@ -36,7 +26,7 @@
     ?>
     <meta name="<?= $meta['meta_name'] ?>" content="<?= $meta['meta_content'] ?>">
     <?php } ?>
-    <title><?= $configs['title'] ?></title>
+    <title><?= TITLE ?></title>
     <?php
         foreach($links as $link) {
     ?>

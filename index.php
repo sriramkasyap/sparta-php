@@ -1,4 +1,5 @@
 <?php 
+    include 'includes/functions.php';    
     include 'includes/site_config.php';
     
     $request_array = explode('/',$_SERVER['REQUEST_URI']);
@@ -11,10 +12,9 @@
 <body id="page-top">
 
 <?php
-    include 'includes/connect.php';
     include 'includes/nav.php';
-    $sql_posts = 'SELECT * FROM `site_posts` ORDER BY `post_pos` ASC';
-    $result_posts = mysqli_query($link, $sql_posts);
+    $sql_posts = 'SELECT * FROM `' . TABLE_PREFIX . 'posts` ORDER BY `post_pos` ASC';
+    $result_posts = mysqli_query(connect_db(), $sql_posts);
     while($row_posts = mysqli_fetch_assoc($result_posts)) {
         echo $row_posts['post_content'];
     }

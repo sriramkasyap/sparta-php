@@ -5,7 +5,7 @@
     else {
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
-        $xcrud->table('site_posts');
+        $xcrud->table(TABLE_PREFIX .'posts');
         $source = $_GET['source'];
         switch($source) {
             case 'add':
