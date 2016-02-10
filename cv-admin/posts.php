@@ -5,19 +5,23 @@
     else {
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
-        $xcrud->table(TABLE_PREFIX .'posts');
+        $xcrud->table('site_posts');
         $source = $_GET['source'];
         switch($source) {
             case 'add':
                 $page['title'] = 'add new post';
+                $xcrud->unset_list();
                 $page['data'] = $xcrud->render('create');
                 $page['heading'] = 'Add New post';
                 break;
             default :
                     $page['title'] = 'post';
-                    $page['data'] =  $xcrud->columns('post_heading,page_id');
-                    $page['data'] =  $xcrud->unset_add();
-                    
+                    $xcrud->unset_add();
+                    $xcrud->unset_print();
+                    $xcrud->unset_csv();
+                    $xcrud->unset_sortable();
+                    $xcrud->join('page_id', 'site_pages', 'page_id');
+                    $page['data'] =  $xcrud->columns('post_heading,site_pages.page_title, post_content');
                     $page['heading'] = 'View All posts';
                     break;
         }
@@ -48,7 +52,6 @@
             <!-- /.container-fluid -->
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 <?php include 'includes/footer.php'; ?>

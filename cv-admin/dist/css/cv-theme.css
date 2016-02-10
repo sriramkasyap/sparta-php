@@ -1,4 +1,4 @@
-nav>.nav>li>a:hover {
+nav>.nav>li>a:hover, nav>.nav>li>a:focus {
     background-color: #3180B3;
 }
 nav.navbar-default {
@@ -29,4 +29,7 @@ nav>.nav .open>a, nav>.nav .open>a:focus, nav>.nav .open>a:hover {
 }
 #page-wrapper {
     margin-top: 50px;
+}
+body {
+    font-family: 'Titillium Web', sans-serif;
 }

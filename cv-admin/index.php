@@ -24,7 +24,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <?php //include 'includes/breadcrumb.php'; ?>
+                        <?php include 'includes/dash_top_notifications.php'; ?>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>   

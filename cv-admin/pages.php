@@ -5,7 +5,7 @@
     else {
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
-        $xcrud->table(TABLE_PREFIX .'pages');
+        $xcrud->table('site_pages');
         $source = $_GET['source'];
         switch($source) {
             case 'add':
@@ -25,6 +25,10 @@
                 }
             default :
                     $page['title'] = 'Pages';
+                    $xcrud->unset_add();
+                    $xcrud->unset_print();
+                    $xcrud->unset_csv();
+                    $xcrud->unset_sortable();
                     $page['data'] =  $xcrud->render('view');
                     $page['heading'] = 'View All Pages';
                     break;
