@@ -20,8 +20,7 @@
                 $page['heading'] = 'Add New post';
                 break;
             default :
-                    $page['title'] = 'post';
-                    $new_post = new start_bootstrap_header(1);
+                    $page['title'] = 'posts';
                     $xcrud->unset_add();
                     $xcrud->unset_csv();
                     $xcrud->unset_print();
@@ -50,14 +49,6 @@
                     <!-- /.col-lg-12 -->
                 </div>
                <?= $page['data'] ?>
-               <?php
-//                $parameters = array('main_heading' => array('string','Sriram Kasyap Meduri'), 'main_description' => array('text','') );
-//                $new_post->post_url = '#header';
-//                $new_post->page_id = 1;
-//                $new_post->post_heading = "Header";
-//                $new_post->
-               $new_post->create_post(); 
-               			//$new_post->printer();?>
             </div>
             <!-- /.container-fluid -->
         </div>
