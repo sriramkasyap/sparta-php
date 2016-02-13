@@ -2,6 +2,7 @@
     $page['title'] = 'home';
     $page['url'] = '';
     $page['heading'] = 'dashboard';
+    include 'includes/site_config.php';
     include_once 'includes/functions.php';
     include 'includes/header.php';
 ?>
