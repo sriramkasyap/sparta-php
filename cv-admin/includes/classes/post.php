@@ -1,16 +1,18 @@
 <?php 
 	abstract class post {
 		protected $post_id;
+		protected $uporin;
 		public $post_url;
 		public $post_heading;
 		public $post_meta;
 		public $post_content;
 		public $page_id;
 		public $post_pos;
-		protected $uporin;
 		public static $snippet_id;
 		public static $snippet_class;
 		public static $snippet_name;
+		public static $snippet_meta;
+		
 		public function __construct() {
 			static::$snippet_class = get_class($this);
 			static::set_snippet_id();
@@ -27,6 +29,7 @@
 				$this->uporin = 'in';
 			}
 		}
+		
 		public function __construct1($fetch_id) {
 			static ::$snippet_class = get_class($this);
 			static ::set_snippet_id();
@@ -48,16 +51,7 @@
 			$this->uporin = 'up';
 		}
 		
-		private static function set_snippet_id() {
-			$result = mysqli_query(connect_db(), "SELECT `snippet_id`, `snippet_name` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_class` = '" . post::$snippet_class . "'");
-			$row = mysqli_fetch_assoc($result);
-			//print_r ($row);
-			static::$snippet_id = $row['snippet_id'];
-			static::$snippet_name = $row['snippet_name'];
-		}
-		abstract public function create_structure();
-		
-		public function create_post() {
+		public function publish_post() {
 			$structure = $this->create_structure();
 			if($this->uporin == 'in') {
 				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "';";
@@ -81,6 +75,21 @@
 			}
 		}
 			
+		function printer() {
+			print_r($this);
+			print static::$snippet_class . "<br>";
+			print static::$snippet_name . "<br>";
+			print static::$snippet_id . "<br>";
+		}
+	
+		private static function set_snippet_id() {
+			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
+			$row = mysqli_fetch_assoc($result);
+			//print_r ($row);
+			static::$snippet_id = $row['snippet_id'];
+			static::$snippet_name = $row['snippet_display_name'];
+		}
 		
+		abstract public function create_structure();
 	}
 ?>

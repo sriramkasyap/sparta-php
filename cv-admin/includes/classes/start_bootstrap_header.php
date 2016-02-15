@@ -1,11 +1,13 @@
 <?php
 	class start_bootstrap_header extends post {
-		function printer() {
-			print_r($this);
-			print static::$snippet_class . "<br>";
-			print static::$snippet_name . "<br>";
-			print static::$snippet_id . "<br>";
-		}
+		public static $snippet_meta = array('main_heading' => ['varchar', 'Your Favorite Source of Free Bootstrap Themes'],
+											'main_description' => ['text','Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!'],
+											'button_link' => ['url', '#about'],
+											'button_text' => ['varchar', 'Find Out More']
+		);
+		//Mandatory Block of Code
+		// Constructor function which calls any overloaded constructor if called with an argument
+		//When no arguments are passed, a new object is formed with the meta values given from the form
 		function __construct() {
 			$a = func_get_args();
 			$i = func_num_args();
@@ -16,6 +18,7 @@
 				parent::__construct();
 			}
 		}
+		// When an argument id is passed, the post with the requested id is fetched.
 		function __construct1($fetch_id) {
 			parent::__construct1($fetch_id);
 		}
@@ -32,6 +35,7 @@
 				</header>';
 			return $html_structure;
 		}
+		
 	}
 	
 ?>

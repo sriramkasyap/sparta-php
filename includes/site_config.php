@@ -34,5 +34,10 @@
     while($row_config = mysqli_fetch_assoc($result_config)) {
         define(strtoupper($row_config['config_name']), $row_config['config_content']);
     }
-    //print_r ($configs);
+    
+    $sql_author = 'SELECT * FROM `' . TABLE_PREFIX . 'users` WHERE `user_access_level` = 1;';
+    $result_author = mysqli_query(connect_db(),$sql_author);
+    while($row_author = mysqli_fetch_assoc($result_author)) {
+    	define('AUTHOR' , $row_config['user_display_name']);
+    }
 ?>

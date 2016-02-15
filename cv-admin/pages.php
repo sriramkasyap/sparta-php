@@ -3,6 +3,8 @@
         header("Location: index.php");
     }
     else {
+    	include 'includes/functions.php';
+    	include 'includes/site_config.php';
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
         $xcrud->table('site_pages');

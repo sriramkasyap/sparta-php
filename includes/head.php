@@ -28,6 +28,8 @@
     ?>
     <meta name="<?= $meta['meta_name'] ?>" content="<?= $meta['meta_content'] ?>">
     <?php } ?>
+    <meta name="description" content="<?= DESC ?>">
+    <meta name="author" content="<?= AUTHOR ?>">
     <title><?= TITLE ?></title>
     <?php
         foreach($links as $link) {
