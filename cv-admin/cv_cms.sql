@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jan 30, 2016 at 09:26 AM
+-- Host: 127.0.0.1
+-- Generation Time: Feb 15, 2016 at 03:48 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -62,10 +62,48 @@ CREATE TABLE `site_config` (
 --
 
 INSERT INTO `site_config` (`config_id`, `config_name`, `config_content`) VALUES
+(0, 'charset', 'utf-8'),
 (1, 'title', 'Sriram Kasyap Meduri'),
 (2, 'base_url', 'localhost:8080/cv_cms/'),
-(3, 'db_name', 'cv_cms'),
 (4, 'desc', 'This is a sample description for a website');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_links`
+--
+
+CREATE TABLE `site_links` (
+  `link_id` int(10) NOT NULL,
+  `link_name` varchar(255) NOT NULL,
+  `link_rel` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT 'stylesheet',
+  `link_type` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT 'text/css',
+  `link_href` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `site_links`
+--
+
+INSERT INTO `site_links` (`link_id`, `link_name`, `link_rel`, `link_type`, `link_href`) VALUES
+(1, 'Bootstrap Core CSS', 'stylesheet', 'text/css', 'css/bootstrap.min.css'),
+(2, 'Custom Fonts', 'stylesheet', 'text/css', 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'),
+(3, 'Custom Font', 'stylesheet', 'text/css', 'http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'),
+(4, 'Font Awesome', 'stylesheet', 'text/css', 'font-awesome/css/font-awesome.min.css'),
+(5, 'Plugin CSS', 'stylesheet', 'text/css', 'css/animate.min.css'),
+(6, 'Custom CSS', 'stylesheet', 'text/css', 'css/creative.css');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_meta`
+--
+
+CREATE TABLE `site_meta` (
+  `meta_id` int(50) NOT NULL,
+  `meta_name` varchar(255) NOT NULL,
+  `meta_content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -74,12 +112,29 @@ INSERT INTO `site_config` (`config_id`, `config_name`, `config_content`) VALUES
 --
 
 CREATE TABLE `site_pages` (
-  `page_id` int(3) NOT NULL,
-  `page_name` varchar(255) NOT NULL,
+  `page_id` int(20) NOT NULL,
   `page_url` varchar(255) NOT NULL,
-  `page_type` varchar(255) NOT NULL,
-  `page_heading` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `page_title` varchar(255) NOT NULL,
+  `page_heading` varchar(255) NOT NULL,
+  `page_description` text NOT NULL,
+  `page_type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_postmeta`
+--
+
+CREATE TABLE `site_postmeta` (
+  `postmeta_id` int(50) NOT NULL,
+  `postmeta_tag` varchar(255) NOT NULL,
+  `postmeta_type` varchar(255) NOT NULL,
+  `postmeta_value` longtext NOT NULL,
+  `post_id` int(50) NOT NULL,
+  `snippet_id` int(50) NOT NULL,
+  `postmeta_pos` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -88,14 +143,15 @@ CREATE TABLE `site_pages` (
 --
 
 CREATE TABLE `site_posts` (
-  `post_id` int(3) NOT NULL,
-  `post_pos` int(5) NOT NULL,
-  `page_id` int(3) NOT NULL,
-  `post_type` varchar(255) NOT NULL,
-  `post_content` mediumtext NOT NULL,
-  `post_option_background` varchar(255) NOT NULL,
-  `post_option_border` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `post_id` int(20) NOT NULL,
+  `page_id` int(20) NOT NULL,
+  `author_id` int(20) NOT NULL,
+  `snippet_id` int(20) NOT NULL,
+  `post_url` varchar(255) NOT NULL,
+  `post_heading` varchar(255) NOT NULL,
+  `post_pos` int(20) NOT NULL,
+  `post_content` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -104,80 +160,69 @@ CREATE TABLE `site_posts` (
 --
 
 CREATE TABLE `site_scripts` (
-  `script_id` int(3) NOT NULL,
+  `script_id` int(20) NOT NULL,
   `script_name` varchar(255) NOT NULL,
-  `script_url` varchar(255) NOT NULL,
-  `script_type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `script_type` varchar(255) NOT NULL,
+  `script_src` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_snippets_installed`
+-- Table structure for table `site_snippets`
 --
 
-CREATE TABLE `site_snippets_installed` (
-  `snip_sample_id` int(5) NOT NULL,
-  `snip_sample_name` varchar(255) NOT NULL,
-  `snip_sample_author` varchar(255) NOT NULL,
-  `snip_sample_desc` text NOT NULL,
-  `snip_sample_display_name` varchar(255) NOT NULL,
-  `snip_sample_type` enum('text','image','video','general') NOT NULL,
-  `snip_sample_call_url` varchar(255) NOT NULL,
-  `snip_sample_sample` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `site_snippets` (
+  `snippet_id` int(20) NOT NULL,
+  `snippet_name` varchar(255) NOT NULL,
+  `snippet_type` varchar(255) NOT NULL,
+  `snippet_content` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_styles`
+-- Table structure for table `site_topnav`
 --
 
-CREATE TABLE `site_styles` (
-  `style_id` int(3) NOT NULL,
-  `style_name` varchar(255) NOT NULL,
-  `style_url` varchar(255) NOT NULL,
-  `style_media_min` varchar(255) NOT NULL,
-  `style_media_max` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `site_topnav` (
+  `topnav_id` int(11) NOT NULL,
+  `topnav_url` varchar(255) NOT NULL,
+  `topnav_name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `topnav_pos` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `site_topnav`
+--
+
+INSERT INTO `site_topnav` (`topnav_id`, `topnav_url`, `topnav_name`, `topnav_pos`) VALUES
+(1, '#page-top', 'Home', 1),
+(2, '#about', 'About Me', 2),
+(3, '#services', 'Services', 3),
+(4, '#portfolio', 'Portfolio', 4),
+(5, '#contact', 'Contact Me', 5);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_theme_installed`
+-- Table structure for table `site_users`
 --
 
-CREATE TABLE `site_theme_installed` (
-  `theme_page_id` int(10) NOT NULL,
-  `theme_page_name` varchar(255) NOT NULL,
-  `theme_page_content` longtext NOT NULL,
-  `theme_page_type` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `site_top_navbar`
---
-
-CREATE TABLE `site_top_navbar` (
-  `topnav_id` int(3) NOT NULL,
-  `page_id` int(3) NOT NULL,
-  `topnav_name` varchar(55) NOT NULL,
-  `topnav_has_dropdown` tinyint(1) NOT NULL,
-  `topnav_dropdown_items` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `site_users` (
+  `user_id` int(25) NOT NULL,
+  `user_name` varchar(255) NOT NULL,
+  `user_display_name` varchar(255) NOT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `user_access_level` int(2) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_summary` text NOT NULL,
+  `user_logged_in` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `admin_sidenav_items`
---
-ALTER TABLE `admin_sidenav_items`
-  ADD PRIMARY KEY (`sidenav_id`),
-  ADD UNIQUE KEY `sidenav_pos` (`sidenav_pos`);
 
 --
 -- Indexes for table `site_config`
@@ -186,17 +231,39 @@ ALTER TABLE `site_config`
   ADD PRIMARY KEY (`config_id`);
 
 --
+-- Indexes for table `site_links`
+--
+ALTER TABLE `site_links`
+  ADD PRIMARY KEY (`link_id`);
+
+--
+-- Indexes for table `site_meta`
+--
+ALTER TABLE `site_meta`
+  ADD PRIMARY KEY (`meta_id`);
+
+--
 -- Indexes for table `site_pages`
 --
 ALTER TABLE `site_pages`
   ADD PRIMARY KEY (`page_id`);
 
 --
+-- Indexes for table `site_postmeta`
+--
+ALTER TABLE `site_postmeta`
+  ADD PRIMARY KEY (`postmeta_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `snippet_id` (`snippet_id`);
+
+--
 -- Indexes for table `site_posts`
 --
 ALTER TABLE `site_posts`
   ADD PRIMARY KEY (`post_id`),
-  ADD KEY `page_id` (`page_id`);
+  ADD KEY `page_id` (`page_id`),
+  ADD KEY `author_id` (`author_id`),
+  ADD KEY `snippet_id` (`snippet_id`);
 
 --
 -- Indexes for table `site_scripts`
@@ -205,96 +272,90 @@ ALTER TABLE `site_scripts`
   ADD PRIMARY KEY (`script_id`);
 
 --
--- Indexes for table `site_snippets_installed`
+-- Indexes for table `site_snippets`
 --
-ALTER TABLE `site_snippets_installed`
-  ADD PRIMARY KEY (`snip_sample_id`);
+ALTER TABLE `site_snippets`
+  ADD PRIMARY KEY (`snippet_id`);
 
 --
--- Indexes for table `site_styles`
+-- Indexes for table `site_topnav`
 --
-ALTER TABLE `site_styles`
-  ADD PRIMARY KEY (`style_id`);
+ALTER TABLE `site_topnav`
+  ADD PRIMARY KEY (`topnav_id`);
 
 --
--- Indexes for table `site_theme_installed`
+-- Indexes for table `site_users`
 --
-ALTER TABLE `site_theme_installed`
-  ADD PRIMARY KEY (`theme_page_id`),
-  ADD UNIQUE KEY `theme_page_name` (`theme_page_name`),
-  ADD UNIQUE KEY `theme_page_type` (`theme_page_type`);
-
---
--- Indexes for table `site_top_navbar`
---
-ALTER TABLE `site_top_navbar`
-  ADD PRIMARY KEY (`topnav_id`),
-  ADD KEY `page_id` (`page_id`);
+ALTER TABLE `site_users`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `admin_sidenav_items`
+-- AUTO_INCREMENT for table `site_links`
 --
-ALTER TABLE `admin_sidenav_items`
-  MODIFY `sidenav_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `site_links`
+  MODIFY `link_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
--- AUTO_INCREMENT for table `site_config`
+-- AUTO_INCREMENT for table `site_meta`
 --
-ALTER TABLE `site_config`
-  MODIFY `config_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `site_meta`
+  MODIFY `meta_id` int(50) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `site_pages`
 --
 ALTER TABLE `site_pages`
-  MODIFY `page_id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `page_id` int(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `site_postmeta`
+--
+ALTER TABLE `site_postmeta`
+  MODIFY `postmeta_id` int(50) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `site_posts`
 --
 ALTER TABLE `site_posts`
-  MODIFY `post_id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `site_scripts`
 --
 ALTER TABLE `site_scripts`
-  MODIFY `script_id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `script_id` int(20) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `site_snippets_installed`
+-- AUTO_INCREMENT for table `site_snippets`
 --
-ALTER TABLE `site_snippets_installed`
-  MODIFY `snip_sample_id` int(5) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `site_snippets`
+  MODIFY `snippet_id` int(20) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `site_styles`
+-- AUTO_INCREMENT for table `site_topnav`
 --
-ALTER TABLE `site_styles`
-  MODIFY `style_id` int(3) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `site_topnav`
+  MODIFY `topnav_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT for table `site_theme_installed`
+-- AUTO_INCREMENT for table `site_users`
 --
-ALTER TABLE `site_theme_installed`
-  MODIFY `theme_page_id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `site_top_navbar`
---
-ALTER TABLE `site_top_navbar`
-  MODIFY `topnav_id` int(3) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `site_users`
+  MODIFY `user_id` int(25) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `site_pages`
+-- Constraints for table `site_postmeta`
 --
-ALTER TABLE `site_pages`
-  ADD CONSTRAINT `site_pages_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `site_top_navbar` (`page_id`);
+ALTER TABLE `site_postmeta`
+  ADD CONSTRAINT `site_postmeta_ibfk_2` FOREIGN KEY (`snippet_id`) REFERENCES `site_snippets` (`snippet_id`),
+  ADD CONSTRAINT `site_postmeta_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `site_posts` (`post_id`);
 
 --
 -- Constraints for table `site_posts`
 --
 ALTER TABLE `site_posts`
-  ADD CONSTRAINT `site_posts_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `site_pages` (`page_id`);
+  ADD CONSTRAINT `site_posts_ibfk_3` FOREIGN KEY (`snippet_id`) REFERENCES `site_snippets` (`snippet_id`),
+  ADD CONSTRAINT `site_posts_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `site_pages` (`page_id`),
+  ADD CONSTRAINT `site_posts_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `site_users` (`user_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

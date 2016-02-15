@@ -15,12 +15,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                <?php 
-                    $sql_topnav = 'SELECT `topnav_id`, `post_id`, `post_url`, `topnav_name`, `topnav_pos` FROM `' . TABLE_PREFIX . 'topnav` JOIN `' . TABLE_PREFIX . 'posts` USING (post_id) ORDER BY `topnav_pos` ASC';
+                    $sql_topnav = 'SELECT `topnav_id`, `topnav_url`, `topnav_name`, `topnav_pos` FROM `' . TABLE_PREFIX . 'topnav` ORDER BY `topnav_pos` ASC';
                     $result_topnav = mysqli_query(connect_db(), $sql_topnav);
                     while($row_topnav = mysqli_fetch_assoc($result_topnav)) {
                 ?>
                 <li>
-                    <a class="page-scroll" href="<?= $row_topnav['post_url'] ?>"><?= $row_topnav['topnav_name'] ?></a>
+                    <a class="page-scroll" href="<?= $row_topnav['topnav_url'] ?>"><?= $row_topnav['topnav_name'] ?></a>
                 </li>
                 <?php } ?>
             </ul>
