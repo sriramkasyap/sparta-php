@@ -1,10 +1,3 @@
-CREATE TABLE `cv_cms`.`site_top_navbar` ( `topnav_id` INT(3) NOT NULL AUTO_INCREMENT , `topnav_name` VARCHAR(55) NOT NULL , `topnav_has_dropdown` BOOLEAN NOT NULL, `topnav_dropdown_items` TEXT , PRIMARY KEY (`config_id`)) ENGINE = InnoDB;
 
-CREATE TABLE `cv_cms`.`site_snippets_installed` ( `snip_sample_id` INT(5) NOT NULL AUTO_INCREMENT ,  `snip_sample_name` VARCHAR(255) NOT NULL ,  `snip_sample_author` VARCHAR(255) NOT NULL ,  `snip_sample_desc` TEXT NOT NULL ,  `snip_sample_display_name` VARCHAR(255) NOT NULL ,  `snip_sample_type` ENUM('text','image','video','general') NOT NULL ,  `snip_sample_call_url` VARCHAR(255) NOT NULL ,  `snip_sample_sample` LONGTEXT NOT NULL ,    PRIMARY KEY  (`snip_sample_id`)) ENGINE = InnoDB;
 
-CREATE TABLE `cv_cms`.`site_posts` ( `post_id` INT(3) NOT NULL AUTO_INCREMENT , `post_pos` INT(5) NOT NULL, `page_id` INT(3) NOT NULL, `post_type` VARCHAR(255) NOT NULL, `post_content` TEXT NOT NULL , PRIMARY KEY (`post_id`)) ENGINE = InnoDB
-
-CREATE TABLE `cv_cms`.`site_styles` ( `style_id` INT(3) NOT NULL AUTO_INCREMENT , `style_name` VARCHAR(255) NOT NULL, `style_url` VARCHAR(255) NOT NULL, `style_media_min` VARCHAR(255) NOT NULL, `style_media_max` VARCHAR(255) NOT NULL , PRIMARY KEY (`style_id`)) ENGINE = InnoDB;
-
-CREATE TABLE `cv_cms`.`site_theme_pages` ( `theme_page_id` INT(10) NOT NULL AUTO_INCREMENT , `theme_page_name` ENUM('home','about','contact','blog_home','404','careers','blank') NOT NULL , `theme_page_content` LONGTEXT NOT NULL , PRIMARY KEY (`theme_page_id`)) ENGINE = InnoDB;
-
+CREATE TABLE `cv_cms`.`site_pages` ( `page_id` INT(10) NOT NULL AUTO_INCREMENT , `page_title` VARCHAR(255) NOT NULL , `page_url` TEXT NOT NULL , `page_heading` VARCHAR(255) NOT NULL , `page_type` ENUM('home', 'project_page') NOT NULL , PRIMARY KEY (`page_id`), UNIQUE (`page_url`)) ENGINE = InnoDB;

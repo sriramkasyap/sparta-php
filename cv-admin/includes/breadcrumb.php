@@ -1,10 +1,9 @@
-<?php 
-
-?>
 <ol class="breadcrumb">
-<!--    <?php //foreach($bread as $crumb)  { ?>-->
-    <li><i class="fa fa-dashboard"></i> <a href="index.php">Dashboard</a></li>
-    <li><i class="fa fa-dashboard"></i> <a href="index.php">Dashboard</a></li>
-    <li><i class="fa fa-dashboard"></i> <a href="index.php">Dashboard</a></li>
-    <?php //} ?>	
+<?php 
+    $url = $_SERVER['REQUEST_URI'];
+    $uri = explode('/',$url);
+    foreach ($uri as $bread) {
+?>
+    <li><i class="fa fa-dashboard"></i> <a href="#"><?= $bread ?></a></li>
+<?php } ?>	
 </ol>

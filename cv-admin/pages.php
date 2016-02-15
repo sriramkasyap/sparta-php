@@ -3,6 +3,8 @@
         header("Location: index.php");
     }
     else {
+    	include 'includes/functions.php';
+    	include 'includes/site_config.php';
         require_once 'xcrud/xcrud.php';
         $xcrud = Xcrud::get_instance();
         $xcrud->table('site_pages');
@@ -25,6 +27,10 @@
                 }
             default :
                     $page['title'] = 'Pages';
+                    $xcrud->unset_add();
+                    $xcrud->unset_print();
+                    $xcrud->unset_csv();
+                    $xcrud->unset_sortable();
                     $page['data'] =  $xcrud->render('view');
                     $page['heading'] = 'View All Pages';
                     break;

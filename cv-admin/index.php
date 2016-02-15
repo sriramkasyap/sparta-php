@@ -3,6 +3,7 @@
     $page['url'] = '';
     $page['heading'] = 'dashboard';
     include_once 'includes/functions.php';
+    include 'includes/site_config.php';
     include 'includes/header.php';
 ?>
 
@@ -24,7 +25,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <?php //include 'includes/breadcrumb.php'; ?>
+                        <?php include 'includes/dash_top_notifications.php'; ?>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>   
