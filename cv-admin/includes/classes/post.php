@@ -7,6 +7,7 @@
 		public $post_meta;
 		public $post_content;
 		public $page_id;
+		public $page_name; 
 		public $post_pos;
 		public static $snippet_id;
 		public static $snippet_class;
@@ -52,15 +53,15 @@
 		}
 		
 		public function publish_post() {
-			$structure = $this->create_structure();
+			
 			if($this->uporin == 'in') {
-				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "';";
-				echo $sql;
+				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
+				echo $sql . '<br/><br/>';
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
-					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "';";
+					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
 					$i++;
-					echo $sql;
+					echo $sql . '<br/><br/>';
 				}
 			}
 			else {
@@ -77,12 +78,15 @@
 			
 		function printer() {
 			print_r($this);
+			echo '<br/>';
 			print static::$snippet_class . "<br>";
 			print static::$snippet_name . "<br>";
 			print static::$snippet_id . "<br>";
+			echo '<br/>';
+			print_r (static::$snippet_meta);
 		}
 	
-		private static function set_snippet_id() {
+		protected static function set_snippet_id() {
 			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
 			$row = mysqli_fetch_assoc($result);
 			//print_r ($row);
@@ -91,5 +95,70 @@
 		}
 		
 		abstract public function create_structure();
+			
+		public function create_form() {	
+			$new_form = new FormBuilder([]);
+			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
+			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
+			$new_form->addObject(['number','page_id','Page ID',$this->page_id]);
+			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
+			foreach (static::$snippet_meta as $name => $typeplace){
+				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
+				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $typeplace[1]]);
+			}
+			$new_form->addSubmit('Submit');
+			echo $new_form->renderForm();
+		}
+		
+		public function submit_form($user_sub){
+			if(isset($user_sub['submit'])){
+				unset($user_sub['submit']);
+			}
+			$this->page_id = $user_sub['page_id'];
+			$this->post_heading= $user_sub['post_heading'];
+			$this->post_url= $user_sub['post_url'];
+			$this->post_pos= $user_sub['post_pos'];
+			unset($user_sub['page_id']);
+			unset($user_sub['post_heading']);
+			unset($user_sub['post_url']);
+			unset($user_sub['post_pos']);
+			$this->submit_meta($user_sub);
+			$this->post_content = $this->create_structure();
+			$this->preview();
+		}
+
+		protected  function submit_meta($user_sub_meta) {
+			
+			foreach ($user_sub_meta as $meta_key => $meta_value) {
+				$meta_type = static::$snippet_meta[$meta_key][0];
+				$post_meta[$meta_key] = [$meta_type, $meta_value];
+			}
+			//print_r ($post_meta);
+			$this->post_meta = $post_meta;
+		}
+	
+		protected function preview() {
+			$preview_structure = '<div>';
+			$preview_structure .= $this->load_css();
+			$preview_structure .= $this->post_content;
+			$preview_structure .= '</div>';
+			echo $preview_structure;
+		}
+		
+		protected function load_css() {
+			$sql_link = 'SELECT * FROM `' . TABLE_PREFIX . 'links`;';
+			$result_link = mysqli_query(connect_db(),$sql_link);
+			$links = array();
+			while($row_link = mysqli_fetch_assoc($result_link)) {
+				$links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => $row_link['link_href']);
+			}
+			$css = '<style scoped>';
+			foreach($links as $link) {
+				$css .= '
+				    	@import "../' . $link['link_href'] . '";';
+			}
+			$css .='</style>';
+			return $css;
+		}
 	}
 ?>

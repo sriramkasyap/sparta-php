@@ -33,3 +33,19 @@ nav>.nav .open>a, nav>.nav .open>a:focus, nav>.nav .open>a:hover {
 body {
     font-family: 'Titillium Web', sans-serif;
 }
+
+.btn-cv {
+	background-color:#004d7f;
+	margin-bottom: 1%;
+	color: white;
+	text-transform:capitalize;
+	-webkit-transition : all 0.2s ease-in;
+	-moz-transition : all 0.2s ease-in;
+	-ms-transition : all 0.2s ease-in;
+	-o-transition : all 0.2s ease-in;
+	transition : all 0.2s ease-in;
+}
+.btn-cv:hover, .btn-cv:focus {
+	background-color: #3180B3;
+	color: white;
+}
