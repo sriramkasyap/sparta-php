@@ -23,7 +23,7 @@
     define ('TABLE_PREFIX', 'site_');
 
     // Prefix for all the tables belonging to the site
-    define ('ABS_PATH', 'localhost/cv_cms/');
+    define ('ABS_PATH', 'localhost:8000/cv_cms/');
 
     // Prefix for all the tables belonging to the site
     define ('CSS_PATH', ABS_PATH . 'css/');

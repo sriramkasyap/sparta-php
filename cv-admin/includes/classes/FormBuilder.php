@@ -76,7 +76,8 @@
 		}
 		
 		protected function addTextArea($name,$placeholder,$value) {
-			$this->form_structure .= '<textarea class="form-control" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>';
+			$this->form_structure .= '<label for="' . $name . '">' . $placeholder . '</label>
+					<textarea class="form-control" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>';
 		}
 	}
 ?>

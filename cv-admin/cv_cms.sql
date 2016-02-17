@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2016 at 11:47 AM
+-- Generation Time: Feb 16, 2016 at 06:45 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -146,7 +146,7 @@ CREATE TABLE `site_postmeta` (
   `snippet_id` int(50) NOT NULL,
   `postmeta_tag` varchar(255) CHARACTER SET utf8 NOT NULL,
   `postmeta_pos` int(50) NOT NULL,
-  `postmeta_type` enum('varchar','text','number','range','color','email','password','tel','date','datetime','time','file','url') CHARACTER SET utf8 NOT NULL,
+  `postmeta_type` enum('varchar','text','number','range','color','email','password','tel','date','datetime','time','file') CHARACTER SET utf8 NOT NULL,
   `postmeta_value` longtext CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -157,7 +157,7 @@ CREATE TABLE `site_postmeta` (
 INSERT INTO `site_postmeta` (`postmeta_id`, `post_id`, `snippet_id`, `postmeta_tag`, `postmeta_pos`, `postmeta_type`, `postmeta_value`) VALUES
 (1, 1, 1, 'main_heading', 1, 'varchar', 'Sriram Kasyap Meduri'),
 (2, 1, 1, 'main_description', 2, 'text', 'Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!'),
-(3, 1, 1, 'button_link', 3, 'url', '#about'),
+(3, 1, 1, 'button_link', 3, 'varchar', '#about'),
 (4, 1, 1, 'button_text', 4, 'varchar', 'Find More..');
 
 -- --------------------------------------------------------
@@ -388,7 +388,7 @@ ALTER TABLE `site_posts`
 -- AUTO_INCREMENT for table `site_scripts`
 --
 ALTER TABLE `site_scripts`
-  MODIFY `script_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `script_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `site_snippets`
 --
@@ -419,9 +419,9 @@ ALTER TABLE `site_postmeta`
 -- Constraints for table `site_posts`
 --
 ALTER TABLE `site_posts`
-  ADD CONSTRAINT `site_posts_ibfk_3` FOREIGN KEY (`snippet_id`) REFERENCES `site_snippets` (`snippet_id`),
   ADD CONSTRAINT `site_posts_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `site_pages` (`page_id`),
-  ADD CONSTRAINT `site_posts_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `site_users` (`user_id`);
+  ADD CONSTRAINT `site_posts_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `site_users` (`user_id`),
+  ADD CONSTRAINT `site_posts_ibfk_3` FOREIGN KEY (`snippet_id`) REFERENCES `site_snippets` (`snippet_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

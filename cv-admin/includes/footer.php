@@ -9,13 +9,19 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
-    <!-- Morris Charts JavaScript -->
-<!--
-    <script src="bower_components/raphael/raphael-min.js"></script>
-    <script src="bower_components/morrisjs/morris.min.js"></script>
--->
-<!--    <script src="js/morris-data.js"></script>-->
+    <link rel="stylesheet" href="dist/css/magnific-popup.css">
 
+    <!-- Magnific Popup core JS file -->
+    <script src="dist/js/jquery.magnific-popup.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.simple-ajax-popup').magnificPopup({
+                type: 'ajax',
+                overflowY: 'scroll' // as we know that popup content is tall we set scroll overflow by default to avoid jump
+            });
+        });
+    </script>  
 </body>
 
 </html>

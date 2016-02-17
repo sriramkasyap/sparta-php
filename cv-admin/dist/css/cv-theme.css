@@ -49,3 +49,8 @@ body {
 	background-color: #3180B3;
 	color: white;
 }
+.snippet-view {
+	max-height: 500px;
+	overflow: scroll-y;
+	padding: 2em;
+}

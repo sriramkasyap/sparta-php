@@ -26,26 +26,10 @@ spl_autoload_register(function ($class_name) {
                     <!-- /.col-lg-12 -->
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">
-                     <?php 
-						$string = 'start_bootstrap_header';
-						$new_post = new $string();
-						
-							//$new_post->create_post();
-							//$new_post->printer();
-						if(isset($_POST['submit'])) {
-							//print_r ($_POST);
-							
-							$new_post->submit_form($_POST);
-							//$new_post->printer();
-							//$new_post->publish_post();
-						}
-						else {
-							$new_post->create_form();
-						}
-						
-						
-					?>
+                    <div class="col-lg-12" id="cv-post-content">
+                    <?php 
+                    	post::demo_view();
+                    ?>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>   

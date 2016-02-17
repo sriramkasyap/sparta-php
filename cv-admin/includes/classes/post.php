@@ -138,14 +138,15 @@
 		}
 	
 		protected function preview() {
-			$preview_structure = '<div>';
-			$preview_structure .= $this->load_css();
+			$preview_structure = '<form action="" method="post"><div>';
+			$preview_structure .= static::load_css();
 			$preview_structure .= $this->post_content;
 			$preview_structure .= '</div>';
+			$preview_structure .= '<button id="publish" name = "publish" type="submit">Publish Post</button></form>';
 			echo $preview_structure;
 		}
 		
-		protected function load_css() {
+		public static function load_css() {
 			$sql_link = 'SELECT * FROM `' . TABLE_PREFIX . 'links`;';
 			$result_link = mysqli_query(connect_db(),$sql_link);
 			$links = array();
@@ -154,11 +155,28 @@
 			}
 			$css = '<style scoped>';
 			foreach($links as $link) {
-				$css .= '
-				    	@import "../' . $link['link_href'] . '";';
+				if($link['link_href'][0]=='h') {
+					$css .= '@import "' . $link['link_href'] . '";';
+				}
+				else {
+					$css .= '@import "../' . $link['link_href'] . '";';
+				}
+				
 			}
 			$css .='</style>';
 			return $css;
 		}
+	
+		public static function demo_view() {
+			$result_content = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'snippets`;');
+			$preview_structure = '<div class="row">';
+			while($row_content = mysqli_fetch_assoc($result_content)) {
+				$preview_structure .= '<a class="simple-ajax-popup" href="' . ABS_PATH . 'index.php?sid=' . $row_content['snippet_id'] . '">Load content via ajax</a><br>';
+			}
+			$preview_structure .= '</div>';
+			echo $preview_structure;
+		}
 	}
 ?>
+
+
