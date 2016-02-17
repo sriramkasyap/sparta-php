@@ -13,7 +13,7 @@
 		public static $snippet_class;
 		public static $snippet_name;
 		public static $snippet_meta;
-		
+		public static $snippet_preview_img;
 		public function __construct() {
 			static::$snippet_class = get_class($this);
 			static::set_snippet_id();
@@ -84,14 +84,16 @@
 			print static::$snippet_id . "<br>";
 			echo '<br/>';
 			print_r (static::$snippet_meta);
+			echo '<br>' . static::$snippet_preview_img;
 		}
 	
 		protected static function set_snippet_id() {
-			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
+			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name`, `snippet_preview_img` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
 			$row = mysqli_fetch_assoc($result);
 			//print_r ($row);
 			static::$snippet_id = $row['snippet_id'];
 			static::$snippet_name = $row['snippet_display_name'];
+			static::$snippet_preview_img = $row['snippet_preview_img'];
 		}
 		
 		abstract public function create_structure();
@@ -159,7 +161,7 @@
 					$css .= '@import "' . $link['link_href'] . '";';
 				}
 				else {
-					$css .= '@import "../' . $link['link_href'] . '";';
+					$css .= '@import "' . CSS_PATH . $link['link_href'] . '";';
 				}
 				
 			}
@@ -171,10 +173,29 @@
 			$result_content = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'snippets`;');
 			$preview_structure = '<div class="row">';
 			while($row_content = mysqli_fetch_assoc($result_content)) {
-				$preview_structure .= '<a class="simple-ajax-popup" href="' . ABS_PATH . 'index.php?sid=' . $row_content['snippet_id'] . '">Load content via ajax</a><br>';
+				$preview_structure .= '<div class="col-sm-4">
+			                    		<div class="panel panel-default">
+							                <div class="panel-heading">
+							                    <h3 class="panel-title">' . $row_content["snippet_display_name"] . '</h3>
+							                </div>
+							                <div class="panel-image hide-panel-body">
+							                    <img src="' . $row_content["snippet_preview_img"] . '" class="panel-image-preview" />
+							                </div>
+							                <div class="panel-body">
+							                    <h4>' . $row_content["snippet_display_name"] . '</h4>
+							                    <p>' . $row_content["snippet_description"] . '</p>
+							                    <small><span class="fa fa-tag"></span> ' . ucwords($row_content["snippet_tags"]) . '</small>
+							                </div>
+							                <div class="panel-footer text-center">
+							                    <a title="Preview" class="simple-ajax-popup" href="snippet.php?task=preview&sid=' . $row_content["snippet_id"] . '"><span class="snip fa fa-eye"></span></a>
+							                    <a title="Select Layout" class="snippet-task" href="#" data-task="new" data-sid="' . $row_content["snippet_id"] . '"><span class="snip fa fa-pencil"></span></a>
+							                </div>
+							            </div>
+			                    		
+			                    	</div>';
 			}
 			$preview_structure .= '</div>';
-			echo $preview_structure;
+			return $preview_structure;
 		}
 	}
 ?>

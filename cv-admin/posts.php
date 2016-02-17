@@ -15,8 +15,8 @@
         switch($source) {
             case 'add':
                 $page['title'] = 'add new post';
-                $xcrud->unset_list();
-                $page['data'] = $xcrud->render('create');
+                $page['data'] = '<h3>Select a Layout for the new post.</h3><br/>';
+                $page['data'] .= post::demo_view();
                 $page['heading'] = 'Add New post';
                 break;
             default :
@@ -48,7 +48,16 @@
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-               <?= $page['data'] ?>
+               	<div class="row">
+                    <div class="col-lg-12" id="cv-post-content">
+                    
+                    <?= $page['data'] ?>
+                    </div>
+                    <div id="wait" style="display:none;position:absolute;top:50%;left:55%;padding:2px;"><img src='img/default.svg' width="64" height="64" /><br>Loading..</div>
+
+                    <!-- /.col-lg-12 -->
+                </div>   
+                <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
         </div>

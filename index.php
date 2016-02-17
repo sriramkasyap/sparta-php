@@ -12,7 +12,7 @@
 <body id="page-top">
 
 <?php
-    include 'includes/nav.php';
+    
     if(isset($_GET['sid'])){
         $where = ' WHERE `snippet_id` = ' . $_GET['sid'];
         $table = 'snippets`';
@@ -24,6 +24,7 @@
         $table = 'posts`';
         $order = ' ORDER BY `post_pos` ASC';
         $content = 'post_content';
+        include 'includes/nav.php';
     }
     $sql_posts = 'SELECT * FROM `' . TABLE_PREFIX . $table . $where . $order;
     $result_posts = mysqli_query(connect_db(), $sql_posts);

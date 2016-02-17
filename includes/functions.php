@@ -12,10 +12,13 @@
                 while($row_link = mysqli_fetch_assoc($result_link)) {
                     $links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => $row_link['link_href']);
                 }
-        
+        		$ret_link = '<style scoped>';
                 foreach($links as $link) {
 
-                    echo '<link rel="' . $link['link_rel'] . '" href="' . $link['link_href'] . '" type="' . $link['link_type']  . '">';
-                 } 
+                    $ret_link .= '@import "' . ABS_PATH . $link['link_href'] . '";';
+                 }
+                 $ret_link .= '</style>';
+                 return $ret_link;
+                 
 		}
 ?>

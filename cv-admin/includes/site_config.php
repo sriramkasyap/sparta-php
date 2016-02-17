@@ -24,9 +24,15 @@
 
     // Prefix for all the tables belonging to the site
     define ('ABS_PATH', 'http://localhost:8000/cv_cms/');
+    
+    // Prefix for all the tables belonging to the site
+    define ('ADMIN_PATH', ABS_PATH . 'cv-admin/');
 
     // Prefix for all the tables belonging to the site
     define ('CSS_PATH', ABS_PATH . 'css/');
+    
+    // Prefix for all the tables belonging to the site
+    define ('JS_PATH', ABS_PATH . 'js/');
     
     //Fetch site configuration details from site_config table
     $sql_config = 'SELECT * FROM `' . TABLE_PREFIX . 'config`;';

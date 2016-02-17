@@ -37,7 +37,7 @@ class Xcrud_config
     
     // scripts
     public static $load_bootstrap = false; // turn on, if you want to load bootstrap via xCRUD
-    public static $load_googlemap = false; // loads google map api for 'POINT' type. Turn off, if your site already uses it.
+    public static $load_googlemap = true; // loads google map api for 'POINT' type. Turn off, if your site already uses it.
     public static $load_jquery = true; // loads jQuery, turn it off if you already have jQuery on your page. jQuery version must be at least 1.7. If your jQuery loads in the bottom of page, you must activate $manual_load and use  Xcrud::load_css() & Xcrud::load_js() on your page.
     public static $load_jquery_ui = true; // jQueryUI, turn it on if you already have jQueryUI on your page (datepicker and slider widgets are mandatory).
     public static $load_jcrop = true; // disable, if your page already uses jCrop

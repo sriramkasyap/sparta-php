@@ -44,10 +44,9 @@
 								break;
 				case 'text':	$this->addTextArea($name,$placeholder,$value);
 								break;
-				case 'checkbox':
+				case 'select':  $this->addSelectObject($name,$placeholder,$value);
+								break;
 				case 'email':
-				case 'radio':
-				case 'checkbox':
 				case 'password': 
 				case 'date':
 				case 'number' :
@@ -79,5 +78,18 @@
 			$this->form_structure .= '<label for="' . $name . '">' . $placeholder . '</label>
 					<textarea class="form-control" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>';
 		}
+	
+		protected function addSelectObject($name,$placeholder,$value) {
+			$form_structure = '<label for="' . $name . '">' . $placeholder . '</label>
+					<select class="form-control" name="' . $name . '" id="' . $name . '">';
+			$form_structure .= '<option disabled selected>' . $placeholder . '</option>';
+			foreach($value as $option_key => $option_value) {
+				$form_structure .= '<option value="' . $option_key . '">' . $option_value . '</option>';
+			}
+			$form_structure .= '</select>';
+			//echo $form_structure;
+			$this->form_structure .= $form_structure;
+		}
+		
 	}
 ?>

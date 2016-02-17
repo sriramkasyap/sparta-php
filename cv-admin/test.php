@@ -28,7 +28,15 @@ spl_autoload_register(function ($class_name) {
                 <div class="row">
                     <div class="col-lg-12" id="cv-post-content">
                     <?php 
-                    	post::demo_view();
+                    	if(isset($_POST['submit'])){
+                    		print_r($_POST);
+                    	}
+                    	//post::demo_view();
+                    	$new_form = new FormBuilder(['','post']);
+                    	$new_form->addObject(['select','trial','Try It',['1'=>'Home','2'=>'About','3'=>'Services']]);
+                    	$new_form->addSubmit('Submit');
+                    	echo $new_form->renderForm();
+                    	
                     ?>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -40,5 +48,17 @@ spl_autoload_register(function ($class_name) {
         <!-- /#page-wrapper -->
 
 </div>
+<style>
+	.fa {
+		-webkit-transition: all 0.2s ease-in-out;
+		-moz-transition: all 0.2s ease-in-out;
+		-ms-transition: all 0.2s ease-in-out;
+		-o-transition: all 0.2s ease-in-out;
+		transition: all 0.2s ease-in-out;
+	}
+	.fa:hover {
+		color: #004d7f;
+	}
+</style>
 
    <?php include 'includes/footer.php'; ?>
