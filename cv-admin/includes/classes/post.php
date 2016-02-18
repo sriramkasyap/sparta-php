@@ -15,8 +15,7 @@
 		public static $snippet_meta;
 		public static $snippet_preview_img;
 		public function __construct() {
-			static::$snippet_class = get_class($this);
-			static::set_snippet_id();
+			$this->set_snippet_data();
 			$a = func_get_args();
 			$i = func_num_args();
 			if (method_exists($this,$f='__construct'.$i)) {
@@ -33,7 +32,7 @@
 		
 		public function __construct1($fetch_id) {
 			static ::$snippet_class = get_class($this);
-			static ::set_snippet_id();
+			static ::set_snippet_data();
 			$result_post = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'posts` WHERE `post_id` = ' . $fetch_id . ';');
 			$result_postmeta = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'postmeta` WHERE `post_id` = ' . $fetch_id . ';');
 			$row_post = mysqli_fetch_array($result_post);
@@ -82,12 +81,12 @@
 			print static::$snippet_class . "<br>";
 			print static::$snippet_name . "<br>";
 			print static::$snippet_id . "<br>";
-			echo '<br/>';
 			print_r (static::$snippet_meta);
 			echo '<br>' . static::$snippet_preview_img;
 		}
 	
-		protected static function set_snippet_id() {
+		function set_snippet_data() {
+			static::$snippet_class = get_class($this);
 			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name`, `snippet_preview_img` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
 			$row = mysqli_fetch_assoc($result);
 			//print_r ($row);
@@ -99,10 +98,14 @@
 		abstract public function create_structure();
 			
 		public function create_form() {	
-			$new_form = new FormBuilder([]);
+			$result_pages=mysqli_query(connect_db(), "SELECT `page_id`, `page_title` FROM `" . TABLE_PREFIX . "pages`");
+			while ($row_pages=mysqli_fetch_assoc($result_pages)){
+				$pages_assoc[$row_pages['page_id']] = $row_pages['page_title'];
+			}
+			$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
 			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
 			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
-			$new_form->addObject(['number','page_id','Page ID',$this->page_id]);
+			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
 			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
 			foreach (static::$snippet_meta as $name => $typeplace){
 				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
@@ -126,7 +129,6 @@
 			unset($user_sub['post_pos']);
 			$this->submit_meta($user_sub);
 			$this->post_content = $this->create_structure();
-			$this->preview();
 		}
 
 		protected  function submit_meta($user_sub_meta) {
@@ -139,12 +141,11 @@
 			$this->post_meta = $post_meta;
 		}
 	
-		protected function preview() {
-			$preview_structure = '<form action="" method="post"><div>';
-			$preview_structure .= static::load_css();
+		public function preview() {
+			$preview_structure = '<div>';
+			//$preview_structure .= static::load_css();
 			$preview_structure .= $this->post_content;
 			$preview_structure .= '</div>';
-			$preview_structure .= '<button id="publish" name = "publish" type="submit">Publish Post</button></form>';
 			echo $preview_structure;
 		}
 		
@@ -161,7 +162,7 @@
 					$css .= '@import "' . $link['link_href'] . '";';
 				}
 				else {
-					$css .= '@import "' . CSS_PATH . $link['link_href'] . '";';
+					$css .= '@import "' . ABS_PATH . $link['link_href'] . '";';
 				}
 				
 			}

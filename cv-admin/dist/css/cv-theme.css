@@ -81,3 +81,11 @@ body {
 .fa.snip:hover {
 	color: #004d7f;
 	}
+	
+.white-popup {
+	position: relative;
+	background: #FFF;
+	min-height: 75vh;
+	width: 90vw;
+	margin: 20px auto;
+}

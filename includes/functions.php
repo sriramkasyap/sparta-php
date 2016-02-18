@@ -21,4 +21,7 @@
                  return $ret_link;
                  
 		}
+		spl_autoload_register(function ($class_name) {
+			include 'cv-admin/includes/classes/' . $class_name. '.php';
+		});
 ?>

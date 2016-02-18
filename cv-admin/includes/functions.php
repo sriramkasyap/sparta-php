@@ -10,7 +10,7 @@
     	return $str;
     }
     
- function load_css() {
+ 	function load_css() {
 			 // Fetch links from site_links table
                 $sql_link = 'SELECT * FROM `' . TABLE_PREFIX . 'links`;';
                 $result_link = mysqli_query(connect_db(),$sql_link);
@@ -27,4 +27,8 @@
                  return $ret_link;
                  
 		}
+		
+	spl_autoload_register(function ($class_name) {
+		include 'includes/classes/' . $class_name. '.php';
+	});
 ?>

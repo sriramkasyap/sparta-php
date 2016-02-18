@@ -33,7 +33,7 @@ GET STARTED!
                     <h2 class="section-heading">' . $this->post_meta['section_heading'][1] . '</h2>
                     <hr class="light">
                     <p class="text-faded">' . $this->post_meta['section_description'][1] . '</p>
-                    <a href="' . $this->post_meta['button_link'][1] . '" class="btn btn-default btn-xl">' . $this->post_meta['button_text'] . '</a>
+                    <a href="' . $this->post_meta['button_link'][1] . '" class="btn btn-default btn-xl">' . $this->post_meta['button_text'][1] . '</a>
                 </div>
             </div>
         </div>

@@ -5,9 +5,6 @@ $page['title'] = 'test';
 include 'includes/functions.php';
 include 'includes/site_config.php';
 include 'includes/header.php';
-spl_autoload_register(function ($class_name) {
-	include 'includes/classes/' . $class_name. '.php';
-});
 ?>
 
 <body>
@@ -28,14 +25,8 @@ spl_autoload_register(function ($class_name) {
                 <div class="row">
                     <div class="col-lg-12" id="cv-post-content">
                     <?php 
-                    	if(isset($_POST['submit'])){
-                    		print_r($_POST);
-                    	}
-                    	//post::demo_view();
-                    	$new_form = new FormBuilder(['','post']);
-                    	$new_form->addObject(['select','trial','Try It',['1'=>'Home','2'=>'About','3'=>'Services']]);
-                    	$new_form->addSubmit('Submit');
-                    	echo $new_form->renderForm();
+                    	$new_post = new start_bootstrap_about();
+                    	$new_post->create_form();
                     	
                     ?>
                     </div>

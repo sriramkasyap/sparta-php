@@ -52,6 +52,22 @@
                     <div class="col-lg-12" id="cv-post-content">
                     
                     <?= $page['data'] ?>
+                    <script type="text/javascript">
+                    $(".snippet-task").click(function(){
+                    	$(document).ajaxStart(function(){
+                            $('#cv-post-content').html('');
+                            $("#wait").css("display", "block");
+                        });
+                        $(document).ajaxComplete(function(){
+                            $("#wait").css("display", "none");
+                        });
+                        var url = 'snippet.php?task=' + $(this).attr('data-task') + '&sid=' + $(this).attr('data-sid');
+                        $.get(url, function(data, status){
+                                $('#cv-post-content').html(data);
+                        });
+                        
+                    });
+                    </script>
                     </div>
                     <div id="wait" style="display:none;position:absolute;top:50%;left:55%;padding:2px;"><img src='img/default.svg' width="64" height="64" /><br>Loading..</div>
 
