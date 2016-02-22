@@ -81,8 +81,8 @@
 	
 		protected function addSelectObject($name,$placeholder,$value) {
 			$form_structure = '<label for="' . $name . '">' . $placeholder . '</label>
-					<select class="form-control" name="' . $name . '" id="' . $name . '">';
-			$form_structure .= '<option disabled selected>' . $placeholder . '</option>';
+					<select required class="form-control" name="' . $name . '" id="' . $name . '">';
+			$form_structure .= '<option value="" disabled selected>' . $placeholder . '</option>';
 			foreach($value as $option_key => $option_value) {
 				$form_structure .= '<option value="' . $option_key . '">' . $option_value . '</option>';
 			}

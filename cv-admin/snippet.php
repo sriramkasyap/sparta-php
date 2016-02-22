@@ -14,11 +14,13 @@
 							break;
         case 'new' :        new_snippet($_GET['sid']);
                             break;
-        case 'retrieve' :   retrieve_snippet($_GET['sid']);
-                            break;
         case 'submit_post' :submit_post($_POST);
                             break;
        	case 'preview_post' : 	preview_post();
+                            break;
+		case 'edit_post' : 	edit_post();
+                            break;
+		case 'publish_post' : 	publish_post();
                             break;
 	}
 	
@@ -28,7 +30,7 @@
 	}
 
     function new_snippet($sid) {
-        for($i=0;$i<1000000;$i++){}
+        for($i=0;$i<10000000;$i++){}
         //echo $sid;
         $result_snippet = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX .'snippets` WHERE `snippet_id` = ' . $sid);
         $row_snippet = mysqli_fetch_assoc($result_snippet);
@@ -36,7 +38,7 @@
         //$new_post->printer();
         $serial = serialize($new_post);
         file_put_contents('temp.cv', $serial);
-        $new_post->create_form();
+        $new_post->create_form('submit_post');
         echo '<script type="text/javascript">
 				var post_form = $("#idform");
 			    post_form.submit(function(event) {
@@ -56,13 +58,6 @@
 			                });
 				});</script>';
     }
-    
-    function retrieve_snippet($sid) {
-    	$serial = file_get_contents('temp.cv');
-    	$post = unserialize($serial);
-    	$post->set_snippet_data();
-    	$post->printer();
-    }
 
 	function submit_post($post_form){
 		//print_r ($post_form);
@@ -74,18 +69,59 @@
 		file_put_contents('temp.cv', $serial);
 		echo '<div class="alert alert-success" role="alert">Your post <strong>"' . $post->post_heading . '"</strong> has been successfully Submitted. Click below to preview, edit or Publish the post.</div>';
 		echo '<div class="btn-group" role="group">';
-		echo '<a class="btn btn-info simple-popup" role="button" href="#preview_post">Preview Post</a>';
-		echo '<a class="btn btn-warning simple-ajax-popup" role="button" href="snippet.php?task=edit_post">Edit Post</a>';
-		echo '<a class="btn btn-success simple-ajax-popup" role="button" href="snippet.php?task=publish_post">Publish Post</a></div>';
+		echo '<a title="Preview Post" class="btn btn-info simple-popup" role="button" href="#preview_post"><span class="fa fa-eye"></span>Preview Post</a>';
+		echo '<a title="Edit Post" class="btn btn-warning snippet-task" href="#" data-task="edit_post"><span class="fa fa-pencil"></span>Edit Post</a>';
+		echo '<a title="Publish Post" class="btn btn-success snippet-task" href="#" data-task="publish_post"><span class="fa fa-pencil"></span>Publish Post</a></div>';
 		echo '<div class="mfp-hide" id="preview_post">';
 		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post" frameborder="0" width="100%" height="auto"></iframe>';
 		echo '</div>';
+		echo '<script type="text/javascript">
+                    $(".snippet-task").click(function(){
+                    	$(document).ajaxStart(function(){
+                            $("#cv-post-content").html("");
+                            $("#wait").css("display", "block");
+                        });
+                        $(document).ajaxComplete(function(){
+                            $("#wait").css("display", "none");
+                        });
+                        var url = "snippet.php?task=" + $(this).attr("data-task") + "&sid=" + $(this).attr("data-sid");
+                        $.get(url, function(data, status){
+                                $("#cv-post-content").html(data);
+                        });
+                        
+                    });
+                    </script>';
+		//	$post->printer();
 	}
 	
 	function preview_post() {
 		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post" frameborder="0" width="100%" height="auto"></iframe>';
-		echo '';
 	}
+
+	function edit_post() {
+		$serial = file_get_contents('temp.cv');
+		$post = unserialize($serial);
+		$post->create_form('submit_post');
+		echo '<script type="text/javascript">
+				var post_form = $("#idform");
+			    post_form.submit(function(event) {
+		
+				    /* stop form from submitting normally */
+					event.preventDefault();
+							//alert("OK");
+			                /* get some values from elements on the page: */
+			                url = post_form.attr( "action");
+		
+			                /* Send the data using post */
+			                var posting = $.post( url, post_form.serialize());
+		
+			                /* Alerts the results */
+			                posting.done(function( data ) {
+			                  $("#cv-post-content").html(data);
+			                });
+				});</script>';
+	}
+	
 ?>
 <script type="text/javascript">
     $(".simple-ajax-popup").magnificPopup({

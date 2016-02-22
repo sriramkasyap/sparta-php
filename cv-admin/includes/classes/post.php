@@ -7,7 +7,6 @@
 		public $post_meta;
 		public $post_content;
 		public $page_id;
-		public $page_name; 
 		public $post_pos;
 		public static $snippet_id;
 		public static $snippet_class;
@@ -27,6 +26,7 @@
 				//echo $row[0];
 				$this->post_id = $row[0] + 1;
 				$this->uporin = 'in';
+				$this->post_meta = static::$snippet_meta;
 			}
 		}
 		
@@ -97,19 +97,19 @@
 		
 		abstract public function create_structure();
 			
-		public function create_form() {	
+		public function create_form($task) {	
 			$result_pages=mysqli_query(connect_db(), "SELECT `page_id`, `page_title` FROM `" . TABLE_PREFIX . "pages`");
 			while ($row_pages=mysqli_fetch_assoc($result_pages)){
 				$pages_assoc[$row_pages['page_id']] = $row_pages['page_title'];
 			}
-			$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
+			$new_form = new FormBuilder(['snippet.php?task=' . $task,'post']);
 			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
 			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
 			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
 			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
 			foreach (static::$snippet_meta as $name => $typeplace){
 				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
-				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $typeplace[1]]);
+				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $this->post_meta[$name][1]]);
 			}
 			$new_form->addSubmit('Submit');
 			echo $new_form->renderForm();
@@ -188,8 +188,8 @@
 							                    <small><span class="fa fa-tag"></span> ' . ucwords($row_content["snippet_tags"]) . '</small>
 							                </div>
 							                <div class="panel-footer text-center">
-							                    <a title="Preview" class="simple-ajax-popup" href="snippet.php?task=preview&sid=' . $row_content["snippet_id"] . '"><span class="snip fa fa-eye"></span></a>
-							                    <a title="Select Layout" class="snippet-task" href="#" data-task="new" data-sid="' . $row_content["snippet_id"] . '"><span class="snip fa fa-pencil"></span></a>
+							                    <a title="Preview" class="simple-ajax-popup" href="snippet.php?task=preview&sid=' . $row_content["snippet_id"] . '"><span class="snip fa fa-eye"></span> Preview</a>
+							                    <a title="Select Layout" class="snippet-task" href="#" data-task="new" data-sid="' . $row_content["snippet_id"] . '"><span class="snip fa fa-pencil"></span> Select Layout</a>
 							                </div>
 							            </div>
 			                    		

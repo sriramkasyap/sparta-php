@@ -2,8 +2,9 @@
 	include 'includes/functions.php';
 	include 'includes/site_config.php';
 	if(!isset($_GET['task'])) {
-		header('Location: index.php');
-		exit();
+		//header('Location: index.php');
+		//exit();
+        $task = 'load_front';
 	}
 	else {
 		$task = $_GET['task'];
@@ -23,7 +24,7 @@
        	case 'preview_post' : 		preview_post();
                             		break;
                             		
-       	default: 					load_frontend();
+       	case 'load_front': 			load_frontend();
        								break;
 	}
 ?>
