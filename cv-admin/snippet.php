@@ -67,7 +67,7 @@
 		//$post->printer();
 		$serial = serialize($post);
 		file_put_contents('temp.cv', $serial);
-		echo '<div class="alert alert-success" role="alert">Your post <strong>"' . $post->post_heading . '"</strong> has been successfully Submitted. Click below to preview, edit or Publish the post.</div>';
+		echo success_message('Your post <strong>"' . $post->post_heading . '"</strong> has been successfully Submitted. Click below to preview, edit or Publish the post.');
 		echo '<div class="btn-group" role="group">';
 		echo '<a title="Preview Post" class="btn btn-info simple-popup" role="button" href="#preview_post"><span class="fa fa-eye"></span>Preview Post</a>';
 		echo '<a title="Edit Post" class="btn btn-warning snippet-task" href="#" data-task="edit_post"><span class="fa fa-pencil"></span>Edit Post</a>';
@@ -122,6 +122,11 @@
 				});</script>';
 	}
 	
+	function publish_post() {
+		$serial = file_get_contents('temp.cv');
+		$post = unserialize($serial);
+		$post->publish_post();
+	}
 ?>
 <script type="text/javascript">
     $(".simple-ajax-popup").magnificPopup({

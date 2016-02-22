@@ -7,6 +7,7 @@
 		public $post_meta;
 		public $post_content;
 		public $page_id;
+		public $author_id;
 		public $post_pos;
 		public static $snippet_id;
 		public static $snippet_class;
@@ -27,6 +28,7 @@
 				$this->post_id = $row[0] + 1;
 				$this->uporin = 'in';
 				$this->post_meta = static::$snippet_meta;
+				$this->author_id = 1;
 			}
 		}
 		
@@ -54,23 +56,31 @@
 		public function publish_post() {
 			
 			if($this->uporin == 'in') {
-				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
-				echo $sql . '<br/><br/>';
+				$this->set_snippet_data();
+				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `author_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->author_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
+				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
+				if(mysqli_query(connect_db(),$sql)) {
+					echo success_message('Query Sucessful');
+				}
+				else {
+					echo warning_message('query Failed. Please Try Again');
+				}
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
+					mysqli_query(connect_db(), $sql);
 					$i++;
-					echo $sql . '<br/><br/>';
+					//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				}
 			}
 			else {
 				$sql = "UPDATE `" . TABLE_PREFIX . "posts` SET `page_id` = '" . $this->page_id . "', `post_url` = '" . $this->post_url . "', `post_heading` = '" . $this->post_heading . "', `post_pos` ='" . $this->post_pos . "', `post_content` ='" . $structure . "', `snippet_id` ='" . static::$snippet_id . "' WHERE `post_id` ='" . $this->post_id . "';";
 				//echo $sql;
 				if(mysqli_query(connect_db(),$sql)) {
-					echo 'Query Sucessful';
+					echo success_message('Query Sucessful');
 				}
 				else {
-					echo 'query Failed. Please Try Again';
+					echo warning_message('query Failed. Please Try Again');
 				}
 			}
 		}
@@ -131,7 +141,7 @@
 			$this->post_content = $this->create_structure();
 		}
 
-		protected  function submit_meta($user_sub_meta) {
+		protected function submit_meta($user_sub_meta) {
 			
 			foreach ($user_sub_meta as $meta_key => $meta_value) {
 				$meta_type = static::$snippet_meta[$meta_key][0];
@@ -198,6 +208,7 @@
 			$preview_structure .= '</div>';
 			return $preview_structure;
 		}
+	
 	}
 ?>
 

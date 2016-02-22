@@ -78,7 +78,7 @@ body {
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
-.fa.snip:hover {
+a:hover>.fa.snip {
 	color: #004d7f;
 	}
 	
