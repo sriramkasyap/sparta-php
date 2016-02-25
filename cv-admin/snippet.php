@@ -22,6 +22,8 @@
                             break;
 		case 'publish_post' : 	publish_post();
                             break;
+		default : 			preview_post();
+							break;
 	}
 	
 	

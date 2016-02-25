@@ -89,3 +89,15 @@ a:hover>.fa.snip {
 	width: 90vw;
 	margin: 20px auto;
 }
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: white;
+}
+.navbar-default .navbar-toggle:hover .icon-bar, .navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #004d7f;
+}
+.navbar-default .navbar-toggle {
+	right: 1em;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: white;
+}

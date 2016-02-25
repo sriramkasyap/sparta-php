@@ -9,9 +9,6 @@
         $xcrud = Xcrud::get_instance();
         $xcrud->table('site_posts');
         $source = $_GET['source'];
-        spl_autoload_register(function ($class_name) {
-        	include 'includes/classes/' . $class_name. '.php';
-        });
         switch($source) {
             case 'add':
                 $page['title'] = 'add new post';
@@ -23,9 +20,14 @@
                     $page['title'] = 'posts';
                     $xcrud->unset_add();
                     $xcrud->unset_csv();
+                    $xcrud->unset_title();
+                    $xcrud->unset_remove();
+                    $xcrud->unset_edit();
                     $xcrud->unset_print();
                     $xcrud->join('page_id','site_pages','page_id');
-                    $page['data'] =  $xcrud->columns('post_heading,site_pages.page_title, post_content');
+                    $xcrud->join('author_id','site_users','user_id');
+                    $page['data'] =  $xcrud->columns('post_heading,site_pages.page_title, site_users.user_display_name, post_content');
+                    //$page['data'] = $xcrud->render();
                     $page['heading'] = 'View All posts';
                     break;
         }

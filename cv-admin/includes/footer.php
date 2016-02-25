@@ -1,6 +1,4 @@
- <!-- jQuery -->
-<!--    <script src="bower_components/jquery/dist/jquery.min.js"></script>-->
-    
+
     <!-- Bootstrap Core JavaScript -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -14,6 +12,8 @@
     <!-- Magnific Popup core JS file -->
     <script src="dist/js/jquery.magnific-popup.js"></script>
     <script src="js/jquery.scoped.js"></script>
+    <script type="text/javascript" src="bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.2.0.min.js"></script>
+    <script type="text/javascript" src="bootstrap-iconpicker/js/bootstrap-iconpicker.min.js"></script>
     <script>
         $(document).ready(function() {
             
@@ -29,7 +29,9 @@
         	    $(this).closest('.panel-image').toggleClass('hide-panel-body');
             });
         });
-    </script>  
+        $('.iconpicker').iconpicker();
+        
+    </script>
 </body>
 
 </html>

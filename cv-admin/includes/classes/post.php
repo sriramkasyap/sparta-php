@@ -60,10 +60,10 @@
 				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `author_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->author_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
 				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				if(mysqli_query(connect_db(),$sql)) {
-					echo success_message('Query Sucessful');
+					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
 				}
 				else {
-					echo warning_message('query Failed. Please Try Again');
+					echo warning_message('Pubish Failed. Please Try Again. <xmp>' . $sql . '</xmp>');
 				}
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
@@ -130,15 +130,15 @@
 				unset($user_sub['submit']);
 			}
 			$this->page_id = $user_sub['page_id'];
-			$this->post_heading= $user_sub['post_heading'];
-			$this->post_url= $user_sub['post_url'];
-			$this->post_pos= $user_sub['post_pos'];
+			$this->post_heading= addslashes ($user_sub['post_heading']);
+			$this->post_url= addslashes ($user_sub['post_url']);
+			$this->post_pos= addslashes ($user_sub['post_pos']);
 			unset($user_sub['page_id']);
 			unset($user_sub['post_heading']);
 			unset($user_sub['post_url']);
 			unset($user_sub['post_pos']);
 			$this->submit_meta($user_sub);
-			$this->post_content = $this->create_structure();
+			$this->post_content = addslashes ($this->create_structure());
 		}
 
 		protected function submit_meta($user_sub_meta) {
@@ -154,7 +154,7 @@
 		public function preview() {
 			$preview_structure = '<div>';
 			//$preview_structure .= static::load_css();
-			$preview_structure .= $this->post_content;
+			$preview_structure .= stripslashes($this->post_content);
 			$preview_structure .= '</div>';
 			echo $preview_structure;
 		}
