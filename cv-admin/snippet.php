@@ -32,7 +32,7 @@
 	}
 
     function new_snippet($sid) {
-        for($i=0;$i<10000000;$i++){}
+        //for($i=0;$i<10000000;$i++){}
         //echo $sid;
         $result_snippet = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX .'snippets` WHERE `snippet_id` = ' . $sid);
         $row_snippet = mysqli_fetch_assoc($result_snippet);
@@ -40,7 +40,7 @@
         //$new_post->printer();
         $serial = serialize($new_post);
         file_put_contents('temp.cv', $serial);
-        $new_post->create_form('submit_post');
+        $new_post->create_form('new');
         echo '<script type="text/javascript">
 				var post_form = $("#idform");
 			    post_form.submit(function(event) {
@@ -103,7 +103,7 @@
 	function edit_post() {
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
-		$post->create_form('submit_post');
+		$post->create_form('edit');
 		echo '<script type="text/javascript">
 				var post_form = $("#idform");
 			    post_form.submit(function(event) {

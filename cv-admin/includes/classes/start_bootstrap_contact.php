@@ -1,12 +1,15 @@
 <?php
 	class start_bootstrap_contact extends post {
+		protected $repeatable_element = 'contact_element';
 		public static $snippet_meta = array('section_heading' => ['varchar', "Let's Get In Touch!"],
 											'section_description' => ['text', "<p>Ready to start your next project with us? That\'s great! Give us a call or send us an email and we will get back to you as soon as possible!</p>"],
-											'contact_icon_1' => ['icon', "fa-phone"],
-											'contact_content_1' => ['varchar', "123-456-6789"],
-											'contact_icon_for_email' => ['icon', "fa-envelope-o"],
-											'contact_email' => ['email', "feedback@startbootstrap.com"],
-											'contact_content_for_email' => ['varchar', "feedback@startbootstrap.com"]
+// 											'contact_icon_1' => ['icon', "fa-phone"],
+// 											'contact_content_1' => ['varchar', "123-456-6789"],
+// 											'contact_icon_for_email' => ['icon', "fa-envelope-o"],
+// 											'contact_email' => ['email', "feedback@startbootstrap.com"],
+// 											'contact_content_for_email' => ['varchar', "feedback@startbootstrap.com"],
+											'contact_element' => ['repeatable',['contact_icon_for_element' => ['icon', "fa-envelope-o"],
+																				'contact_content_for_element' => ['varchar', ""]] ]
 											
 		);
 		//Mandatory Block of Code
@@ -34,20 +37,19 @@
 							                    <h2 class="section-heading">' . $this->post_meta['section_heading'][1] .  '</h2>
 							                    <hr class="primary">
 							                    ' . $this->post_meta['section_description'][1] . '
-							                </div>
-							                <div class="col-lg-4 col-lg-offset-2 text-center">
-							                    <i class="fa ' . $this->post_meta['contact_icon_1'][1] . ' fa-3x wow bounceIn"></i>
-							                    <p>' . $this->post_meta['contact_content_1'][1] . '</p>
-							                </div>
-							                <div class="col-lg-4 text-center">
-							                    <i class="fa ' . $this->post_meta['contact_icon_for_email'][1] . ' fa-3x wow bounceIn" data-wow-delay=".1s"></i>
-							                    <p><a href="mailto:' . $this->post_meta['contact_email'][1] . '">' . $this->post_meta['contact_content_for_email'][1] . '</a></p>
-							                </div>
-							            </div>
+							                </div>';
+			for($i=0;$i<count($this->post_meta[$this->repeatable_element][1]['contact_icon_for_element'][1]);$i++) {
+				$html_structure .='<div class="col-lg-4 col-lg-offset-1 text-center">
+					                    <i class="fa ' . $this->post_meta[$this->repeatable_element][1]['contact_icon_for_element'][1][$i] . ' fa-3x wow bounceIn"></i>
+					                    <p>' . $this->post_meta[$this->repeatable_element][1]['contact_content_for_element'][1][$i] . '</p>
+					                </div>';
+			}
+			$html_structure .='</div>
 							        </div>
 							    </section>';
 			return $html_structure;
 		}
+		
 		
 	}
 	

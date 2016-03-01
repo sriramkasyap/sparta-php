@@ -67,6 +67,9 @@
 				}
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
+					if(is_array($value[1])){
+						$value[1] = $value[1][0];
+					}
 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
 					mysqli_query(connect_db(), $sql);
 					$i++;
@@ -112,13 +115,14 @@
 			while ($row_pages=mysqli_fetch_assoc($result_pages)){
 				$pages_assoc[$row_pages['page_id']] = $row_pages['page_title'];
 			}
-			$new_form = new FormBuilder(['snippet.php?task=' . $task,'post']);
+			$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
 			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
 			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
 			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
 			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
 			foreach (static::$snippet_meta as $name => $typeplace){
 				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
+				//print_r($this->post_meta[$name][1]);
 				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $this->post_meta[$name][1]]);
 			}
 			$new_form->addSubmit('Submit');
@@ -142,13 +146,37 @@
 		}
 
 		protected function submit_meta($user_sub_meta) {
-			
-			foreach ($user_sub_meta as $meta_key => $meta_value) {
-				$meta_type = static::$snippet_meta[$meta_key][0];
-				$post_meta[$meta_key] = [$meta_type, $meta_value];
+			//print_r($user_sub_meta);
+// 			foreach ($user_sub_meta as $meta_key => $meta_value) {
+// 				if(isset(static::$snippet_meta[$meta_key])) {
+// 					$meta_type = static::$snippet_meta[$meta_key][0];
+// 				}
+// 				else {
+// 					$meta_type = static::$snippet_meta[$this->repeatable_element][1][$meta_key][0];
+// 				}
+// 				if(is_array($meta_value)){
+// 					for($i=0;$i<count($meta_value);$i++){
+						
+// 						$post_meta[$this->repeatable_element] = ['repeatable',[$meta_key=>[$meta_type,$meta_value[$i]]]];
+// 					}
+// 				}
+// 				else {
+// 					$post_meta[$meta_key] = [$meta_type, $meta_value];
+// 				}
+// 			}
+
+			$post_meta = static::$snippet_meta;
+			foreach ($user_sub_meta as $meta_key=>$meta_value){
+				if(isset($post_meta[$meta_key])){
+					$post_meta[$meta_key][1] = $meta_value;
+				}
+				else {
+					$post_meta[$this->repeatable_element][1][$meta_key][1] = $meta_value;
+				}
 			}
-			//print_r ($post_meta);
+			
 			$this->post_meta = $post_meta;
+			//print_r($this->post_meta);
 		}
 	
 		public function preview() {
