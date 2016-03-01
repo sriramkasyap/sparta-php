@@ -164,10 +164,11 @@
 			$form_structure .= '</div><div class="panel-footer"><a class="btn btn-success" id="add_field">Add Field</a><br/></div></div>';
 			$form_structure .= '<script type="text/javascript">
 								var counter =  0;
+								var fields = $("#'.$name.'").html();
 								$(function(){
 								 $("#add_field").click(function(){
 								 counter += 1;
-								 $("#'.$name.'").append($("#'.$name.'").html());
+								 $("#'.$name.'").append(fields);
 								 });
 								});
 								</script>';

@@ -18,7 +18,14 @@
                             break;
        	case 'preview_post' : 	preview_post();
                             break;
-		case 'edit_post' : 	edit_post();
+		case 'delete_post' : 	delete_post($_GET['sid']);
+                            break;
+		case 'edit_post' : 	if(isset($_GET['sid'])) {
+								edit_post_arg($_GET['sid']);
+							}
+							else {
+								edit_post();
+							}
                             break;
 		case 'publish_post' : 	publish_post();
                             break;
@@ -128,6 +135,43 @@
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
 		$post->publish_post();
+	}
+	
+	function edit_post_arg ($pid) {
+		$query_snippet = 'SELECT `snippet_id`, `snippet_name` FROM `'.TABLE_PREFIX.'posts` JOIN `'.TABLE_PREFIX.'snippets` USING (`snippet_id`) WHERE `post_id`='.$pid;
+		//echo $query_snippet;
+		$result_snippet = mysqli_query(connect_db(),$query_snippet );
+		$row_snippet = mysqli_fetch_assoc($result_snippet);
+		$snippet_name = $row_snippet['snippet_name'];
+		$post = new $snippet_name($pid);
+		$post->create_form('edit');
+		echo '<script type="text/javascript">
+				var post_form = $("#idform");
+			    post_form.submit(function(event) {
+		
+				    /* stop form from submitting normally */
+					event.preventDefault();
+							//alert("OK");
+			                /* get some values from elements on the page: */
+			                url = post_form.attr( "action");
+		
+			                /* Send the data using post */
+			                var posting = $.post( url, post_form.serialize());
+		
+			                /* Alerts the results */
+			                posting.done(function( data ) {
+			                  $("#cv-post-content").html(data);
+			                });
+				});</script>';
+	}
+	function delete_post($pid) {
+		$query_snippet = 'SELECT `snippet_id`, `snippet_name` FROM `'.TABLE_PREFIX.'posts` JOIN `'.TABLE_PREFIX.'snippets` USING (`snippet_id`) WHERE `post_id`='.$pid;
+		//echo $query_snippet;
+		$result_snippet = mysqli_query(connect_db(),$query_snippet );
+		$row_snippet = mysqli_fetch_assoc($result_snippet);
+		$snippet_name = $row_snippet['snippet_name'];
+		$post = new $snippet_name($pid);
+		$post->delete();
 	}
 ?>
 <script type="text/javascript">

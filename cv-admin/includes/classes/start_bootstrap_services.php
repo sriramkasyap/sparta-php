@@ -13,7 +13,6 @@
 											'icon_4' => ['icon', 'fa-heart'],
 											'sub_head_4' => ['varchar','Made with Love'],
 											'sub_description_4' => ['text','You have to make your websites with love these days!'],
-											
 		);
 		//Mandatory Block of Code
 		// Constructor function which calls any overloaded constructor if called with an argument

@@ -237,6 +237,12 @@
 			return $preview_structure;
 		}
 	
+		public function delete() {
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'posts_trash` SELECT * FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+		}
 	}
 ?>
 

@@ -30,18 +30,21 @@
 			parent::__construct1($fetch_id);
 		}
 		function create_structure(){
+			
+			$meta = $this->post_meta;
+			$repeater = $meta[$this->repeatable_element][1];
 			$html_structure = '<section id="contact">
 							        <div class="container">
 							            <div class="row">
 							                <div class="col-lg-8 col-lg-offset-2 text-center">
-							                    <h2 class="section-heading">' . $this->post_meta['section_heading'][1] .  '</h2>
+							                    <h2 class="section-heading">' . $meta['section_heading'][1] .  '</h2>
 							                    <hr class="primary">
-							                    ' . $this->post_meta['section_description'][1] . '
+							                    ' . $meta['section_description'][1] . '
 							                </div>';
-			for($i=0;$i<count($this->post_meta[$this->repeatable_element][1]['contact_icon_for_element'][1]);$i++) {
+			for($i=0;$i<count($repeater['contact_icon_for_element'][1]);$i++) {
 				$html_structure .='<div class="col-lg-4 col-lg-offset-1 text-center">
-					                    <i class="fa ' . $this->post_meta[$this->repeatable_element][1]['contact_icon_for_element'][1][$i] . ' fa-3x wow bounceIn"></i>
-					                    <p>' . $this->post_meta[$this->repeatable_element][1]['contact_content_for_element'][1][$i] . '</p>
+					                    <i class="fa ' . $repeater['contact_icon_for_element'][1][$i] . ' fa-3x wow bounceIn"></i>
+					                    <p>' . $repeater['contact_content_for_element'][1][$i] . '</p>
 					                </div>';
 			}
 			$html_structure .='</div>
