@@ -7,15 +7,15 @@
 		public $post_meta;
 		public $post_content;
 		public $page_id;
+		public $author_id;
 		public $post_pos;
 		public static $snippet_id;
 		public static $snippet_class;
 		public static $snippet_name;
 		public static $snippet_meta;
-		
+		public static $snippet_preview_img;
 		public function __construct() {
-			static::$snippet_class = get_class($this);
-			static::set_snippet_id();
+			$this->set_snippet_data();
 			$a = func_get_args();
 			$i = func_num_args();
 			if (method_exists($this,$f='__construct'.$i)) {
@@ -27,12 +27,14 @@
 				//echo $row[0];
 				$this->post_id = $row[0] + 1;
 				$this->uporin = 'in';
+				$this->post_meta = static::$snippet_meta;
+				$this->author_id = 1;
 			}
 		}
 		
 		public function __construct1($fetch_id) {
 			static ::$snippet_class = get_class($this);
-			static ::set_snippet_id();
+			static ::set_snippet_data();
 			$result_post = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'posts` WHERE `post_id` = ' . $fetch_id . ';');
 			$result_postmeta = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'postmeta` WHERE `post_id` = ' . $fetch_id . ';');
 			$row_post = mysqli_fetch_array($result_post);
@@ -52,44 +54,196 @@
 		}
 		
 		public function publish_post() {
-			$structure = $this->create_structure();
+			
 			if($this->uporin == 'in') {
-				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "';";
-				echo $sql;
+				$this->set_snippet_data();
+				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `author_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->author_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
+				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
+				if(mysqli_query(connect_db(),$sql)) {
+					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
+				}
+				else {
+					echo warning_message('Pubish Failed. Please Try Again. <xmp>' . $sql . '</xmp>');
+				}
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
-					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "';";
+					if(is_array($value[1])){
+						$value[1] = $value[1][0];
+					}
+					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
+					mysqli_query(connect_db(), $sql);
 					$i++;
-					echo $sql;
+					//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				}
 			}
 			else {
 				$sql = "UPDATE `" . TABLE_PREFIX . "posts` SET `page_id` = '" . $this->page_id . "', `post_url` = '" . $this->post_url . "', `post_heading` = '" . $this->post_heading . "', `post_pos` ='" . $this->post_pos . "', `post_content` ='" . $structure . "', `snippet_id` ='" . static::$snippet_id . "' WHERE `post_id` ='" . $this->post_id . "';";
 				//echo $sql;
 				if(mysqli_query(connect_db(),$sql)) {
-					echo 'Query Sucessful';
+					echo success_message('Query Sucessful');
 				}
 				else {
-					echo 'query Failed. Please Try Again';
+					echo warning_message('query Failed. Please Try Again');
 				}
 			}
 		}
 			
 		function printer() {
 			print_r($this);
+			echo '<br/>';
 			print static::$snippet_class . "<br>";
 			print static::$snippet_name . "<br>";
 			print static::$snippet_id . "<br>";
+			print_r (static::$snippet_meta);
+			echo '<br>' . static::$snippet_preview_img;
 		}
 	
-		private static function set_snippet_id() {
-			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
+		function set_snippet_data() {
+			static::$snippet_class = get_class($this);
+			$result = mysqli_query(connect_db(), "SELECT `snippet_id`,`snippet_name`, `snippet_display_name`, `snippet_preview_img` FROM `" . TABLE_PREFIX . "snippets` WHERE `snippet_name` = '" . static ::$snippet_class . "'");
 			$row = mysqli_fetch_assoc($result);
 			//print_r ($row);
 			static::$snippet_id = $row['snippet_id'];
 			static::$snippet_name = $row['snippet_display_name'];
+			static::$snippet_preview_img = $row['snippet_preview_img'];
 		}
 		
 		abstract public function create_structure();
+			
+		public function create_form($task) {	
+			$result_pages=mysqli_query(connect_db(), "SELECT `page_id`, `page_title` FROM `" . TABLE_PREFIX . "pages`");
+			while ($row_pages=mysqli_fetch_assoc($result_pages)){
+				$pages_assoc[$row_pages['page_id']] = $row_pages['page_title'];
+			}
+			$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
+			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
+			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
+			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
+			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
+			foreach (static::$snippet_meta as $name => $typeplace){
+				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
+				//print_r($this->post_meta[$name][1]);
+				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $this->post_meta[$name][1]]);
+			}
+			$new_form->addSubmit('Submit');
+			echo $new_form->renderForm();
+		}
+		
+		public function submit_form($user_sub){
+			if(isset($user_sub['submit'])){
+				unset($user_sub['submit']);
+			}
+			$this->page_id = $user_sub['page_id'];
+			$this->post_heading= addslashes ($user_sub['post_heading']);
+			$this->post_url= addslashes ($user_sub['post_url']);
+			$this->post_pos= addslashes ($user_sub['post_pos']);
+			unset($user_sub['page_id']);
+			unset($user_sub['post_heading']);
+			unset($user_sub['post_url']);
+			unset($user_sub['post_pos']);
+			$this->submit_meta($user_sub);
+			$this->post_content = addslashes ($this->create_structure());
+		}
+
+		protected function submit_meta($user_sub_meta) {
+			//print_r($user_sub_meta);
+// 			foreach ($user_sub_meta as $meta_key => $meta_value) {
+// 				if(isset(static::$snippet_meta[$meta_key])) {
+// 					$meta_type = static::$snippet_meta[$meta_key][0];
+// 				}
+// 				else {
+// 					$meta_type = static::$snippet_meta[$this->repeatable_element][1][$meta_key][0];
+// 				}
+// 				if(is_array($meta_value)){
+// 					for($i=0;$i<count($meta_value);$i++){
+						
+// 						$post_meta[$this->repeatable_element] = ['repeatable',[$meta_key=>[$meta_type,$meta_value[$i]]]];
+// 					}
+// 				}
+// 				else {
+// 					$post_meta[$meta_key] = [$meta_type, $meta_value];
+// 				}
+// 			}
+
+			$post_meta = static::$snippet_meta;
+			foreach ($user_sub_meta as $meta_key=>$meta_value){
+				if(isset($post_meta[$meta_key])){
+					$post_meta[$meta_key][1] = $meta_value;
+				}
+				else {
+					$post_meta[$this->repeatable_element][1][$meta_key][1] = $meta_value;
+				}
+			}
+			
+			$this->post_meta = $post_meta;
+			//print_r($this->post_meta);
+		}
+	
+		public function preview() {
+			$preview_structure = '<div>';
+			//$preview_structure .= static::load_css();
+			$preview_structure .= stripslashes($this->post_content);
+			$preview_structure .= '</div>';
+			echo $preview_structure;
+		}
+		
+		public static function load_css() {
+			$sql_link = 'SELECT * FROM `' . TABLE_PREFIX . 'links`;';
+			$result_link = mysqli_query(connect_db(),$sql_link);
+			$links = array();
+			while($row_link = mysqli_fetch_assoc($result_link)) {
+				$links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => $row_link['link_href']);
+			}
+			$css = '<style scoped>';
+			foreach($links as $link) {
+				if($link['link_href'][0]=='h') {
+					$css .= '@import "' . $link['link_href'] . '";';
+				}
+				else {
+					$css .= '@import "' . ABS_PATH . $link['link_href'] . '";';
+				}
+				
+			}
+			$css .='</style>';
+			return $css;
+		}
+	
+		public static function demo_view() {
+			$result_content = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX . 'snippets`;');
+			$preview_structure = '<div class="row">';
+			while($row_content = mysqli_fetch_assoc($result_content)) {
+				$preview_structure .= '<div class="col-sm-4">
+			                    		<div class="panel panel-default">
+							                <div class="panel-heading">
+							                    <h3 class="panel-title">' . $row_content["snippet_display_name"] . '</h3>
+							                </div>
+							                <div class="panel-image hide-panel-body">
+							                    <img src="' . $row_content["snippet_preview_img"] . '" class="panel-image-preview" />
+							                </div>
+							                <div class="panel-body">
+							                    <h4>' . $row_content["snippet_display_name"] . '</h4>
+							                    <p>' . $row_content["snippet_description"] . '</p>
+							                    <small><span class="fa fa-tag"></span> ' . ucwords($row_content["snippet_tags"]) . '</small>
+							                </div>
+							                <div class="panel-footer text-center">
+							                    <a title="Preview" class="simple-ajax-popup" href="snippet.php?task=preview&sid=' . $row_content["snippet_id"] . '"><span class="snip fa fa-eye"></span> Preview</a>
+							                    <a title="Select Layout" class="snippet-task" href="#" data-task="new" data-sid="' . $row_content["snippet_id"] . '"><span class="snip fa fa-pencil"></span> Select Layout</a>
+							                </div>
+							            </div>
+			                    		
+			                    	</div>';
+			}
+			$preview_structure .= '</div>';
+			return $preview_structure;
+		}
+	
+		public function delete() {
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'posts_trash` SELECT * FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+		}
 	}
 ?>
+
+

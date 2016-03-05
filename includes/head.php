@@ -28,13 +28,13 @@
     ?>
     <meta name="<?= $meta['meta_name'] ?>" content="<?= $meta['meta_content'] ?>">
     <?php } ?>
-    <meta name="description" content="<?= DESC ?>">
+    <meta name="description" content="<?= DESCRIPTION ?>">
     <meta name="author" content="<?= AUTHOR ?>">
     <title><?= TITLE ?></title>
     <?php
         foreach($links as $link) {
     ?>
-    <link rel="<?= $link['link_rel'] ?>" href="<?= $link['link_href'] ?>" type="<?= $link['link_type'] ?>">
+    <link rel="<?= $link['link_rel'] ?>" href="<?= ($link['link_href'][0]=='h') ? $link['link_href'] : 'http://'.ABS_PATH . $link['link_href'] ?>" type="<?= $link['link_type'] ?>">
     <?php } ?>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

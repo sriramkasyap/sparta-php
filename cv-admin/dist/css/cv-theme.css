@@ -33,3 +33,74 @@ nav>.nav .open>a, nav>.nav .open>a:focus, nav>.nav .open>a:hover {
 body {
     font-family: 'Titillium Web', sans-serif;
 }
+
+.btn-cv {
+	background-color:#004d7f;
+	margin-bottom: 1%;
+	color: white;
+	text-transform:capitalize;
+	-webkit-transition : all 0.2s ease-in;
+	-moz-transition : all 0.2s ease-in;
+	-ms-transition : all 0.2s ease-in;
+	-o-transition : all 0.2s ease-in;
+	transition : all 0.2s ease-in;
+}
+.btn-cv:hover, .btn-cv:focus {
+	background-color: #3180B3;
+	color: white;
+}
+.panel-image img.panel-image-preview {
+    width: 100%;
+	border-radius: 4px 4px 0px 0px;
+}
+
+.panel-heading ~ .panel-image img.panel-image-preview {
+	border-radius: 0px;
+}
+
+.panel-image ~ .panel-body, .panel-image.hide-panel-body ~ .panel-body {
+	overflow: hidden;
+}
+.panel-image ~ .panel-footer a {
+	padding: 0px 10px;
+	font-size: 1.3em;
+	color: rgb(100, 100, 100);
+}
+
+.panel-image.hide-panel-body ~ .panel-body {
+	height: 0px;
+	padding: 0px;
+}
+.fa.snip  {
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+}
+a:hover>.fa.snip {
+	color: #004d7f;
+	}
+	
+.white-popup {
+	position: relative;
+	background: #FFF;
+	min-height: 75vh;
+	width: 90vw;
+	margin: 20px auto;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: white;
+}
+.navbar-default .navbar-toggle:hover .icon-bar, .navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #004d7f;
+}
+.navbar-default .navbar-toggle {
+	right: 1em;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: white;
+}
+.snippet-task {
+	 cursor: pointer;
+}

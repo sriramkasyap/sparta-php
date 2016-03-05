@@ -2,7 +2,7 @@
 	class start_bootstrap_header extends post {
 		public static $snippet_meta = array('main_heading' => ['varchar', 'Your Favorite Source of Free Bootstrap Themes'],
 											'main_description' => ['text','Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!'],
-											'button_link' => ['url', '#about'],
+											'button_link' => ['varchar', '#about'],
 											'button_text' => ['varchar', 'Find Out More']
 		);
 		//Mandatory Block of Code
