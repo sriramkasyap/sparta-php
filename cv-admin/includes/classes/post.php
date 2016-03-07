@@ -7,7 +7,7 @@
 		public $post_meta;
 		public $post_content;
 		public $page_id;
-		public $author_id;
+		public $user_id;
 		public $post_pos;
 		public static $snippet_id;
 		public static $snippet_class;
@@ -28,7 +28,7 @@
 				$this->post_id = $row[0] + 1;
 				$this->uporin = 'in';
 				$this->post_meta = static::$snippet_meta;
-				$this->author_id = 1;
+				$this->user_id = 1;
 			}
 		}
 		
@@ -57,7 +57,7 @@
 			
 			if($this->uporin == 'in') {
 				$this->set_snippet_data();
-				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `author_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->author_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
+				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `user_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->user_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
 				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				if(mysqli_query(connect_db(),$sql)) {
 					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
@@ -68,7 +68,8 @@
 				$i=0;
 				foreach ($this->post_meta as $key => $value){
 					if(is_array($value[1])){
-						$value[1] = $value[1][0];
+// 						$value[1] = $value[1][0];
+						print_r($value[1]);
 					}
 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
 					mysqli_query(connect_db(), $sql);
@@ -242,6 +243,11 @@
 			mysqli_query(connect_db(), $query_post);
 			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
 			mysqli_query(connect_db(), $query_post);
+			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			echo success_message("Post ".$this->post_heading." has been successsfully Deleted");
 		}
 	}
 ?>

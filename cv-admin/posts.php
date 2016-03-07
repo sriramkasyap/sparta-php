@@ -48,7 +48,7 @@
 		                    <td>' . $row['page_title'] . '</td>
 		                    <td>' . $row['user_display_name'] . '</td>
 		                    <td>' . $row['post_url'] . '</td>
-		                    <td><a class="snippet-task" data-task="edit_post" data-sid="' . $row['post_id'] . '">Edit</a></td>
+		                    <td><a class="snippet-task" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '">Edit</a></td>
 		                    <td><a class="snippet-task" data-task="delete_post" data-sid="' . $row['post_id'] . '">Delete</a></td>
 		                </tr>';
             }

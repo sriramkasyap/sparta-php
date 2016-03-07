@@ -39,7 +39,7 @@
         $sql_posts = 'SELECT * FROM `' . TABLE_PREFIX . $table . $where;
 	    $result_posts = mysqli_query(connect_db(), $sql_posts);
 	    while($row_posts = mysqli_fetch_assoc($result_posts)) {
-	        echo $row_posts[$content];
+	        echo stripslashes($row_posts[$content]);
 	    }
     }
     
@@ -76,7 +76,7 @@
     	$sql_posts = 'SELECT * FROM '. $table . $where . $order;
     	$result_posts = mysqli_query(connect_db(), $sql_posts);
     	while($row_posts = mysqli_fetch_assoc($result_posts)) {
-    		echo $row_posts[$content];
+    		echo stripslashes($row_posts[$content]);
     	}
     }
 
