@@ -20,13 +20,10 @@
                             break;
 		case 'delete_post' : 	delete_post($_GET['sid']);
                             break;
-		case 'edit_post' : 	if(isset($_GET['sid'])) {
-								edit_post_arg($_GET['sid']);
-							}
-							else {
-								edit_post();
-							}
-                            break;
+		case 'edit_post_arg' : 	edit_post_arg($_GET['sid']);
+								break;
+		case 'edit_post'	:	edit_post();
+							    break;
 		case 'publish_post' : 	publish_post();
                             break;
 		default : 			preview_post();
@@ -41,6 +38,7 @@
     function new_snippet($sid) {
         //for($i=0;$i<10000000;$i++){}
         //echo $sid;
+        unset($_GET['sid']);
         $result_snippet = mysqli_query(connect_db(), 'SELECT * FROM `' . TABLE_PREFIX .'snippets` WHERE `snippet_id` = ' . $sid);
         $row_snippet = mysqli_fetch_assoc($result_snippet);
         $new_post = new $row_snippet['snippet_name']();

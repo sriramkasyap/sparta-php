@@ -32,6 +32,7 @@
         $('.iconpicker').iconpicker();
         
     </script>
+    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 </body>
 
 </html>

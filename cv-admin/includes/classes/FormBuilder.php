@@ -101,7 +101,10 @@
 		
 		protected function addTextArea($name,$placeholder,$value,$repeatable) {
 			$form_structure = '<label for="' . $name . '">' . $placeholder . '</label>
-					<textarea class="form-control" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>';
+					<textarea class="form-control ckeditor" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>
+					<script>
+		                CKEDITOR.replace("'.$name.'");
+		            </script>';
 			if($repeatable) {
 				return $form_structure;
 			}

@@ -1,5 +1,5 @@
 <?php 
-    if(!isset($_GET['source'])) {
+    if(!isset($_GET['task'])) {
         header("Location: index.php");
     }
     else {
@@ -8,7 +8,7 @@
         $task = $_GET['task'];
         switch($task) {
             case 'add':     $page['title'] = 'add new Page';
-                            $page['data'] = '';
+                            $page['data'] = add_page();
                             $page['heading'] = 'Add New Page';
                             break;
                 
@@ -19,7 +19,7 @@
                             break;
                 
             default :       $page['title'] = 'posts';
-                            $page['data'] =  view_all_pages();
+//                             $page['data'] =  view_all_pages();
                             $page['heading'] = 'View All posts';
                             break;
         }
@@ -28,19 +28,19 @@
     
     function view_all_pages() {
     	$data = '<hr>
-		<h3>Approved Posts</h3>
-		   <table class="table table-hover">
-		    <thead>
-		        <tr>
-		            <th>S.No.</th>
-		            <th>Page Name</th>
-		            <th>Page URL</th>
-                    <th>Page Type</th>
-                    <th>Page Description</th>
-		            <th colspan="2">Actions</th>
-		        </tr>
-		    </thead>
-		    <tbody>';
+				<h3>Approved Posts</h3>
+				   <table class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th>S.No.</th>
+				            <th>Page Name</th>
+				            <th>Page URL</th>
+		                    <th>Page Type</th>
+		                    <th>Page Description</th>
+				            <th colspan="2">Actions</th>
+				        </tr>
+				    </thead>
+				    <tbody>';
             $view_query = "SELECT * FROM `".TABLE_PREFIX."pages`";
             //echo $query;
             $all_posts_result = mysqli_query(connect_db(), $view_query);
@@ -66,6 +66,13 @@
     function delete_page($pid) {
     	
     }
+    
+    function create_page_form() {
+    	$form_structure = '';
+    }
+    function add_page() {
+    	
+    }
 ?>
 <body>
 
@@ -84,9 +91,9 @@
                     <!-- /.col-lg-12 -->
                 </div>
                	<div class="row">
-                    <div class="col-lg-12" id="cv-post-content">
-                    
-                    <?= $page['data'] ?>
+                    <div class="col-lg-12" id="cv-page-content">
+                    	<form action=""></form>
+                   
                     <script type="text/javascript">
                     $(".page-task").click(function(){
                     	$(document).ajaxStart(function(){
@@ -99,7 +106,7 @@
 
                         var url = 'pages.php?task=' + $(this).attr('data-task') + '&sid=' + $(this).attr('data-sid');
                         $.get(url, function(data, status){
-                                $('#cv-post-content').html(data);
+                                $('#cv-page-content').html(data);
                         });
                         
                     });
