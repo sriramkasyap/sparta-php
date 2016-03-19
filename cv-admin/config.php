@@ -38,15 +38,22 @@
                 ?>
                 <div class="row">
                     <div class="col-md-8 col-md-push-2">
-                    	<form id="config_form" action="" method="post">
-                    			<?php 
-                    				$result_configur = mysqli_query(connect_db(), "SELECT * FROM `" . TABLE_PREFIX . "config`");
-                    				while ($row_configur = mysqli_fetch_assoc($result_configur)) {
-                    					echo '<div class="form-group"><label for="'.$row_configur['config_name'].'">'.underToUpper($row_configur['config_name']).'</label><input name="'.$row_configur['config_name'].'" id="'.$row_configur['config_name'].'" class="form-control" value="'.$row_configur['config_content'].'"/></div>';
-                    				}
-                    			?>
-                    		<button class="btn btn-cv" name="submit" id="submit" type="submit">Submit</button>
-                    	</form>
+                    	<div class="panel panel-primary">
+	                    	<div class="panel-heading">
+	                    		Configuration Parameters
+	                    	</div>
+	                    	<div class="panel-body">
+		                    	<form id="config_form" action="" method="post">
+		                    			<?php 
+		                    				$result_configur = mysqli_query(connect_db(), "SELECT * FROM `" . TABLE_PREFIX . "config`");
+		                    				while ($row_configur = mysqli_fetch_assoc($result_configur)) {
+		                    					echo '<div class="form-group"><label for="'.$row_configur['config_name'].'">'.underToUpper($row_configur['config_name']).'</label><input name="'.$row_configur['config_name'].'" id="'.$row_configur['config_name'].'" class="form-control" value="'.$row_configur['config_content'].'"/></div>';
+		                    				}
+		                    			?>
+		                    		<button class="btn btn-cv" name="submit" id="submit" type="submit">Submit</button>
+		                    	</form>
+	                    	</div>
+                    	</div>
                   	</div>
                 </div>
             </div>

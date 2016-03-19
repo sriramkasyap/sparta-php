@@ -17,7 +17,7 @@
 				$this->form_method = 'post';
 			}
 			if(isset($actionmethodenctype[2])){
-				$this->form_enctype = $actionmethodenctype[2];
+				$this->form_enctype = ' enctype="' . $actionmethodenctype[2] . '" ';
 			} else {
 				$this->form_enctype = '';
 			}
@@ -25,7 +25,7 @@
 		}
 		
 		private function addForm() {
-			$this->form_structure = '<form id="idform" action="' . $this->form_action . '" method="' . $this->form_method . '" enctype="' . $this->form_enctype . '">';
+			$this->form_structure = '<form id="idform" action="' . $this->form_action . '" method="' . $this->form_method .'"'. $this->form_enctype . '>';
 		}
 		
 		public function addObject($typenameplacevalue){
@@ -49,7 +49,7 @@
 			}
 		}
 		
-		public function addInputObject($type,$name,$placeholder,$value,$repeatable) {
+		protected  function addInputObject($type,$name,$placeholder,$value,$repeatable) {
 			switch ($type) {
 				case 'varchar': $return_object = $this->addInput('text',$name,$placeholder,$value,$repeatable);
 								break;
@@ -57,10 +57,13 @@
 								break;
 				case 'select':  $return_object = $this->addSelectObject($name,$placeholder,$value,$repeatable);
 								break;
+				case 'image':  $return_object = $this->addImageObject($name,$placeholder,$value,$repeatable);
+								break;
 				case 'email':
 				case 'password': 
 				case 'date':
 				case 'number' :
+				case 'hidden' :
 				case 'datetime':
 				case 'color': 	$return_object = $this->addInput($type,$name,$placeholder,$value,$repeatable);
 								break;
@@ -77,11 +80,13 @@
 		}
 		
 		public function addSubmit($button) {
-			$this->form_structure .= '<button class="btn btn-cv" type="submit" id="submit" name="submit">' . $button . '</button></form>';
+			$this->form_structure .= '<div class="form-group">
+										<button class="btn btn-cv" type="submit" id="submit" name="submit">' . $button . '</button>
+									</div></form>';
 		}
 		
 		public function renderForm() {
-			return $this->form_structure;
+			return stripslashes($this->form_structure);
 		}
 		
 		protected function addInput($type,$name,$placeholder,$value,$repeatable) {
@@ -100,11 +105,14 @@
 		}
 		
 		protected function addTextArea($name,$placeholder,$value,$repeatable) {
-			$form_structure = '<label for="' . $name . '">' . $placeholder . '</label>
+			$form_structure = '<div class="form-group"><label for="' . $name . '">' . $placeholder . '</label>
 					<textarea class="form-control ckeditor" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>
 					<script>
-		                CKEDITOR.replace("'.$name.'");
-		            </script>';
+		               	var editor = CKEDITOR.replace("'.$name.'");
+						editor.on( \'change\', function( evt ) {
+		               		CKEDITOR.instances.'.$name.'.updateElement();
+		               	});
+		            </script></div>';
 			if($repeatable) {
 				return $form_structure;
 			}
@@ -186,5 +194,93 @@
 // 			print_r($value);
 		}
 		
+		protected function addImageObject($name,$placeholder,$value,$repeatable) {
+			$form_structure = ' <div class="form-group"><div class="input-group image-preview">
+					                <input type="text" class="form-control image-preview-filename" disabled="disabled">
+					                <span class="input-group-btn">
+					                    <!-- image-preview-clear button -->
+					                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+					                        <span class="glyphicon glyphicon-remove"></span> Clear
+					                    </button>
+					                    <!-- image-preview-input -->
+					                    <div class="btn btn-default image-preview-input">
+					                        <span class="glyphicon glyphicon-folder-open"></span>
+					                        <span class="image-preview-input-title">Browse</span>
+					                        <input type="file" accept="image/png, image/jpeg, image/gif" name="'.$name.'"/>
+					                    </div>
+					                </span>
+					            </div></div>';
+			$form_structure .= '<script>
+									$(document).on(\'click\', \'#close-preview\', function(){ 
+								    $(\'.image-preview\').popover(\'hide\');
+								    // Hover befor close the preview
+								    $(\'.image-preview\').hover(
+								        function () {
+								           $(\'.image-preview\').popover(\'show\');
+								        }, 
+								         function () {
+								           $(\'.image-preview\').popover(\'hide\');
+								        }
+								    );    
+								});
+								
+								$(function() {
+								    // Create the close button
+								    var closebtn = $(\'<button/>\', {
+								        type:"button",
+								        text: \'x\',
+								        id: "close-preview",
+								        style: "font-size: initial;",
+								    });
+								    closebtn.attr("class","close pull-right");
+								    // Set the popover default content
+								    $(".image-preview").popover({
+								        trigger:"manual",
+								        html:true,
+								        title: "<strong>Preview</strong>"+$(closebtn)[0].outerHTML,
+								        content: "There\'s no image",
+								        placement:"bottom"
+								    });
+								    // Clear event
+								    $(".image-preview-clear").click(function(){
+								        $(\'.image-preview\').attr("data-content","").popover(\'hide\');
+								        $(\'.image-preview-filename\').val("");
+								        $(\'.image-preview-clear\').hide();
+								        $(\'.image-preview-input input:file\').val("");
+								        $(".image-preview-input-title").text("Browse"); 
+								    }); 
+								    // Create the preview image
+								    $(".image-preview-input input:file").change(function (){     
+								        var img = $(\'<img/>\', {
+								            id: "dynamic",
+								            width:250,
+								            height:200
+								        });      
+								        var file = this.files[0];
+								        var reader = new FileReader();
+								        // Set preview image into the popover data-content
+								        reader.onload = function (e) {
+								            $(".image-preview-input-title").text("Change");
+								            $(".image-preview-clear").show();
+								            $(".image-preview-filename").val(file.name);            
+								            img.attr("src", e.target.result);
+								            $(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
+								        }        
+								        reader.readAsDataURL(file);
+								    });  
+								});
+								</script>';
+// 			$form_structure = '<div class="form-group">
+// 								    <label for="'.$name.'">File input</label>
+// 								    <input type="file" id="'.$name.'" name="'.$name.'">
+// 								 </div>';
+			if($repeatable) {
+				return $form_structure;
+			}
+			else {
+				$this->form_structure .= $form_structure;
+				return true;
+			}
+		}
 	}
 ?>

@@ -116,7 +116,18 @@
 			while ($row_pages=mysqli_fetch_assoc($result_pages)){
 				$pages_assoc[$row_pages['page_id']] = $row_pages['page_title'];
 			}
-			$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
+			$image_present = False;
+			foreach ($this->post_meta as $meta_element) {
+				if(in_array('text',$meta_element)) {
+					$image_present = True;
+				}
+			}
+			if($image_present) {
+				$new_form = new FormBuilder(['snippet.php?task=submit_post','post','multipart/form-data']);
+			}
+			else {
+				$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
+			}
 			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
 			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
 			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
@@ -131,43 +142,29 @@
 		}
 		
 		public function submit_form($user_sub){
-			if(isset($user_sub['submit'])){
-				unset($user_sub['submit']);
-			}
-			$this->page_id = $user_sub['page_id'];
-			$this->post_heading= addslashes ($user_sub['post_heading']);
-			$this->post_url= addslashes ($user_sub['post_url']);
-			$this->post_pos= addslashes ($user_sub['post_pos']);
-			unset($user_sub['page_id']);
-			unset($user_sub['post_heading']);
-			unset($user_sub['post_url']);
-			unset($user_sub['post_pos']);
-			$this->submit_meta($user_sub);
-			$this->post_content = addslashes ($this->create_structure());
+			print_r($user_sub);
+			print_r($_FILES);
+// 			if(isset($user_sub['submit'])){
+// 				unset($user_sub['submit']);
+// 			}
+// 			$this->page_id = $user_sub['page_id'];
+// 			$this->post_heading= addslashes ($user_sub['post_heading']);
+// 			$this->post_url= addslashes ($user_sub['post_url']);
+// 			$this->post_pos= addslashes ($user_sub['post_pos']);
+// 			unset($user_sub['page_id']);
+// 			unset($user_sub['post_heading']);
+// 			unset($user_sub['post_url']);
+// 			unset($user_sub['post_pos']);
+// 			$this->submit_meta($user_sub);
+// 			$this->post_content = addslashes ($this->create_structure());
 		}
 
 		protected function submit_meta($user_sub_meta) {
-			//print_r($user_sub_meta);
-// 			foreach ($user_sub_meta as $meta_key => $meta_value) {
-// 				if(isset(static::$snippet_meta[$meta_key])) {
-// 					$meta_type = static::$snippet_meta[$meta_key][0];
-// 				}
-// 				else {
-// 					$meta_type = static::$snippet_meta[$this->repeatable_element][1][$meta_key][0];
-// 				}
-// 				if(is_array($meta_value)){
-// 					for($i=0;$i<count($meta_value);$i++){
-						
-// 						$post_meta[$this->repeatable_element] = ['repeatable',[$meta_key=>[$meta_type,$meta_value[$i]]]];
-// 					}
-// 				}
-// 				else {
-// 					$post_meta[$meta_key] = [$meta_type, $meta_value];
-// 				}
-// 			}
-
 			$post_meta = static::$snippet_meta;
 			foreach ($user_sub_meta as $meta_key=>$meta_value){
+				if(!empty($_FILES)) {
+					
+				}
 				if(isset($post_meta[$meta_key])){
 					$post_meta[$meta_key][1] = $meta_value;
 				}

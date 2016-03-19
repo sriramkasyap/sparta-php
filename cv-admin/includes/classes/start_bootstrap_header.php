@@ -4,7 +4,7 @@
 											'main_description' => ['text','Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!'],
 											'button_link' => ['varchar', '#about'],
 											'button_text' => ['varchar', 'Find Out More'],
-											'background-image' => ['varchar', 'img/header.jpg']
+											'background-image' => ['image', 'img/header.jpg']
 		);
 		//Mandatory Block of Code
 		// Constructor function which calls any overloaded constructor if called with an argument

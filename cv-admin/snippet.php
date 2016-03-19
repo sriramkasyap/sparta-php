@@ -14,8 +14,11 @@
 							break;
         case 'new' :        new_snippet($_GET['sid']);
                             break;
-        case 'submit_post' :submit_post($_POST);
-                            break;
+        case 'submit_post' :	if(!empty($_FILES)) {
+						        	echo 'Files Present';
+						        }
+        						submit_post($_POST);
+                            	break;
        	case 'preview_post' : 	preview_post();
                             break;
 		case 'delete_post' : 	delete_post($_GET['sid']);
@@ -47,38 +50,40 @@
         file_put_contents('temp.cv', $serial);
         $new_post->create_form('new');
         echo '<script type="text/javascript">
-				var post_form = $("#idform");
-			    post_form.submit(function(event) {
-						
-				    /* stop form from submitting normally */
-					event.preventDefault();
-							//alert("OK");
+				$("#idform").submit(function(event) {
+				    		/* stop form from submitting normally */
+							event.preventDefault();
+        					var formData = new FormData(this);
 			                /* get some values from elements on the page: */
-			                url = post_form.attr( "action");
-			
+			                url = $(this).attr( "action");
+//         					alert(formData);
 			                /* Send the data using post */
-			                var posting = $.post( url, post_form.serialize());
+			                var posting = $.post( url, formData);
 			
 			                /* Alerts the results */
 			                posting.done(function( data ) {
 			                  $("#cv-post-content").html(data);
-			                });
-				});</script>';
+        					});
+			    });
+        		</script>';
     }
 
 	function submit_post($post_form){
-		//print_r ($post_form);
+		print_r ($post_form);
+		
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
 		$post->submit_form($post_form);
+// 		print_r($_FILES);
+			
 		//$post->printer();
 		$serial = serialize($post);
 		file_put_contents('temp.cv', $serial);
 		echo success_message('Your post <strong>"' . $post->post_heading . '"</strong> has been successfully Submitted. Click below to preview, edit or Publish the post.');
 		echo '<div class="btn-group" role="group">';
-		echo '<a title="Preview Post" class="btn btn-info simple-popup" role="button" href="#preview_post"><span class="fa fa-eye"></span>Preview Post</a>';
-		echo '<a title="Edit Post" class="btn btn-warning snippet-task" href="#" data-task="edit_post"><span class="fa fa-pencil"></span>Edit Post</a>';
-		echo '<a title="Publish Post" class="btn btn-success snippet-task" href="#" data-task="publish_post"><span class="fa fa-pencil"></span>Publish Post</a></div>';
+		echo '<a title="Preview Post" class="btn btn-info simple-popup" role="button" href="#preview_post"><span class="fa fa-eye"></span> Preview Post</a>';
+		echo '<a title="Edit Post" class="btn btn-warning snippet-task" href="#" data-task="edit_post"><span class="fa fa-pencil"></span> Edit Post</a>';
+		echo '<a title="Publish Post" class="btn btn-success snippet-task" href="#" data-task="publish_post"><span class="fa fa-check"></span> Publish Post</a></div>';
 		echo '<div class="mfp-hide" id="preview_post">';
 		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post" frameborder="0" width="100%" height="auto"></iframe>';
 		echo '</div>';
