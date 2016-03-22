@@ -1,0 +1,12 @@
+
+# BEGIN cv_cms
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /cv_cms/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /cv_cms/index.php [L]
+</IfModule>
+
+# END cv_cms

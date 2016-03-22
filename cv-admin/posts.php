@@ -1,11 +1,11 @@
 <?php 
-    if(!isset($_GET['source'])) {
+    if(!isset($_GET['task'])) {
         header("Location: index.php");
     }
     else {
     	include 'includes/functions.php';
     	include 'includes/site_config.php';
-        $source = $_GET['source'];
+        $source = $_GET['task'];
         switch($source) {
             case 'add':
                 $page['title'] = 'add new post';

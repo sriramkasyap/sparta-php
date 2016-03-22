@@ -55,7 +55,7 @@
 							event.preventDefault();
         					var formData = new FormData(this);
 			                /* get some values from elements on the page: */
-			                url = $(this).attr( "action");
+			                url = "snippet.php?task=submit_post";
 //         					alert(formData);
 			                /* Send the data using post */
 			                var posting = $.post( url, formData);

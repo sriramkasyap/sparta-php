@@ -1,4 +1,4 @@
-<?php
+<?php 
 	include 'includes/functions.php';
 	include 'includes/site_config.php';
 	if(!isset($_GET['task'])) {
@@ -86,6 +86,7 @@
 		$post->preview();
 	}
     
+    
 ?>
 </body>
-<?php include 'includes/footer.php'; ?>
+<?php //include 'includes/footer.php'; ?>
