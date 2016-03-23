@@ -34,6 +34,9 @@
     // Prefix for all the tables belonging to the site
     define ('JS_PATH', ABS_PATH . 'js/');
     
+    // Prefix for all the tables belonging to the site
+    define ('IMG_PATH', ABS_PATH . 'img/');
+    
     //Fetch site configuration details from site_config table
     $sql_config = 'SELECT * FROM `' . TABLE_PREFIX . 'config`;';
     $result_config = mysqli_query(connect_db(),$sql_config);

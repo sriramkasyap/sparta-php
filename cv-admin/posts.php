@@ -77,6 +77,8 @@
                     <div class="col-lg-12" id="cv-post-content">
                     
                     <?= $page['data'] ?>
+                    
+                    </div>
                     <script type="text/javascript">
                     $(".snippet-task").click(function(){
                     	$(document).ajaxStart(function(){
@@ -94,7 +96,6 @@
                         
                     });
                     </script>
-                    </div>
                     <div id="wait" style="display:none;position:absolute;top:50%;left:55%;padding:2px;"><img src='img/default.svg' width="64" height="64" /><br>Loading..</div>
 
                     <!-- /.col-lg-12 -->

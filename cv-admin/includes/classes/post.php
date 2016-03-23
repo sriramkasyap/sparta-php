@@ -142,21 +142,20 @@
 		}
 		
 		public function submit_form($user_sub){
-			print_r($user_sub);
-			print_r($_FILES);
-// 			if(isset($user_sub['submit'])){
-// 				unset($user_sub['submit']);
-// 			}
-// 			$this->page_id = $user_sub['page_id'];
-// 			$this->post_heading= addslashes ($user_sub['post_heading']);
-// 			$this->post_url= addslashes ($user_sub['post_url']);
-// 			$this->post_pos= addslashes ($user_sub['post_pos']);
-// 			unset($user_sub['page_id']);
-// 			unset($user_sub['post_heading']);
-// 			unset($user_sub['post_url']);
-// 			unset($user_sub['post_pos']);
-// 			$this->submit_meta($user_sub);
-// 			$this->post_content = addslashes ($this->create_structure());
+// 			print_r($user_sub);
+			if(isset($user_sub['submit'])){
+				unset($user_sub['submit']);
+			}
+			$this->page_id = $user_sub['page_id'];
+			$this->post_heading= addslashes ($user_sub['post_heading']);
+			$this->post_url= addslashes ($user_sub['post_url']);
+			$this->post_pos= addslashes ($user_sub['post_pos']);
+			unset($user_sub['page_id']);
+			unset($user_sub['post_heading']);
+			unset($user_sub['post_url']);
+			unset($user_sub['post_pos']);
+			$this->submit_meta($user_sub);
+			$this->post_content = addslashes ($this->create_structure());
 		}
 
 		protected function submit_meta($user_sub_meta) {

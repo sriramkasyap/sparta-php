@@ -16,9 +16,8 @@ nav.navbar-default {
 }
 .navbar-brand {
     display: table;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-left: 2em;
+    padding: 0px;
+    margin-left: -40px;
 }
 nav.navbar-default>.nav>li>a {
     color: white;
@@ -125,4 +124,17 @@ a:hover>.fa.snip {
 }
 .image-preview-input-title {
     margin-left:2px;
+}
+#sidebar-logo {
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 50px;
+    position: absolute;
+}
+#sidebar-logo>img {
+    margin-left: auto;
+    margin-right: auto;
+}
+ul#side-menu {
+    height: 100vh;
 }

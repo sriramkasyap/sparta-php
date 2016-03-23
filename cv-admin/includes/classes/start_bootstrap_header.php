@@ -24,7 +24,7 @@
 			parent::__construct1($fetch_id);
 		}
 		function create_structure(){
-			$html_structure = '<header style="background-image:'.$this->post_meta['background-image'][1].' ">
+			$html_structure = '<header style="background-image: url(\'img/'.$this->post_meta['background-image'][1].'\') ">
 				    <div class="header-content">
 				        <div class="header-content-inner">
 				            <h1>' . $this->post_meta['main_heading'][1] . '</h1>

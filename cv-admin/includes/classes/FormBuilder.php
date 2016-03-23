@@ -25,7 +25,7 @@
 		}
 		
 		private function addForm() {
-			$this->form_structure = '<form id="idform" action="' . $this->form_action . '" method="' . $this->form_method .'"'. $this->form_enctype . '>';
+			$this->form_structure = '<form id="new_snip_form" action="' . $this->form_action . '" method="' . $this->form_method .'"'. $this->form_enctype . '>';
 		}
 		
 		public function addObject($typenameplacevalue){
