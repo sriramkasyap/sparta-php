@@ -106,13 +106,16 @@
 		
 		protected function addTextArea($name,$placeholder,$value,$repeatable) {
 			$form_structure = '<div class="form-group"><label for="' . $name . '">' . $placeholder . '</label>
-					<textarea class="form-control ckeditor" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>
-					<script>
+					<textarea class="form-control ckeditor" rows="3" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" >' . $value . '</textarea>';
+			if(!$repeatable){
+					$form_structure .= '<script>
 		               	var editor = CKEDITOR.replace("'.$name.'");
 						editor.on( \'change\', function( evt ) {
 		               		CKEDITOR.instances.'.$name.'.updateElement();
 		               	});
-		            </script></div>';
+		            </script>';
+			}
+			$form_structure .= '</div>';
 			if($repeatable) {
 				return $form_structure;
 			}

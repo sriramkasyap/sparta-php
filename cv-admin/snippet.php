@@ -56,13 +56,13 @@
 				    		/* stop form from submitting normally */
 							event.preventDefault();
         					$.ajax({
-								url: "snippet.php?task=submit_post", // Url to which the request is send
-								type: "POST",             // Type of request to be send, called as method
-								data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-								contentType: false,       // The content type used when sending data to the server.
-								cache: false,             // To unable request pages to be cached
-								processData:false,        // To send DOMDocument or non processed data file it is set to false
-								success: function(data)   // A function to be called if request succeeds
+								url: "snippet.php?task=submit_post", 
+								type: "POST",
+								data: new FormData(this),
+								contentType: false,
+								cache: false,
+								processData:false,
+								success: function(data)
 								{
 									$("#cv-post-content").html(data);
 								}
@@ -148,7 +148,7 @@
 					$post_form[$file_name] = $target_file;
 				}
 			}
-			print_r($blog_errors);
+			//print_r($blog_errors);
 		}
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
@@ -183,7 +183,6 @@
 		//	$post->printer();
 	}
 	
-	
 	function preview_post() {
 		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post" frameborder="0" width="100%" height="auto"></iframe>';
 	}
@@ -193,29 +192,33 @@
 		$post = unserialize($serial);
 		$post->create_form('edit');
 		echo '<script type="text/javascript">
-				var post_form = $("#idform");
-			    post_form.submit(function(event) {
-		
-				    /* stop form from submitting normally */
-					event.preventDefault();
-							//alert("OK");
-			                /* get some values from elements on the page: */
-			                url = post_form.attr( "action");
-		
-			                /* Send the data using post */
-			                var posting = $.post( url, post_form.serialize());
-		
-			                /* Alerts the results */
-			                posting.done(function( data ) {
-			                  $("#cv-post-content").html(data);
-			                });
-				});</script>';
+				$("#new_snip_form").submit(function(event) {
+				    		/* stop form from submitting normally */
+							event.preventDefault();
+        					$.ajax({
+								url: "snippet.php?task=submit_post", // Url to which the request is send
+								type: "POST",             // Type of request to be send, called as method
+								data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+								contentType: false,       // The content type used when sending data to the server.
+								cache: false,             // To unable request pages to be cached
+								processData:false,        // To send DOMDocument or non processed data file it is set to false
+								success: function(data)   // A function to be called if request succeeds
+								{
+									$("#cv-post-content").html(data);
+								}
+							});
+			    });
+        		</script>';
 	}
 	
 	function publish_post() {
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
-		$post->publish_post();
+		// 		$post->printer();
+		if($post->publish_post() && file_exists('temp.cv')) {
+			unlink('temp.cv');
+			
+		}
 	}
 	
 	function edit_post_arg ($pid) {
@@ -225,25 +228,29 @@
 		$row_snippet = mysqli_fetch_assoc($result_snippet);
 		$snippet_name = $row_snippet['snippet_name'];
 		$post = new $snippet_name($pid);
+// 		$post->uporin = 'up';
+// 		$post->printer();
 		$post->create_form('edit');
+		$serial = serialize($post);
+		file_put_contents('temp.cv', $serial);
 		echo '<script type="text/javascript">
-				var post_form = $("#idform");
-			    post_form.submit(function(event) {
-		
-				    /* stop form from submitting normally */
-					event.preventDefault();
-							//alert("OK");
-			                /* get some values from elements on the page: */
-			                url = post_form.attr( "action");
-		
-			                /* Send the data using post */
-			                var posting = $.post( url, post_form.serialize());
-		
-			                /* Alerts the results */
-			                posting.done(function( data ) {
-			                  $("#cv-post-content").html(data);
-			                });
-				});</script>';
+				$("#new_snip_form").submit(function(event) {
+				    		/* stop form from submitting normally */
+							event.preventDefault();
+        					$.ajax({
+								url: "snippet.php?task=submit_post", // Url to which the request is send
+								type: "POST",             // Type of request to be send, called as method
+								data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+								contentType: false,       // The content type used when sending data to the server.
+								cache: false,             // To unable request pages to be cached
+								processData:false,        // To send DOMDocument or non processed data file it is set to false
+								success: function(data)   // A function to be called if request succeeds
+								{
+									$("#cv-post-content").html(data);
+								}
+							});
+			    });
+        		</script>';
 	}
 	
 	function delete_post($pid) {

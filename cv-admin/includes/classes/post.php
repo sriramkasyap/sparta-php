@@ -1,7 +1,7 @@
 <?php 
 	abstract class post {
 		protected $post_id;
-		protected $uporin;
+		public $uporin;
 		public $post_url;
 		public $post_heading;
 		public $post_meta;
@@ -51,41 +51,74 @@
 			}
 			//print_r ($this->post_meta);
 			$this->uporin = 'up';
+// 			$this->printer();
 		}
 		
 		public function publish_post() {
-			
+// 			print $this->uporin;
 			if($this->uporin == 'in') {
 				$this->set_snippet_data();
 				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `user_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->user_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
 				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				if(mysqli_query(connect_db(),$sql)) {
 					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
+					echo "<a href='posts.php?task=view' class='btn btn-success'>Back to Posts</a>";
 				}
 				else {
 					echo warning_message('Pubish Failed. Please Try Again. <xmp>' . $sql . '</xmp>');
+					
 				}
-				$i=0;
-				foreach ($this->post_meta as $key => $value){
-					if(is_array($value[1])){
-// 						$value[1] = $value[1][0];
-						print_r($value[1]);
-					}
-					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
-					mysqli_query(connect_db(), $sql);
-					$i++;
-					//echo '<xmp>' . $sql . '</xmp><br/><br/>';
+				
+				if($this->publish_meta()) {
+					return true;
+				}
+				else {
+					return false;
 				}
 			}
 			else {
-				$sql = "UPDATE `" . TABLE_PREFIX . "posts` SET `page_id` = '" . $this->page_id . "', `post_url` = '" . $this->post_url . "', `post_heading` = '" . $this->post_heading . "', `post_pos` ='" . $this->post_pos . "', `post_content` ='" . $structure . "', `snippet_id` ='" . static::$snippet_id . "' WHERE `post_id` ='" . $this->post_id . "';";
+				$this->set_snippet_data();
+				$sql = "UPDATE `" . TABLE_PREFIX . "posts` SET `page_id` = '" . $this->page_id . "', `post_url` = '" . $this->post_url . "', `post_heading` = '" . $this->post_heading . "', `post_pos` ='" . $this->post_pos . "', `post_content` ='" . $this->post_content . "', `snippet_id` ='" . static::$snippet_id . "' WHERE `post_id` ='" . $this->post_id . "';";
 				//echo $sql;
 				if(mysqli_query(connect_db(),$sql)) {
-					echo success_message('Query Sucessful');
+// 					echo success_message('Query Sucessful');
+					$this->delete_meta();
+					if($this->publish_meta()) {
+						return true;
+					}
+					else {
+						return false;
+					}
 				}
 				else {
-					echo warning_message('query Failed. Please Try Again');
+					echo warning_message('Query Failed. Please Try Again');
 				}
+			}
+			
+		}
+		
+		protected function publish_meta() {
+			$done = array();
+			$i=0;
+			foreach ($this->post_meta as $key => $value){
+				if(is_array($value[1])){
+					// 						$value[1] = $value[1][0];
+// 					print_r($value[1]);
+// 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
+				}
+				else {
+					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
+					$done[] = mysqli_query(connect_db(), $sql);
+				}
+				
+				$i++;
+				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
+			}
+			if(!in_array(false, $done)) {
+				return true;
+			}
+			else {
+				return false;
 			}
 		}
 			
@@ -161,9 +194,7 @@
 		protected function submit_meta($user_sub_meta) {
 			$post_meta = static::$snippet_meta;
 			foreach ($user_sub_meta as $meta_key=>$meta_value){
-				if(!empty($_FILES)) {
-					
-				}
+				
 				if(isset($post_meta[$meta_key])){
 					$post_meta[$meta_key][1] = $meta_value;
 				}
@@ -235,15 +266,18 @@
 		}
 	
 		public function delete() {
-			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'posts_trash` SELECT * FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
-			mysqli_query(connect_db(), $query_post);
-			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
-			mysqli_query(connect_db(), $query_post);
+			$this->delete_meta();
 			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
 			mysqli_query(connect_db(), $query_post);
 			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
 			mysqli_query(connect_db(), $query_post);
 			echo success_message("Post ".$this->post_heading." has been successsfully Deleted");
+		}
+		protected function delete_meta() {
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'posts_trash` SELECT * FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
 		}
 	}
 ?>

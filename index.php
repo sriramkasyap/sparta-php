@@ -24,7 +24,7 @@
        	case 'preview_post' : 		preview_post();
                             		break;
                             		
-       	case 'load_front': 			load_frontend();
+       	default: 			load_frontend();
        								break;
 	}
 ?>
@@ -56,7 +56,7 @@
     		$request_page_url = $url_array[count($url_array)-1];
     	}
 //     	echo $request_page;
-		$request_query = 'SELECT `page_id` FROM `'.TABLE_PREFIX.'pages` WHERE `page_url` = "'.$request_page_url.'"';
+		$request_query = 'SELECT `page_id` FROM `'.TABLE_PREFIX.'pages` WHERE `page_url` = "/'.$request_page_url.'/"';
 // 		echo $request_query;
 		$request_result = mysqli_query(connect_db(), $request_query);
     	
@@ -66,7 +66,10 @@
 //     		echo $request_page_id;
     	}
     	else {
-    		$request_page_id = 1;
+    		$request_query = 'SELECT `page_id` FROM `'.TABLE_PREFIX.'pages` WHERE `page_url` = "/home/"';
+    		$request_result = mysqli_query(connect_db(), $request_query);
+    		$request_row = mysqli_fetch_assoc($request_result);
+    		$request_page_id = $request_row['page_id'];
     	}
 		$where = ' WHERE `page_id` = '.$request_page_id;
     	$table = '`'.TABLE_PREFIX.'posts`';
@@ -89,4 +92,4 @@
     
 ?>
 </body>
-<?php //include 'includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

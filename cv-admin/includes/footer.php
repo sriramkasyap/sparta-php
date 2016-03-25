@@ -11,7 +11,6 @@
 
     <!-- Magnific Popup core JS file -->
     <script src="dist/js/jquery.magnific-popup.js"></script>
-    <script src="js/jquery.scoped.js"></script>
     <script type="text/javascript" src="bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.2.0.min.js"></script>
     <script type="text/javascript" src="bootstrap-iconpicker/js/bootstrap-iconpicker.min.js"></script>
     <script>
@@ -21,7 +20,6 @@
                 type: 'ajax',
                 overflowY: 'scroll' // as we know that popup content is tall we set scroll overflow by default to avoid jump
             });
-            $.scoped();
         });
        
         $(function() {
@@ -32,7 +30,7 @@
         $('.iconpicker').iconpicker();
         
     </script>
-    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+   
 </body>
 
 </html>

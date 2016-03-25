@@ -24,8 +24,7 @@
     include 'includes/header.php';
     
     function view_all_posts() {
-    	$data = '<hr>
-		<h3>Approved Posts</h3>
+    	$data = '
 		   <table class="table table-hover">
 		    <thead>
 		        <tr>
@@ -41,18 +40,23 @@
             $view_query = "SELECT `post_id`, `page_id`, `page_title`, `user_id`, `user_display_name`, `snippet_id`, `snippet_display_name`, `post_url`, `post_heading`, `post_pos` FROM `".TABLE_PREFIX."posts` JOIN `".TABLE_PREFIX."pages` USING (`page_id`) JOIN `".TABLE_PREFIX."users` USING (`user_id`) JOIN `".TABLE_PREFIX."snippets` USING (`snippet_id`) ORDER BY `post_pos`";
             //echo $query;
             $all_posts_result = mysqli_query(connect_db(), $view_query);
-            while($row=mysqli_fetch_assoc($all_posts_result)) {
-                $data .= '<tr>
-		                    <td>' . $row['post_pos'] . '</td>
-		                    <td>' . $row['post_heading'] . '</td>
-		                    <td>' . $row['page_title'] . '</td>
-		                    <td>' . $row['user_display_name'] . '</td>
-		                    <td>' . $row['post_url'] . '</td>
-		                    <td><a class="snippet-task" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '">Edit</a></td>
-		                    <td><a class="snippet-task" data-task="delete_post" data-sid="' . $row['post_id'] . '">Delete</a></td>
-		                </tr>';
+            if(mysqli_num_rows($all_posts_result)>0) {
+	            while($row=mysqli_fetch_assoc($all_posts_result)) {
+	                $data .= '<tr>
+			                    <td>' . $row['post_pos'] . '</td>
+			                    <td>' . $row['post_heading'] . '</td>
+			                    <td>' . $row['page_title'] . '</td>
+			                    <td>' . $row['user_display_name'] . '</td>
+			                    <td>' . $row['post_url'] . '</td>
+			                    <td><a class="snippet-task" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '">Edit</a></td>
+			                    <td><a class="snippet-task" data-task="delete_post" data-sid="' . $row['post_id'] . '">Delete</a></td>
+			                </tr>';
+	            }
+    			$data .= '</tbody></table>';
             }
-    	$data .= '</tbody></table>';
+            else {
+            	$data = '<div class="text-center"><h4>No Posts Yet. Click <a href="posts.php?task=add">Add New Post</a> to create new Posts.</h4></div>';
+            }
   		return $data;
     }
 

@@ -36,6 +36,7 @@
 				            <th>Page URL</th>
 		                    <th>Page Type</th>
 		                    <th>Page Description</th>
+    						<th>No. of Posts</th>
 				            <th colspan="2">Actions</th>
 				        </tr>
 				    </thead>
@@ -44,22 +45,27 @@
             //echo $query;
             $all_posts_result = mysqli_query(connect_db(), $view_query);
             while($row=mysqli_fetch_assoc($all_posts_result)) {
+            	$count_result = mysqli_query(connect_db(),"SELECT COUNT(`post_id`) as count FROM `".TABLE_PREFIX."posts` WHERE `page_id` ='".$row['page_id']."'");
+            	$count = mysqli_fetch_assoc($count_result);
                 $data .= '<tr>
 		                    <td>' . $row['page_id'] . '</td>
 		                    <td>' . $row['page_heading'] . '</td>
 		                    <td>' . $row['page_url'] . '</td>
 		                    <td>' . $row['page_type'] . '</td>
 		                    <td>' . $row['page_description'] . '</td>
-		                    <td><a class="page-task" data-task="edit" data-sid="' . $row['page_id'] . '">Edit</a></td>
-		                    <td><a class="page-task" data-task="delete" data-sid="' . $row['page_id'] . '">Delete</a></td>
+		                    <td>' . $count['count'] . '</td>
+		                    <td><a href="#" class="page-task" data-task="edit" data-sid="' . $row['page_id'] . '">Edit</a></td>
+		                    <td><a href="#" class="page-task" data-task="delete" data-sid="' . $row['page_id'] . '">Delete</a></td>
 		                </tr>';
             }
     	$data .= '</tbody></table>';
   		return $data;
     }
+    
     function add_page() {
     	return create_page_form('add', false);
     }
+    
     function edit_page($pid) {
    ?>
    		<div class="row">
@@ -70,7 +76,7 @@
                     <!-- /.col-lg-12 -->
                 </div>
                	<div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12"  id="cv-post-content">
    <?php
    			echo create_page_form('edit', $pid);
    	?>                    
@@ -103,13 +109,33 @@
     		$page_form->addObject(['varchar','page_url','URL address of the page', $page_row['page_url']]);
     		$page_form->addObject(['varchar', 'page_type','Type of Page', $page_row['page_type']]);
     		$page_form->addObject(['text','page_description', 'Detailed Description of page', $page_row['page_description']]);
+    		$page_form->addObject(['hidden','page_id', '', $page_id]);
     	}
     	$page_form->addSubmit(ucfirst($action).' Page');
     	$form_structure .= $page_form->renderForm();
     	$form_structure .= '</div></div>';
+    	$form_structure .= '<script type="text/javascript">
+				$("#new_snip_form").submit(function(event) {
+				    		/* stop form from submitting normally */
+							event.preventDefault();
+        					$.ajax({
+								url: "action.php?task='.$action.'",
+								type: "POST",
+								data: new FormData(this),
+								contentType: false,
+								cache: false,
+								processData:false,
+								success: function(data)
+								{
+									$("#cv-post-content").html(data);
+								}
+							});
+			    });
+        		</script>';
     	return $form_structure;
     	
     }
+    
     function total_structure($page) {
     	include 'includes/header.php';
 ?>
@@ -161,7 +187,7 @@
                     <!-- /.col-lg-12 -->
                 </div>
                	<div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" id="cv-post-content">
                    	<?php echo $page['data']; ?>
                     
                     </div>
@@ -177,11 +203,7 @@
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
-<?php 
-		include 'includes/footer.php'; 
-    }
-?>
-<script type="text/javascript">
+    <script type="text/javascript">
                     $(".page-task").click(function(){
                     	$(document).ajaxStart(function(){
                             $('#cv-post-content').html('');
@@ -198,3 +220,7 @@
                         
                     });
                     </script>
+<?php 
+		include 'includes/footer.php'; 
+    }
+?>

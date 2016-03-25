@@ -35,7 +35,7 @@
 		
 	function success_message($message) {
 		$success_msg = '<div class="alert alert-success" role="alert"><span class="fa fa-success"></span> ';
-		$success_msg .= $message;
+		$success_msg .= '<strong>'.$message.'</strong>';
 		$success_msg .= '</div>';
 		return $success_msg;
 	}
