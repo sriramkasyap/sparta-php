@@ -23,6 +23,8 @@
                             		
        	case 'preview_post' : 		preview_post();
                             		break;
+		case 'preview_post_old' : 		preview_post_old($_GET['pid']);
+                            		break;
                             		
        	default: 			load_frontend();
        								break;
@@ -89,6 +91,17 @@
 		$post->preview();
 	}
     
+	function preview_post_old($pid) {
+		$where = ' WHERE `post_id` = '.$pid;
+		$table = '`'.TABLE_PREFIX.'posts`';
+		$order = '';
+		$content = 'post_content';
+		$sql_posts = 'SELECT * FROM '. $table . $where . $order;
+		$result_posts = mysqli_query(connect_db(), $sql_posts);
+		while($row_posts = mysqli_fetch_assoc($result_posts)) {
+			echo stripslashes($row_posts[$content]);
+		}
+	}
     
 ?>
 </body>

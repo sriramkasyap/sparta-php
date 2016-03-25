@@ -2,7 +2,7 @@
 	class start_bootstrap_services extends post {
 		protected $repeatable_element = 'service';
 		public static $snippet_meta = array('section_heading' => ['varchar', 'At Your Service'],
-											'service'=> ['repeatable' , ['icon' => ['icon', 'fa-phone'],
+											'service'=> ['repeatable' , ['service_icon' => ['icon', 'fa-phone'],
 																		'sub_head' => ['varchar','Sturdy Templates'],
 																		'sub_description' => ['text','Our templates are updated regularly so they don\'t break.']]]
 											
@@ -38,10 +38,10 @@
 							        </div>
 							        <div class="container">
 							            <div class="row">';
-				for($i=0;$i<count($repeater['icon'][1]);$i++) {
+				for($i=0;$i<count($repeater['service_icon'][1]);$i++) {
 					$html_structure .='<div class="col-lg-3 col-md-6 text-center">
 							                    <div class="service-box">
-							                        <i class="fa fa-4x ' . $repeater['icon'][1][$i] .  ' wow bounceIn text-primary"></i>
+							                        <i class="fa fa-4x ' . $repeater['service_icon'][1][$i] .  ' wow bounceIn text-primary"></i>
 							                        <h3>' . $repeater['sub_head'][1][$i] .  '</h3>
 							                        <p class="text-muted">' . $repeater['sub_description'][1][$i] .  '</p>
 							                    </div>

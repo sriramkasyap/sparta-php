@@ -27,16 +27,16 @@
     	$data = '
 		   <table class="table table-hover">
 		    <thead>
-		        <tr>
-		            <th>S.No.</th>
-		            <th>Post Heading</th>
-		            <th>Page Name</th>
-		            <th>Author name</th>
-		            <th>Post URL</th>
-		            <th colspan="2">Actions</th>
+		        <tr class="text-center">
+		            <th class="text-center">S.No.</th>
+		            <th class="text-center">Post Heading</th>
+		            <th class="text-center">Page Name</th>
+		            <th class="text-center">Author name</th>
+		            <th class="text-center">Post URL</th>
+		            <th class="text-center" colspan="3">Actions</th>
 		        </tr>
 		    </thead>
-		    <tbody>';
+		    <tbody class="text-center">';
             $view_query = "SELECT `post_id`, `page_id`, `page_title`, `user_id`, `user_display_name`, `snippet_id`, `snippet_display_name`, `post_url`, `post_heading`, `post_pos` FROM `".TABLE_PREFIX."posts` JOIN `".TABLE_PREFIX."pages` USING (`page_id`) JOIN `".TABLE_PREFIX."users` USING (`user_id`) JOIN `".TABLE_PREFIX."snippets` USING (`snippet_id`) ORDER BY `post_pos`";
             //echo $query;
             $all_posts_result = mysqli_query(connect_db(), $view_query);
@@ -48,8 +48,12 @@
 			                    <td>' . $row['page_title'] . '</td>
 			                    <td>' . $row['user_display_name'] . '</td>
 			                    <td>' . $row['post_url'] . '</td>
-			                    <td><a class="snippet-task" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '">Edit</a></td>
-			                    <td><a class="snippet-task" data-task="delete_post" data-sid="' . $row['post_id'] . '">Delete</a></td>
+			                   	<td><div class="btn-group" role="group">
+					                    <a class="simple-ajax-popup btn btn-primary" href="snippet.php?task=preview_post&pid=' . $row['post_id'] . '" title="View"><i class="fa fa-eye"></i></a>
+					                    <a class="snippet-task  btn btn-warning" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '" title="Edit"><i class="fa fa-pencil"></i></a>
+					                    <a class="snippet-task btn btn-danger" data-task="delete_post" data-sid="' . $row['post_id'] . '" title="Delete"><i class="fa fa-trash"></i></a>
+				                    </div>
+				                </td>
 			                </tr>';
 	            }
     			$data .= '</tbody></table>';

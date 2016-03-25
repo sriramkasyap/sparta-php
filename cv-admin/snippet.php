@@ -21,8 +21,13 @@
         							submit_post($_POST);
 						        }
                             	break;
-       	case 'preview_post' : 	preview_post();
-                            break;
+       	case 'preview_post' : 	if(isset($_GET['pid'])){
+						       		preview_post_old($_GET['pid']);
+						       	}
+						       	else {
+       								preview_post();
+						       	}
+                            	break;
 		case 'delete_post' : 	delete_post($_GET['sid']);
                             break;
 		case 'edit_post_arg' : 	edit_post_arg($_GET['sid']);
@@ -185,6 +190,10 @@
 	
 	function preview_post() {
 		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post" frameborder="0" width="100%" height="auto"></iframe>';
+	}
+	
+	function preview_post_old($pid) {
+		echo '<iframe src="' . ABS_PATH . 'index.php?task=preview_post_old&pid='.$pid.'" frameborder="0" width="100%" height="auto"></iframe>';
 	}
 
 	function edit_post() {

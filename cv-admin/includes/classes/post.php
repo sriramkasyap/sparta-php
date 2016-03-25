@@ -45,10 +45,16 @@
 			$this->post_heading = $row_post['post_heading'];
 			$this->post_pos = $row_post['post_pos'];
 			$this->post_content = $row_post['post_content'];
-			$this->post_meta = array();
+			$post_meta = static::$snippet_meta;
 			while ($row_postmeta = mysqli_fetch_array($result_postmeta)){
-				$this->post_meta[$row_postmeta['postmeta_tag']] = array($row_postmeta['postmeta_type'], $row_postmeta['postmeta_value']);
+				if(isset($post_meta[$row_postmeta['postmeta_tag']])) {
+					$post_meta[$row_postmeta['postmeta_tag']][1] = $row_postmeta['postmeta_value'];
+				}
+				else {
+					$post_meta[$this->repeatable_element][1][$row_postmeta['postmeta_tag']][1] = $row_postmeta['postmeta_value'];
+				}
 			}
+			$this->post_meta = $post_meta;
 			//print_r ($this->post_meta);
 			$this->uporin = 'up';
 // 			$this->printer();
@@ -62,7 +68,7 @@
 				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				if(mysqli_query(connect_db(),$sql)) {
 					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
-					echo "<a href='posts.php?task=view' class='btn btn-success'>Back to Posts</a>";
+					echo "<div class='btn-group' role='group'><a href='posts.php?task=view' class='btn btn-success'>Back to Posts</a><a href='posts.php?task=add' class='btn btn-info'>Add One more Post</a></div>";
 				}
 				else {
 					echo warning_message('Pubish Failed. Please Try Again. <xmp>' . $sql . '</xmp>');
@@ -79,9 +85,12 @@
 			else {
 				$this->set_snippet_data();
 				$sql = "UPDATE `" . TABLE_PREFIX . "posts` SET `page_id` = '" . $this->page_id . "', `post_url` = '" . $this->post_url . "', `post_heading` = '" . $this->post_heading . "', `post_pos` ='" . $this->post_pos . "', `post_content` ='" . $this->post_content . "', `snippet_id` ='" . static::$snippet_id . "' WHERE `post_id` ='" . $this->post_id . "';";
-				//echo $sql;
+// 				echo $sql;
 				if(mysqli_query(connect_db(),$sql)) {
 // 					echo success_message('Query Sucessful');
+
+					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
+					echo "<div class='btn-group' role='group'><a href='posts.php?task=view' class='btn btn-success'>Back to Posts</a><a href='posts.php?task=add' class='btn btn-info'>Add One more Post</a></div>";
 					$this->delete_meta();
 					if($this->publish_meta()) {
 						return true;
@@ -103,8 +112,14 @@
 			foreach ($this->post_meta as $key => $value){
 				if(is_array($value[1])){
 					// 						$value[1] = $value[1][0];
-// 					print_r($value[1]);
-// 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
+					$k=0;
+					foreach($value[1] as $value_key=>$value_array) {
+ 						$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $value_key . "', '" . $value_array[0] . "', '" . $value_array[1][$k]. "', '" . $i . "');";
+// 						echo $sql."<br/>";
+						$k++;
+						$done[] = mysqli_query(connect_db(), $sql);
+					}
+ 					
 				}
 				else {
 					$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $key . "', '" . $value[0] . "', '" . $value[1]. "', '" . $i . "');";
@@ -151,7 +166,7 @@
 			}
 			$image_present = False;
 			foreach ($this->post_meta as $meta_element) {
-				if(in_array('text',$meta_element)) {
+				if(in_array('image',$meta_element)) {
 					$image_present = True;
 				}
 			}
@@ -200,9 +215,10 @@
 				}
 				else {
 					$post_meta[$this->repeatable_element][1][$meta_key][1] = $meta_value;
+					
 				}
 			}
-			
+// 			print_r($post_meta[$this->repeatable_element]);
 			$this->post_meta = $post_meta;
 			//print_r($this->post_meta);
 		}
@@ -266,17 +282,22 @@
 		}
 	
 		public function delete() {
-			$this->delete_meta();
-			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
-			mysqli_query(connect_db(), $query_post);
-			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
-			mysqli_query(connect_db(), $query_post);
-			echo success_message("Post ".$this->post_heading." has been successsfully Deleted");
-		}
-		protected function delete_meta() {
+			
 			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'posts_trash` SELECT * FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
 			mysqli_query(connect_db(), $query_post);
 			$query_post = 'INSERT INTO `'.TABLE_PREFIX.'postmeta_trash` SELECT * FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'posts` WHERE `post_id` = '.$this->post_id;
+			mysqli_query(connect_db(), $query_post);
+			$this->delete_meta();
+			echo success_message("Post ".$this->post_heading." has been successsfully Deleted");
+			echo "<a href='posts.php?task=view' class='btn btn-success'>Back to Posts</a>";
+		}
+		
+		protected function delete_meta() {
+
+			
+			$query_post = 'DELETE FROM `'.TABLE_PREFIX.'postmeta` WHERE `post_id` = '.$this->post_id;
 			mysqli_query(connect_db(), $query_post);
 		}
 	}
