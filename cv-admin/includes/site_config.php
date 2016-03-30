@@ -8,7 +8,7 @@
     */
     
     // Name of the Database of the website
-    define ('DB_NAME', 'cv_cms');
+    define ('DB_NAME', 'coveventure');
 
     // MySQL database User Name
     define ('DB_USER', 'root');
@@ -23,7 +23,7 @@
     define ('TABLE_PREFIX', 'site_');
 
     // Prefix for all the tables belonging to the site
-    define ('ABS_PATH', 'http://localhost:8000/cv_cms/');
+    define ('ABS_PATH', 'http://localhost:8000/coveventure/');
     
     // Prefix for all the tables belonging to the site
     define ('ADMIN_PATH', ABS_PATH . 'cv-admin/');

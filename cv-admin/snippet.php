@@ -113,50 +113,24 @@
 	
 	function submit_post_files($post_form, $files){
 		//print_r ($post_form);
-		//print_r($_FILES);
-		foreach($files as $file_name=>$file_param) {
-// 			print_r($file_name);
-// 			print_r($file_param);
-			$target_dir = '../img/'; 
-			$target_file = $target_dir . basename($file_param["name"]);
-			$uploadOk = 1;
-			$blog_errors = array();
-			$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-			// Check if image file is a actual image or fake image
-			$check = getimagesize($file_param["tmp_name"]);
-			if($check !== false) {
-				$uploadOk = 1;
-			} else {
-				$blog_errors[] = "File is not an image.";
-				$uploadOk = 0;
-			}
-			// Check if file already exists
-			if (file_exists($target_file)) {
-				$info = pathinfo($target_file);
-				$target_file = $target_dir . str_shuffle(basename($file_param["name"],'.'.$info['extension'])).'.'.$info['extension'];
-			}
-			// Allow certain file formats
-			if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-				&& $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG"
-				&& $imageFileType != "GIF" ) {
-					$blog_errors[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-					$uploadOk = 0;
-			}
-			// Check if $uploadOk is set to 0 by an error
-			if ($uploadOk == 0) {
-				$blog_errors[] = "Sorry, your file was not uploaded.";
-				// if everything is ok, try to upload file
-			} 
-			else 
-			{
-				if (move_uploaded_file($file_param["tmp_name"], $target_file)) {
-					$post_form[$file_name] = $target_file;
-				}
-			}
-			//print_r($blog_errors);
-		}
+// 		print_r($_FILES);
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
+		foreach ($files as $file=>$file_params){
+			if(!is_array($file_params['name'])) {
+				$post_form[$file] = submit_file($file, $file_params);
+			}
+			else {
+				for($f=0;$f<count($file_params['name']);$f++) {
+					$file_params_new = $file_params;
+					foreach ($file_params as $param_name=>$param_value) {
+						$file_params_new[$param_name] = $param_value[$f];
+					}
+					$post_form[$file][$f] = submit_file($file, $file_params_new);
+				}
+			}
+		}
+// 		print_r($post_form);
 		$post->submit_form($post_form);
 // 		$post->printer();
 		$serial = serialize($post);
@@ -186,6 +160,51 @@
                     });
                     </script>';
 		//	$post->printer();
+	}
+	
+
+	function submit_file($file_name, $file_param) {
+		// 			print_r($file_name);
+		// 			print_r($file_param);
+		$target_dir = '../img/';
+		$added_file =  basename($file_param["name"]);
+		$target_file = $target_dir . $added_file;
+		$uploadOk = 1;
+		$blog_errors = array();
+		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+		// Check if image file is a actual image or fake image
+		$check = getimagesize($file_param["tmp_name"]);
+		if($check !== false) {
+			$uploadOk = 1;
+		} else {
+			$blog_errors[] = "File is not an image.";
+			$uploadOk = 0;
+		}
+		// Check if file already exists
+		if (file_exists($target_file)) {
+			$info = pathinfo($target_file);
+			$added_file = str_shuffle(basename($file_param["name"],'.'.$info['extension'])).'.'.$info['extension'];
+			$target_file = $target_dir . $added_file;
+		}
+		// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+				&& $imageFileType != "gif" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG"
+				&& $imageFileType != "GIF" ) {
+					$blog_errors[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+					$uploadOk = 0;
+				}
+				// Check if $uploadOk is set to 0 by an error
+				if ($uploadOk == 0) {
+					$blog_errors[] = "Sorry, your file was not uploaded.";
+					// if everything is ok, try to upload file
+				}
+				else
+				{
+					if (move_uploaded_file($file_param["tmp_name"], $target_file)) {
+						return 'img/'.$added_file;
+					}
+				}
+				//print_r($blog_errors);
 	}
 	
 	function preview_post() {
@@ -271,6 +290,7 @@
 		$post = new $snippet_name($pid);
 		$post->delete();
 	}
+	
 ?>
 <script type="text/javascript">
     $(".simple-ajax-popup").magnificPopup({

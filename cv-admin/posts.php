@@ -27,27 +27,27 @@
     	$data = '
 		   <table class="table table-hover">
 		    <thead>
-		        <tr class="text-center">
-		            <th class="text-center">S.No.</th>
-		            <th class="text-center">Post Heading</th>
-		            <th class="text-center">Page Name</th>
-		            <th class="text-center">Author name</th>
-		            <th class="text-center">Post URL</th>
-		            <th class="text-center" colspan="3">Actions</th>
+		        <tr">
+		            <th>S.No.</th>
+		            <th>Post Heading</th>
+		            <th>Page Name</th>
+    				<th>Posted Date</th>
+		            <th>Author name</th>
+		            <th colspan="3">Actions</th>
 		        </tr>
 		    </thead>
-		    <tbody class="text-center">';
-            $view_query = "SELECT `post_id`, `page_id`, `page_title`, `user_id`, `user_display_name`, `snippet_id`, `snippet_display_name`, `post_url`, `post_heading`, `post_pos` FROM `".TABLE_PREFIX."posts` JOIN `".TABLE_PREFIX."pages` USING (`page_id`) JOIN `".TABLE_PREFIX."users` USING (`user_id`) JOIN `".TABLE_PREFIX."snippets` USING (`snippet_id`) ORDER BY `post_pos`";
+		    <tbody">';
+            $view_query = "SELECT `post_id`, `page_id`, `page_title`, DATE_FORMAT(`post_date`,'%D %M,%Y') as `post_date`, `user_id`, `user_display_name`, `snippet_id`, `snippet_display_name`, `post_url`, `post_heading`, `post_pos` FROM `".TABLE_PREFIX."posts` JOIN `".TABLE_PREFIX."pages` USING (`page_id`) JOIN `".TABLE_PREFIX."users` USING (`user_id`) JOIN `".TABLE_PREFIX."snippets` USING (`snippet_id`) ORDER BY `page_id`";
             //echo $query;
             $all_posts_result = mysqli_query(connect_db(), $view_query);
             if(mysqli_num_rows($all_posts_result)>0) {
 	            while($row=mysqli_fetch_assoc($all_posts_result)) {
 	                $data .= '<tr>
-			                    <td>' . $row['post_pos'] . '</td>
+			                    <td></td>
 			                    <td>' . $row['post_heading'] . '</td>
 			                    <td>' . $row['page_title'] . '</td>
+			                    <td>' . $row['post_date'] . '</td>
 			                    <td>' . $row['user_display_name'] . '</td>
-			                    <td>' . $row['post_url'] . '</td>
 			                   	<td><div class="btn-group" role="group">
 					                    <a class="simple-ajax-popup btn btn-primary" href="snippet.php?task=preview_post&pid=' . $row['post_id'] . '" title="View"><i class="fa fa-eye"></i></a>
 					                    <a class="snippet-task  btn btn-warning" data-task="edit_post_arg" data-sid="' . $row['post_id'] . '" title="Edit"><i class="fa fa-pencil"></i></a>

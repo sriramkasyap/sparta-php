@@ -9,6 +9,7 @@
 		public $page_id;
 		public $user_id;
 		public $post_pos;
+		public $post_on_every_page;
 		public static $snippet_id;
 		public static $snippet_class;
 		public static $snippet_name;
@@ -29,6 +30,8 @@
 				$this->uporin = 'in';
 				$this->post_meta = static::$snippet_meta;
 				$this->user_id = 1;
+				$this->post_url = '#';
+				$this->post_on_every_page = 0;
 			}
 		}
 		
@@ -64,7 +67,7 @@
 // 			print $this->uporin;
 			if($this->uporin == 'in') {
 				$this->set_snippet_data();
-				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `user_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->user_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "');";
+				$sql = "INSERT INTO `" . TABLE_PREFIX . "posts` (`post_id`, `page_id`, `post_url`, `user_id`, `post_heading`, `post_pos`, `post_content`, `snippet_id`, `post_on_every_page`, `post_date`) VALUES ('" . $this->post_id . "', '" . $this->page_id . "', '" . $this->post_url . "', '" . $this->user_id . "', '" . $this->post_heading . "', '" . $this->post_pos . "', '" . $this->post_content . "', '" . static::$snippet_id . "', '".$this->post_on_every_page."', NOW());";
 				//echo '<xmp>' . $sql . '</xmp><br/><br/>';
 				if(mysqli_query(connect_db(),$sql)) {
 					echo success_message('Your Post "' . $this->post_heading . '" has been successfully published.');
@@ -114,7 +117,8 @@
 					// 						$value[1] = $value[1][0];
 					$k=0;
 					foreach($value[1] as $value_key=>$value_array) {
- 						$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $value_key . "', '" . $value_array[0] . "', '" . $value_array[1][$k]. "', '" . $i . "');";
+//  						print_r($value[1]); echo $k.'<br>';
+						$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $value_key . "', '" . $value_array[0] . "', '" . $value_array[1][$k]. "', '" . $i . "');";
 // 						echo $sql."<br/>";
 						$k++;
 						$done[] = mysqli_query(connect_db(), $sql);
@@ -180,6 +184,7 @@
 			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
 			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
 			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
+			$new_form->addObject(['number','post_on_every_page','To Be Displayed On Every Page',$this->post_on_every_page]);
 			foreach (static::$snippet_meta as $name => $typeplace){
 				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
 				//print_r($this->post_meta[$name][1]);
@@ -198,10 +203,12 @@
 			$this->post_heading= addslashes ($user_sub['post_heading']);
 			$this->post_url= addslashes ($user_sub['post_url']);
 			$this->post_pos= addslashes ($user_sub['post_pos']);
+			$this->post_on_every_page = $user_sub['post_on_every_page'];
 			unset($user_sub['page_id']);
 			unset($user_sub['post_heading']);
 			unset($user_sub['post_url']);
 			unset($user_sub['post_pos']);
+			unset($user_sub['post_on_every_page']);
 			$this->submit_meta($user_sub);
 			$this->post_content = addslashes ($this->create_structure());
 		}
@@ -220,7 +227,7 @@
 			}
 // 			print_r($post_meta[$this->repeatable_element]);
 			$this->post_meta = $post_meta;
-			//print_r($this->post_meta);
+// 			print_r($this->post_meta);
 		}
 	
 		public function preview() {
@@ -262,7 +269,7 @@
 							                    <h3 class="panel-title">' . $row_content["snippet_display_name"] . '</h3>
 							                </div>
 							                <div class="panel-image hide-panel-body">
-							                    <img src="' . $row_content["snippet_preview_img"] . '" class="panel-image-preview" />
+							                    <img src="img/snippets/' . $row_content["snippet_preview_img"] . '" class="panel-image-preview" />
 							                </div>
 							                <div class="panel-body">
 							                    <h4>' . $row_content["snippet_display_name"] . '</h4>

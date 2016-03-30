@@ -15,12 +15,15 @@
             case 'edit':    edit_page($_GET['pid']);
                             break;
                 
-            case 'delete':  delete_page($_GET['pid']);
+            case 'delete':  $page['title'] = 'Delete Page';
+                            $page['data'] = delete_page($_GET['pid']);
+                            $page['heading'] = 'Delete Page';
+                            total_structure($page);
                             break;
                 
-            default :       $page['title'] = 'Pages';
+            default :       $page['title'] = 'Navigation';
                             $page['data'] =  view_all_pages();
-                            $page['heading'] = 'View All Pages';
+                            $page['heading'] = 'Navigation Bar';
                             total_structure($page);
                             break;
         }
@@ -47,17 +50,15 @@
                     $count_result = mysqli_query(connect_db(),"SELECT COUNT(`post_id`) as count FROM `".TABLE_PREFIX."posts` WHERE `page_id` ='".$row['page_id']."'");
                     $count = mysqli_fetch_assoc($count_result);
                     $data .= '<tr>
-                                <td></td>
+                                <td>' . $row['page_id'] . '</td>
                                 <td>' . $row['page_heading'] . '</td>
                                 <td>' . $row['page_url'] . '</td>
                                 <td>' . $row['page_type'] . '</td>
-                                <td>' . strip_tags($row['page_description']) . '</td>
+                                <td>' . $row['page_description'] . '</td>
                                 <td>' . $count['count'] . '</td>
-                                <td><div class="btn-group" role="group"><a href="'. ABS_PATH.trim($row['page_url'],'/'). '" class="btn btn-primary" title="View" target="_blank"><i class="fa fa-eye"></i></a>
-                                <a href="#" class="page-task btn btn-warning" data-task="edit" data-sid="' . $row['page_id'] . '" title="Edit"><i class="fa fa-pencil"></i></a>
-                                <a href="#" class="page-task btn btn-danger" data-task="delete" data-sid="' . $row['page_id'] . '" title="Delete"><i class="fa fa-trash"></i></a></div>
-				                </td>
-			                </tr>';
+                                <td><a href="#" class="page-task" data-task="edit" data-sid="' . $row['page_id'] . '">Edit</a></td>
+                                <td><a href="#" class="page-task" data-task="delete" data-sid="' . $row['page_id'] . '">Delete</a></td>
+                            </tr>';
                 }
                 
     	       $data .= '</tbody></table>';
@@ -100,27 +101,8 @@
         mysqli_query(connect_db(), $query_post);
         $message = success_message("Page has been successsfully Deleted");
         $message .= "<a href='pages.php?task=view' class='btn btn-success'>Back to Pages</a>";
-     ?>
-           		<div class="row">
-                            <div class="col-lg-12">
-                                <h1 class="page-header">Delete Page</h1>
-                                <p id="tester"></p>
-                            </div>
-                            <!-- /.col-lg-12 -->
-                        </div>
-                       	<div class="row">
-                            <div class="col-lg-12"  id="cv-post-content">
-           <?php
-           			echo $message;
-           	?>                    
-                            </div>
-                            
-                            <div id="wait" style="display:none;position:absolute;top:50%;left:55%;padding:2px;"><img src='img/default.svg' width="64" height="64" /><br>Loading..</div>
-        
-                            <!-- /.col-lg-12 -->
-                        </div>   
-                        <!-- /.row -->
-<?php }
+        return $message;
+    }
     
     function create_page_form($action,$page_id) {
     	$form_structure ='<div class="row"><div class="col-sm-10 col-md-8 col-sm-push-1 col-md-push-2">' ;
