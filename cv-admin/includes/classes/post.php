@@ -31,7 +31,7 @@
 				$this->post_meta = static::$snippet_meta;
 				$this->user_id = 1;
 				$this->post_url = '#';
-				$this->post_on_every_page = 0;
+				$this->post_on_every_page = false;
 			}
 		}
 		
@@ -48,6 +48,7 @@
 			$this->post_heading = $row_post['post_heading'];
 			$this->post_pos = $row_post['post_pos'];
 			$this->post_content = $row_post['post_content'];
+			$this->post_on_every_page = $row_post['post_on_every_page'];
 			$post_meta = static::$snippet_meta;
 			while ($row_postmeta = mysqli_fetch_array($result_postmeta)){
 				if(isset($post_meta[$row_postmeta['postmeta_tag']])) {
@@ -115,13 +116,16 @@
 			foreach ($this->post_meta as $key => $value){
 				if(is_array($value[1])){
 					// 						$value[1] = $value[1][0];
-					$k=0;
+					
 					foreach($value[1] as $value_key=>$value_array) {
 //  						print_r($value[1]); echo $k.'<br>';
-						$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $value_key . "', '" . $value_array[0] . "', '" . $value_array[1][$k]. "', '" . $i . "');";
-// 						echo $sql."<br/>";
-						$k++;
-						$done[] = mysqli_query(connect_db(), $sql);
+						
+						for($k=0;$k<count($value_array);$k++){
+							$sql = "INSERT INTO `" . TABLE_PREFIX . "postmeta`(`post_id`, `snippet_id`, `postmeta_tag`, `postmeta_type`, `postmeta_value`, `postmeta_pos`) VALUES ('" . $this->post_id . "', '" . static::$snippet_id . "', '" . $value_key . "', '" . $value_array[0] . "', '" . $value_array[1][$k]. "', '" . $i . "');";
+	// 						echo $sql."<br/>";
+							
+							$done[] = mysqli_query(connect_db(), $sql);
+						}
 					}
  					
 				}
@@ -180,22 +184,22 @@
 			else {
 				$new_form = new FormBuilder(['snippet.php?task=submit_post','post']);
 			}
-			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading]);
-			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url]);
-			$new_form->addObject(['select','page_id','Page Name',$pages_assoc]);
-			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos]);
-			$new_form->addObject(['number','post_on_every_page','To Be Displayed On Every Page',$this->post_on_every_page]);
+			$new_form->addObject(['varchar','post_heading','Post Heading', $this->post_heading],true);
+			$new_form->addObject(['varchar','post_url','Post URL',$this->post_url],true);
+			$new_form->addObject(['select','page_id','Page Name',$pages_assoc],true);
+			$new_form->addObject(['number','post_pos','Post Position',$this->post_pos],true);
+			$new_form->addObject(['bool','post_on_every_page',' To Be Displayed On Every Page',$this->post_on_every_page],true);
 			foreach (static::$snippet_meta as $name => $typeplace){
 				//echo $meta_key . ' => '  . $meta_value[1] . '<br>';
 				//print_r($this->post_meta[$name][1]);
-				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $this->post_meta[$name][1]]);
+				$new_form->addObject([$typeplace[0], $name, underToUpper($name), $this->post_meta[$name][1]],true);
 			}
 			$new_form->addSubmit('Submit');
 			echo $new_form->renderForm();
 		}
 		
 		public function submit_form($user_sub){
-// 			print_r($user_sub);
+//  			print_r($user_sub);
 			if(isset($user_sub['submit'])){
 				unset($user_sub['submit']);
 			}
@@ -203,7 +207,7 @@
 			$this->post_heading= addslashes ($user_sub['post_heading']);
 			$this->post_url= addslashes ($user_sub['post_url']);
 			$this->post_pos= addslashes ($user_sub['post_pos']);
-			$this->post_on_every_page = $user_sub['post_on_every_page'];
+			$this->post_on_every_page = ($user_sub['post_on_every_page']=='on' ? true : false);
 			unset($user_sub['page_id']);
 			unset($user_sub['post_heading']);
 			unset($user_sub['post_url']);
@@ -218,10 +222,20 @@
 			foreach ($user_sub_meta as $meta_key=>$meta_value){
 				
 				if(isset($post_meta[$meta_key])){
-					$post_meta[$meta_key][1] = $meta_value;
+					if($post_meta[$meta_key][0]=='checkbox' || $post_meta[$meta_key][0]=='bool') {
+						$post_meta[$meta_key][1] = ($meta_value=='on' ? true : false);
+					}
+					else {
+						$post_meta[$meta_key][1] = $meta_value;
+					}
 				}
 				else {
-					$post_meta[$this->repeatable_element][1][$meta_key][1] = $meta_value;
+					if($post_meta[$this->repeatable_element][1][$meta_key][0]=='checkbox' || $post_meta[$this->repeatable_element][1][$meta_key][0]=='bool') {
+						$post_meta[$this->repeatable_element][1][$meta_key][1] = ($meta_value=='on' ? true : false);
+					}
+					else {
+						$post_meta[$this->repeatable_element][1][$meta_key][1] = $meta_value;
+					}
 					
 				}
 			}

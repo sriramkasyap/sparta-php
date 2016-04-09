@@ -158,3 +158,6 @@ ul#side-menu {
 .table>tbody>tr>td {
 	vertical-align: middle;
 }
+.input-group {
+	width: 100%;
+}

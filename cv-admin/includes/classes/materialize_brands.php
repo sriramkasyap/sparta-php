@@ -2,7 +2,7 @@
 	class materialize_brands extends post {
 		protected $repeatable_element = 'brand_card';
 		public static $snippet_meta = array('section_heading' => ['varchar','Section Heading'],
-											'brand_card' => ['repeatable', ['brand_logo' => ['varchar', 'img/bdat_logo.jpg'],
+											'brand_card' => ['repeatable', ['brand_logo' => ['icon', 'fa-remove'],
 																		'brand_short_name' => ['varchar', 'Brand'],
 																		'brand_long_name' => ['varchar', 'Brand Full Name'],
 																		'brand_description' => ['text', 'Brand Description'],

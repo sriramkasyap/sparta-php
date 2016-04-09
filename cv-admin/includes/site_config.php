@@ -36,6 +36,9 @@
     
     // Prefix for all the tables belonging to the site
     define ('IMG_PATH', ABS_PATH . 'img/');
+
+    // Prefix for all the tables belonging to the site
+    define ('AUTHOR','Sriram Kasyap');
     
     //Fetch site configuration details from site_config table
     $sql_config = 'SELECT * FROM `' . TABLE_PREFIX . 'config`;';
