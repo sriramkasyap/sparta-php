@@ -9,7 +9,7 @@
    <?php
         foreach($scripts as $script) {
     ?>
-    <script type="<?= $script['script_type'] ?>" src="<?= (($script['script_src'][0]=='h') ? $script['script_src'] : ABS_PATH . $script['script_src']) ?>"></script>
+    <script type="<?= $script['script_type'] ?>" src="<?= (($script['script_src'][0]=='h') ? trim($script['script_src']) : trim(ABS_PATH . $script['script_src'])) ?>"></script>
     <?php } ?>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -24,6 +24,10 @@
                         		break;
         case 'edit_script' :	edit_script_submit($_POST);
                         		break;
+        case 'add_plugin' :		add_plugin_submit($_POST);
+                        		break;
+        case 'edit_plugin' :	edit_plugin_submit($_POST);
+                        		break;
 	}
 	
 	function add_page_submit($post) {
@@ -55,7 +59,7 @@
 		// 			print $sql;
 		if(mysqli_query(connect_db(), $sql)) {
 			echo success_message('Link <strong>"'.$post['link_name'].'"</strong> has been added successfully.');
-			
+			echo "<script> location.reload(); </script>";
 		}
 		else {
 			echo warning_message('Link has not been added. Please Try Again');
@@ -67,7 +71,7 @@
 		// 			print $sql;
 		if(mysqli_query(connect_db(), $sql)) {
 			echo success_message('Link <strong>"'.$post['link_name'].'"</strong> has been edited successfully.');
-				
+			echo "<script> location.reload(); </script>";
 		}
 		else {
 			echo warning_message('Link has not been edited. Please Try Again');
@@ -79,10 +83,11 @@
 		// 			print $sql;
 		if(mysqli_query(connect_db(), $sql)) {
 			echo success_message('Script <strong>"'.$post['script_name'].'"</strong> has been added successfully.');
-				
+			echo "<script> location.reload(); </script>";
 		}
 		else {
 			echo warning_message('Script has not been added. Please Try Again');
+			
 		}
 	}
 	
@@ -91,10 +96,36 @@
 		// 			print $sql;
 		if(mysqli_query(connect_db(), $sql)) {
 			echo success_message('Script <strong>"'.$post['script_name'].'"</strong> has been edited successfully.');
-	
+			echo "<script> location.reload(); </script>";
 		}
 		else {
 			echo warning_message('Script has not been edited. Please Try Again');
+		}
+	}
+	
+
+	function add_plugin_submit($post) {
+		$sql = 'INSERT INTO `'.TABLE_PREFIX.'plugins`(`plugin_name`,`plugin_file`, `plugin_sub_menus`,`plugin_author`,`plugin_desciription`,`plugin_icon`) VALUES ("'.$post["plugin_name"].'", "'.$post["plugin_file"].'", "'.$post["plugin_sub_menus"].'", "'.$post["plugin_author"].'", "'.$post["plugin_desciription"].'", "'.$post["plugin_icon"].'");';
+		// 			print $sql;
+		if(mysqli_query(connect_db(), $sql)) {
+			echo success_message('Plugin <strong>"'.$post['plugin_name'].'"</strong> has been added successfully.');
+			echo "<script> location.reload(); </script>";
+		}
+		else {
+			echo warning_message('Plugin has not been added. Please Try Again');
+				
+		}
+	}
+	
+	function edit_plugin_submit($post) {
+		$sql = 'UPDATE `'.TABLE_PREFIX.'plugins`SET `plugin_name`="'.$post['plugin_name'].'", `plugin_sub_menus`="'.$post['plugin_sub_menus'].'",`plugin_file`="'.$post['plugin_file'].'",`plugin_desciription`="'.$post['plugin_desciription'].'",`plugin_icon`="'.$post['plugin_icon'].'" WHERE `plugin_id`="'.$post['plugin_id'].'"';
+		// 			print $sql;
+		if(mysqli_query(connect_db(), $sql)) {
+			echo success_message('Plugin <strong>"'.$post['plugin_name'].'"</strong> has been edited successfully.');
+			echo "<script> location.reload(); </script>";
+		}
+		else {
+			echo warning_message('Plugin has not been edited. Please Try Again');
 		}
 	}
 ?>

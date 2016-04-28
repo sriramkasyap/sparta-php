@@ -207,7 +207,7 @@
 			$this->post_heading= addslashes ($user_sub['post_heading']);
 			$this->post_url= addslashes ($user_sub['post_url']);
 			$this->post_pos= addslashes ($user_sub['post_pos']);
-			$this->post_on_every_page = ($user_sub['post_on_every_page']=='on' ? true : false);
+			$this->post_on_every_page = ((isset($user_sub['post_on_every_page']) && $user_sub['post_on_every_page']=='on') ? true : false);
 			unset($user_sub['page_id']);
 			unset($user_sub['post_heading']);
 			unset($user_sub['post_url']);

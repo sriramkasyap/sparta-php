@@ -106,11 +106,21 @@
                         $(document).ajaxComplete(function(){
                             $("#wait").css("display", "none");
                         });
-
-                        var url = 'links.php?task=' + $(this).attr('data-task') + '&lid=' + $(this).attr('data-sid');
-                        $.get(url, function(data, status){
+                        var task = $(this).attr('data-task');
+                        var url = 'links.php?task=' + task + '&lid=' + $(this).attr('data-sid');
+                        if(task=="delete") {
+							if(confirm("Do you really want to remove this Link?")) {
+								$.get(url, function(data, status){
+	                                $('#link-form').html(data);
+	                        	});
+							}
+							location.reload();
+						}
+						else {
+							$.get(url, function(data, status){
                                 $('#link-form').html(data);
-                        });
+                       		});
+						}
                         
                     });
     				

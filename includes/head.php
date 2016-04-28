@@ -4,7 +4,7 @@
     $result_link = mysqli_query(connect_db(),$sql_link);
     $links = array();
     while($row_link = mysqli_fetch_assoc($result_link)) {
-        $links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => $row_link['link_href']);
+        $links[] = array('link_rel' => $row_link['link_rel'], 'link_type' => $row_link['link_type'], 'link_href' => trim($row_link['link_href']));
     }
     //print_r ($links);
     // Fetch meta tags from site_meta table

@@ -16,20 +16,21 @@
 	//print_r ($request_array);
 	include 'includes/head.php';
 ?>
-	<body id="top">
+	<body>
 	
-<?php 
+<?php 	
 	
 	switch ($task) {
 		
         case 'preview_snippet' :	preview_snippet($_GET['sid']);
                             		break;
-                            		
+
        	case 'preview_post' : 		preview_post();
                             		break;
-		case 'preview_post_old' : 		preview_post_old($_GET['pid']);
+
+		case 'preview_post_old' : 	preview_post_old($_GET['pid']);
                             		break;
-                            		
+
        	default: 			load_frontend();
        								break;
 	}
@@ -38,6 +39,7 @@
         $table = 'snippets`';
         $content = 'snippet_content';
         $sql_posts = 'SELECT * FROM `' . TABLE_PREFIX . $table . $where;
+//         echo $sql_posts; 
 	    $result_posts = mysqli_query(connect_db(), $sql_posts);
 	    while($row_posts = mysqli_fetch_assoc($result_posts)) {
 	        echo stripslashes($row_posts[$content]);
@@ -45,10 +47,10 @@
     }
     
     function load_frontend() {
-    	echo '<div id="mainrow">';
+    	echo '<div>';
     	$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     	$url = str_replace(ABS_PATH, '', $url);
-    	$url_array = explode('/', $url);
+    	$url_array = explode('/', trim($url,'/'));
     	$url_array = array_filter($url_array);
 //     	print_r($url_array);
     	if(empty($url_array[count($url_array)-1])) {
@@ -86,7 +88,6 @@
                 echo stripslashes($row_posts[$content]);
             }
         }
-        include 'includes/footer.php';
     }
 
 	function preview_post() {

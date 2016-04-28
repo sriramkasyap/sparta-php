@@ -77,12 +77,12 @@
     }
 
 	function submit_post($post_form){
-		//print_r ($post_form);
-		//print_r($_FILES);
+		print_r ($post_form);
+		print_r($_FILES);
 		$serial = file_get_contents('temp.cv');
 		$post = unserialize($serial);
-		$post->submit_form($post_form);
-		$serial = serialize($post);
+// 		$post->submit_form($post_form);
+// 		$serial = serialize($post);
 		file_put_contents('temp.cv', $serial);
 		echo success_message('Your post <strong>"' . $post->post_heading . '"</strong> has been successfully Submitted. Click below to preview, edit or Publish the post.');
 		echo '<div class="btn-group" role="group">';

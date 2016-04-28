@@ -1,136 +1,142 @@
-        <nav class="white z-depth-0" role="navigation">
-            <div class="nav-wrapper">
-                <div id="logo">
-                    <svg id="white" href="home" class="brand-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width="100px" height="48px" viewBox="0 18 360 180" enable-background="new 0 18 360 180" xml:space="preserve"><path fill="#ffffff" d="M343.8 30.8l-86.6 161 -43.5 0 -56.6-90.6c-18.3-27.1-25.1-45.9-62.2-45C65.7 56.9 41.9 79.9 41.9 109.1c0 29.2 23.3 52.9 52.5 52.9 0 0 20 3.2 38-11l17.8 26.9c0 0-30 17.8-62.2 15.5 -50.2-3.6-81.3-34.6-81.3-84.3 0-49.7 40.4-86.4 90.2-86.4 0 0 43.5-0.4 64.8 28.8l75.9 114.3L308.5 30.8 343.8 30.8z"/><path fill="#ffffff" d="M133.2 68.6"/></svg>
-                    <a class="brand-logo hide-on-med-and-down"><img id="blue" alt="Cove Venture" src="/img/cv_logo.png" width="129px" height="90px"/></a>
-                    <a class="brand-logo hide-on-large-only"><img id="blue" alt="Cove Venture" src="/img/cv_logo.png" width="71px" height="50px"/></a>
-                    <!--<a href="/index" class="brand-logo"><img id="white" alt="Cove Venture" src="img/cv_logo_white.png" width="100px" height="48px"/></a>-->
-                    
-                </div>
-                <a href="#" data-activates="mobile-demo" class="button-collapse black-text"><i class="material-icons">menu</i></a>
-                <ul id="nav-mobile" class="hide-on-med-and-down">
-                    <li class= " <?php echo ($page=='home'? 'active': '');?>"><a class=" main-menu" href="home">Home</a></li>
-                    <li class= " <?php echo ($page=='about'? 'active': '');?>"><a class="main-menu" href="about">About</a></li>
-                    <li class= " <?php echo ($page=='big data'? 'active': '') ;?>">
-                        <a class=" main-menu" href="big-data">Big Data</a>
-                        <ul class="fallback card">
-                            <li><a class="sub-menu" href="#">Technology Partnerships<i class="fa fa-chevron-right right"></i></a>
-                                <ul class="fallback card">
-                                    <li class= " <?php echo ($page=='hortonworks'? 'active': '');?>"><a class="sub-menu" href="hortonworks">Hortonworks</a></li>
-                                    <li class= " <?php echo ($page=='cloudera'? 'active': '');?>"><a class="sub-menu" href="cloudera">Cloudera</a></li>
-                                    <li class= " <?php echo ($page=='mongodb'? 'active': '');?>"><a class="sub-menu" href="mongodb">MongoDB</a></li>
-                                    
-                                </ul>
-                            </li>
-                            <li class= " <?php echo ($page=='bigdata hosting'? 'active': '');?>"><a class="sub-menu" href="http://www.yaaji.com" target="_blank">Big Data Hosting</a></li>
-                            <li class= " <?php echo ($page=='bigdata trawler'? 'active': '');?>"><a class="sub-menu" href="http://www.bigdatatrawler.com" target="_blank">Big Data Trawler</a></li>
-                            <li class= " <?php echo ($page=='consultant on demand'? 'active': '');?>"><a class="sub-menu" href="consultant-on-demand">Consultant on Demand</a></li>
-                            <li><a class="sub-menu" href="#">Training<i class="fa fa-chevron-right right"></i></a>
-                                <ul class="fallback card">
-                                	<li class= " <?php echo ($page=='hortonworks training'? 'active': '');?>"><a class="sub-menu" href="hortonworks-training">Hortonworks</a></li>
-                                    <li class= " <?php echo ($page=='cloudera training'? 'active': '');?>"><a class="sub-menu" href="cloudera-training">Cloudera</a></li>
-                                    
-                                    
-                                    <li class= " <?php echo ($page=='mongodb training'? 'active': '');?>"><a class="sub-menu" href="mongodb-training">MongoDB</a></li>
-                                    
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class=" main-menu" href="market-research">Market Research</a>
-                        <ul class="fallback card">
-                            <li class= " <?php echo ($page=='market research'? 'active': '') ;?>"><a class="sub-menu" href="market-research">Research using Big Data</a></li>
-                            <li><a class="sub-menu" href="#">Survey To Go<i class="fa fa-chevron-right right"></i></a>
-                                <ul class="fallback card">
-                                    <li class= " <?php echo ($page=='about STG'? 'active': '') ;?>"><a class="sub-menu" href="survey-to-go">About STG</a></li>
-                                    <li class= " <?php echo ($page=='features of STG'? 'active': '') ;?>"><a class="sub-menu" href="stgfeatures">STG's Features</a></li>
-                                    <li class= " <?php echo ($page=='FAQ\'s on STG'? 'active': '') ;?>"><a class="sub-menu" href="stgfaq">STG's FAQ</a></li>
-                                    <li><a class="sub-menu" href="stgpricing">Pricing<i class="fa fa-chevron-right right"></i></a>
-                                    	<ul class="fallback card">
-                                            <li class= " <?php echo ($page=='prepaid Plans'? 'active': '') ;?>"><a class="sub-menu" href="prepaid-plans">Prepaid Plans</a></li>
-                                            <li class= " <?php echo ($page=='monthly Plans'? 'active': '') ;?>"><a class="sub-menu" href="monthly-plans">Monthly Plans</a></li>
-                                            <li class= " <?php echo ($page=='storage Plans'? 'active': '') ;?>"><a class="sub-menu" href="storage-plans">Storage Plans</a></li>
-                                		</ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class= " <?php echo ($page=='webogen'? 'active': '') ;?>">
-                        <a class=" main-menu" href="#">Application Development</a>
-                        <ul class="fallback card">
-                           <li><a class="sub-menu" href="website-development">Web Application Development</a></li>
-                           <li><a class="sub-menu" href="website-development">Mobile Application Development</a></li>
-                           <li><a class="sub-menu" href="website-hosting">Hosting Services</a></li>
-                        </ul>
-                    </li>
-                    <li class= " <?php echo ($page=='careers'? 'active': '') ;?>">
-                        <a class=" main-menu" href="careers">Careers</a>
-                        <ul class="fallback card">
-                            <li class= " <?php echo ($page=='internships'? 'active': '') ;?>"><a class="sub-menu" href="internship">Internships</a></li>
-                            <li class= " <?php echo ($page=='full Time Careers'? 'active': '') ;?>"><a class="sub-menu" href="full-time">Full Time Opportunities</a></li>
-                        </ul>
-                    </li>
-                    <li class= " <?php echo ($page=='blog'? 'active': '') ;?>"><a class="main-menu" href="blog">Blog</a></li>
-                    <li class= " <?php echo ($page=='contact us'? 'active': '') ;?>"><a class=" main-menu" href="contact">Contact Us</a></li>
-                </ul>
-<!------------------------------Mobile Compatible Dropdown menu------------------------------------------->
-                <ul id="mobile-demo" class="side-nav">
-                    <li class= " <?php echo ($page=='home'? 'active': '');?>"><a class=" main-menu" href="index">Home</a></li>
-                    <li class= " <?php echo ($page=='about'? 'active': '');?>"><a class="main-menu" href="about">About</a></li>
-                    <li class= " <?php echo ($page=='big data'? 'active': '') ;?>">
-                        <a class=" main-menu dropdown-button" data-activates="dropdown1" href="#">Big Data</a>
-                        <ul id="dropdown1" class="dropdown-content">
-                            <li><a class="sub-menu" href="hortonworks">Hortonworks</a></li>
-                            <li><a class="sub-menu" href="cloudera">Cloudera</a></li>
-                            <li><a class="sub-menu" href="mongodb">MongoDB</a></li>
-                            <li><a class="sub-menu" href="http://www.yaaji.com" target="_blank">Big Data Hosting</a></li>
-                            <li><a class="sub-menu" href="http://www.bigdatatrawler.com" target="_blank">Big Data Trawler</a></li>
-                            <li><a class="sub-menu" href="cloudera-training">Cloudera Training</a></li>
-                            <li><a class="sub-menu" href="hortonworks-training">Hortonworks Training</a></li>
-                            <li><a class="sub-menu" href="mongodb-training">MongoDB Training</a></li>
-                        </ul>
-                    </li>
 
-                    <!--<li class= " <?php //echo ($page=='internet of things'? 'active': '') ;?>">
-                        <a data-activates="dropdown3" class=" main-menu dropdown-button" href="#">Internet Of Things</a>
-                        <ul id="dropdown3" class="dropdown-content">
-                            <li><a class="sub-menu" href="agriculture">Agriculture</a></li>
-                            <li><a class="sub-menu" href="healthcare">Healthcare</a></li>
-                            <li><a class="sub-menu" href="retail-management">Retail Management</a></li>
-                        </ul>
-                    </li>-->
-                    <li class= " <?php echo ($page=='market research'? 'active': '') ;?>">
-                        <a data-activates="dropdown4" class=" main-menu dropdown-button" href="market-research">Market Research</a>
-                        <ul id="dropdown4" class="dropdown-content">
-                            <li><a class="sub-menu" href="market-research">Research using Big Data</a></li>
-                            <li><a class="sub-menu" href="survey-to-go">About Survey To Go</a></li>
-                            <li><a class="sub-menu" href="stgfeatures">STG's Features</a></li>
-                            <li><a class="sub-menu" href="stgfaq">STG's FAQ</a></li>
-                            <li class= " <?php echo ($page=='prepaid Plans'? 'active': '') ;?>"><a class="sub-menu" href="prepaid-plans">Prepaid Plans</a></li>
-                            <li class= " <?php echo ($page=='monthhly Plans'? 'active': '') ;?>"><a class="sub-menu" href="monthly-plans">Monthly Plans</a></li>
-                            <li class= " <?php echo ($page=='storage Plans'? 'active': '') ;?>"><a class="sub-menu" href="storage-plans">Storage Plans</a></li>
-                        </ul>
-                    </li>
-                    <li class= " <?php echo ($page=='consultant on demand'? 'active': '') ;?>"><a href="consultant-on-demand">Consultant on Demand</a></li>
-                    <li class= " <?php echo ($page=='webogen'? 'active': '') ;?>">
-                        <a data-activates="dropdown5" class=" main-menu dropdown-button">Web Technologies</a>
-                        <ul id="dropdown5" class="dropdown-content">
-                            <li><a class="sub-menu" href="website-development">Web Development</a></li>
-                            <li><a class="sub-menu" href="website-hosting">Web Hosting</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class=" main-menu" href="careers">Careers</a>
-                        <ul class="fallback card">
-                            <li class= " <?php echo ($page=='internships'? 'active': '') ;?>"><a class="sub-menu" href="internship">Internships</a></li>
-                            <li class= " <?php echo ($page=='full Time Careers'? 'active': '') ;?>"><a class="sub-menu" href="full-time">Full Time Opportunities</a></li>
-                        </ul>
-                    </li>
-                    <li class= " <?php echo ($page=='blog'? 'active': '') ;?>"><a class="main-menu" href="blog">Blog</a></li>
-                    <li class= " <?php echo ($page=='contact us'? 'active': '') ;?>"><a class=" main-menu" href="contact">Contact Us</a></li>
-                </ul>
+<?php
+// 	include '../cv-admin/includes/functions.php';
+// 	include '../cv-admin/includes/site_config.php';
+	$link = connect_db();
+	$nav_items = array();
+	$nav_items_result = mysqli_query($link,'SELECT * FROM `'.TABLE_PREFIX.'topnav`');
+	$nav_items = mysqli_fetch_all($nav_items_result,MYSQLI_ASSOC);
+// 	print_r($nav_items);
+	function search_for_nav($parent_id,$nav_list) {
+		$result_nav = array();
+		foreach ($nav_list as $nav_item){
+			if($nav_item['topnav_parent_id']==$parent_id) {
+				$result_nav[] = $nav_item;
+			}
+		}
+		if(!empty($result_nav)) {
+			return $result_nav;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	function print_sub_menu($nav_sub_list,$nav_items, $level=1){
+		$structure = '<ul class="mn-sub '.($level==2 ? 'to-left' : '').'">';
+		foreach ($nav_sub_list as $subnav_item) {
+			if(!search_for_nav($subnav_item['topnav_id'], $nav_items)) {
+				$structure .= '<li id="nav-item-'.trim($subnav_item['topnav_link'],'/').'"><a href="'.trim($subnav_item['topnav_link'],'/').'">'.$subnav_item['topnav_name'].'</a></li>';
+			}
+			else {
+				$structure .= '<li id="nav-item-'.trim($subnav_item['topnav_link'],'/').'"><a class="mn-has-sub" href="'.trim($subnav_item['topnav_link'],'/').'">'.$subnav_item['topnav_name'].'</a>';
+				$structure .= print_sub_menu(search_for_nav($subnav_item['topnav_id'], $nav_items),$nav_items,2);
+				$structure .= '</li>';
+			}
+			
+		}
+		$structure .= '</ul>';
+		return $structure;
+	}
+// 	print_r(print_sub_menu(search_for_nav(16, $nav_items)));
+	$main_menu_items = array();
+	foreach ($nav_items as $nav_item){
+		
+		if($nav_item['topnav_parent_id']==0) {
+			$main_menu_items[] = $nav_item;
+		}
+	}
+// 	print_r($main_menu_items);
+?>
+<header>
+      <!-- site top panel-->
+      <!-- site top panel-->
+      <div class="site-top-panel">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <!-- lang select wrapper-->
+<!--               <div class="lang-wrap"><i class="icon-lang flaticon-earth-globe21"></i>Change your language -->
+<!--                 <select name="billing_lang" class="lang-change"> -->
+<!--                   <option value="">English</option> -->
+<!--                   <option value="AX">Åland</option> -->
+<!--                   <option value="AF">Afghanistan</option> -->
+<!--                   <option value="AL">Albania</option> -->
+<!--                   <option value="DZ">Algeria</option> -->
+<!--                   <option value="AD">Andorra</option> -->
+<!--                   <option value="AO">Angola</option> -->
+<!--                   <option value="AI">Anguilla</option> -->
+<!--                 </select> -->
+<!--               </div> -->
+              <!-- ! lang select wrapper-->
             </div>
-        </nav>
-
+            <div class="col-sm-6 text-right">
+              <!-- social wrapper-->
+              <div class="social-wrap">
+              <?php 
+              	$social_link_result = mysqli_query($link,"SELECT * FROM `".TABLE_PREFIX."top_panel`");
+              	while ($social_link=mysqli_fetch_assoc($social_link_result)) {
+              ?>
+              	<a target="_blank" href="<?= $social_link['top_panel_link']?>" class="cws-social fa <?= $social_link['top_panel_icon']?>"></a>
+              <?php }?>
+              </div>
+              <!-- ! social wrapper-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ! site top panel-->
+      <!-- Navigation panel-->
+      <nav class="main-nav js-stick">
+        <div class="full-wrapper relative clearfix container">
+          <!-- Logo ( * your text or image into link tag *)-->
+          <div class="nav-logo-wrap local-scroll"><a href="index.html" class="logo"><img src="img/the8-logo.png" data-at2x="img/the8-logo@2x.png" alt><img src="img/the8-logo-sticky.png" data-at2x="img/the8-logo-sticky@2x.png" alt class="sticky-logo"></a></div>
+          <!-- Main Menu-->
+          <div class="inner-nav desktop-nav">
+            <ul class="clearlist">
+       		<?php 
+       			foreach ($main_menu_items as $main_menu_item) {
+       				$sub_menu = search_for_nav($main_menu_item['topnav_id'], $nav_items);
+       				if(is_array($sub_menu)) {
+       		?>
+              <!-- Item With Sub-->
+              <li><a href="<?= trim($main_menu_item['topnav_link'],'/') ?>" class="mn-has-sub"><?= $main_menu_item['topnav_name'] ?> <i class="fa fa-angle-down button_open"></i></a>
+              <?php 
+       					echo print_sub_menu($sub_menu,$nav_items);
+       					echo '</li>';
+       				}
+       				else {
+       			?>	
+       				<li><a href="<?= trim($main_menu_item['topnav_link'],'/') ?>" ><?= $main_menu_item['topnav_name'] ?> </a></li>
+       			<?php 
+       				}
+       			}
+              ?>
+              
+              <!-- End Cart-->
+              <!-- Search-->
+<!--               <li class="search"><a href="#" class="mn-has-sub"><i class="flaticon-magnifying-glass34 search-icon"></i></a> -->
+<!--                 <ul class="search-sub"> -->
+<!--                   <li> -->
+<!--                     <div class="container"> -->
+<!--                       <div class="mn-wrap"> -->
+<!--                         <form method="post" class="form"> -->
+<!--                           <div class="search-wrap"> -->
+<!--                             <input type="text" placeholder="Search . . ." class="form-control search-field"> -->
+<!--                           </div> -->
+<!--                         </form> -->
+<!--                       </div> -->
+<!--                       <div class="close-button flaticon-cancel30"></div> -->
+<!--                     </div> -->
+<!--                   </li> -->
+<!--                 </ul> -->
+<!--               </li> -->
+              <!-- End Search-->
+            </ul>
+          </div>
+          <!-- End Main Menu-->
+        </div>
+      </nav>
+      <!-- End Navigation panel-->
+    </header>

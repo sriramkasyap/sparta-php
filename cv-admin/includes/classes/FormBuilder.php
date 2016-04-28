@@ -75,6 +75,8 @@
 				case 'bool' :
 				case 'checkbox' : $return_object = $this->addCheckBoxObject($name,$placeholder,$value,$repeatable, $mandatory);
 									break;
+				case 'url' : $return_object = $this->addURL($name, $placeholder, $value, $repeatable, $mandatory);
+							break;
 				
 				default: echo 'Unknown Type ' . $type;
 						break;
@@ -189,6 +191,58 @@
 			}
 		}
 		
+		protected function addURL($name,$placeholder,$value,$repeatable, $mandatory) {
+			$form_structure = '
+					<div class="form-group">
+    					<label for="' . $name . '">' . $placeholder . '</label>
+    					<div class="input-group">
+    						
+    						<select required class="form-control url-selector" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" value="' . $value . '">
+    							<option disbaled selected>Select an Internal Page to link</option>
+    							<option value="ext">Enter External Link Address</option>';
+			
+
+			$page_urls = mysqli_query(connect_db(),"SELECT `page_url`,`page_title` FROM `".TABLE_PREFIX."pages`");
+				
+			while($row_urls = mysqli_fetch_assoc($page_urls)) {
+				$form_structure .='<option '. ((isset($value) && ($value==$row_urls['page_url'])) ? 'selected' : '') . ' value="'. trim($row_urls['page_url'],'/') .'">'. $row_urls['page_title'] .'</option>';
+			}
+			$form_structure .= '</select><input type="hidden" required class="form-control" id="hid-'.$name.'" placeholder="' . $placeholder. '" value="' . $value . '"/>';
+			if(!$mandatory) {
+				$form_structure .= '<div class="input-group-btn">
+					                   	<button class="remove_input btn btn-danger" onclick="remove_input(this)"  title="Remove Field"  type="button"><span class="glyphicon glyphicon-remove"></span></button>
+					            	</div> ';
+			}
+			
+			$form_structure .= '</div></div>
+					<script>
+						$("#hid-'.$name.'").hide();
+						$(".url-selector#'.$name.'").change(function() {
+							var selected_option = $(".url-selector#'.$name.' option:selected").attr("value");
+							//alert(selected_option);
+							if(selected_option == "ext") {
+								$("#hid-'.$name.'").show();
+								$("#hid-'.$name.'").attr("type","text");
+								$("#hid-'.$name.'").attr("name","'.$name.'");
+								$(this).removeAttr("name");
+										
+							}
+							else {
+								$(this).attr("name","'.$name.'");
+								$("#hid-'.$name.'").attr("type","hidden");
+								$("#hid-'.$name.'").removeAttr("name");
+							}
+						});
+					</script>';
+			if($repeatable) {
+				return $form_structure;
+			}
+			else {
+				$this->form_structure .= $form_structure;
+				return true;
+			}
+		}
+				
 		protected function addCheckBoxObject($name,$placeholder,$value,$repeatable, $mandatory) {
 			$form_structure = '
 					<div class="form-group">

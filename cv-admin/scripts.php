@@ -19,7 +19,7 @@
         }
 	
         function view_structure() {
-        	$page['title'] = 'Linked Files';
+        	$page['title'] = 'Site Scripts';
         	include 'includes/header.php';
         
   ?> 
@@ -80,7 +80,7 @@
     	       echo '</tbody></table>';
             }
             else {
-                    echo '<div class="text-center"><h4>No Links Yet. </h4></div>';
+                    echo '<div class="text-center"><h4>No Scripts Yet. </h4></div>';
             }
      ?>
                     
@@ -106,12 +106,22 @@
                         $(document).ajaxComplete(function(){
                             $("#wait").css("display", "none");
                         });
-
-                        var url = 'scripts.php?task=' + $(this).attr('data-task') + '&lid=' + $(this).attr('data-sid');
-                        $.get(url, function(data, status){
-                                $('#script-form').html(data);
-                        });
+                        var task = $(this).attr('data-task');
+                        var url = 'scripts.php?task=' + task + '&lid=' + $(this).attr('data-sid');
                         
+                        if(task=="delete") {
+							if(confirm("Do you really want to remove this Item?")) {
+								$.get(url, function(data, status){
+	                                $('#script-form').html(data);
+	                        	});
+							}
+							location.reload();
+						}
+						else {
+							$.get(url, function(data, status){
+                                $('#script-form').html(data);
+                        	});
+						}
                     });
     				
             		</script>

@@ -6,7 +6,7 @@
 																		'brand_short_name' => ['varchar', 'Brand'],
 																		'brand_long_name' => ['varchar', 'Brand Full Name'],
 																		'brand_description' => ['text', 'Brand Description'],
-																		'footer_link' => ['varchar', 'Link to Brand'],
+																		'footer_link' => ['url', 'Link to Brand'],
 																		'footer_link_text' => ['varchar', 'Link Text']]]					
 		);
 		//Mandatory Block of Code

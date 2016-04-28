@@ -20,6 +20,17 @@
                 type: 'ajax',
                 overflowY: 'scroll' // as we know that popup content is tall we set scroll overflow by default to avoid jump
             });
+
+            $('.plugin-sidenav').click(function(e) {
+				e.preventDefault();
+				var plugin_url = $(this).attr('href');
+				$.get(plugin_url,function(data) {
+								$("#cv-page-content").html(data);
+					
+				});
+            });
+
+           
         });
        
         $(function() {

@@ -8,7 +8,7 @@
     */
     
     // Name of the Database of the website
-    define ('DB_NAME', 'coveventure');
+    define ('DB_NAME', 't8');
 
     // MySQL database User Name
     define ('DB_USER', 'root');
@@ -21,21 +21,8 @@
     
     // Prefix for all the tables belonging to the site
     define ('TABLE_PREFIX', 'site_');
-
-    // Prefix for all the tables belonging to the site
-    define ('ABS_PATH', 'http://localhost:8000/coveventure/');
     
-    // Prefix for all the tables belonging to the site
-    define ('ADMIN_PATH', ABS_PATH . 'cv-admin/');
-
-    // Prefix for all the tables belonging to the site
-    define ('CSS_PATH', ABS_PATH . 'css/');
     
-    // Prefix for all the tables belonging to the site
-    define ('JS_PATH', ABS_PATH . 'js/');
-    
-    // Prefix for all the tables belonging to the site
-    define ('IMG_PATH', ABS_PATH . 'img/');
 
     // Prefix for all the tables belonging to the site
     define ('AUTHOR','Sriram Kasyap');
@@ -46,5 +33,18 @@
     while($row_config = mysqli_fetch_assoc($result_config)) {
         define(strtoupper($row_config['config_name']), $row_config['config_content']);
     }
+    // Prefix for all the tables belonging to the site
+    define ('ABS_PATH', BASE_URL);
+    // Prefix for all the tables belonging to the site
+    define ('ADMIN_PATH', ABS_PATH . 'cv-admin/');
+    
+    // Prefix for all the tables belonging to the site
+    define ('CSS_PATH', ABS_PATH . 'css/');
+    
+    // Prefix for all the tables belonging to the site
+    define ('JS_PATH', ABS_PATH . 'js/');
+    
+    // Prefix for all the tables belonging to the site
+    define ('IMG_PATH', ABS_PATH . 'img/');
     //print_r ($configs);
 ?>

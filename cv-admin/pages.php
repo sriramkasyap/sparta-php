@@ -126,19 +126,19 @@
     	$form_structure ='<div class="row"><div class="col-sm-10 col-md-8 col-sm-push-1 col-md-push-2">' ;
     	$page_form = new FormBuilder(['action.php?task='.$action,'post','']);
     	if($action=='add') {
-    		$page_form->addObject(['varchar','page_heading','Heading of the page']);
-    		$page_form->addObject(['varchar','page_url','URL address of the page']);
-    		$page_form->addObject(['varchar', 'page_type','Type of Page']);
-    		$page_form->addObject(['text','page_description', 'Detailed Description of page']);
+    		$page_form->addObject(['varchar','page_heading','Heading of the page'],true);
+    		$page_form->addObject(['varchar','page_url','URL address of the page'],true);
+    		$page_form->addObject(['varchar', 'page_type','Type of Page'],true);
+    		$page_form->addObject(['text','page_description', 'Detailed Description of page'],true);
     	}
     	else{
     		$page_result = mysqli_query(connect_db(), 'SELECT * FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = "'.$page_id.'"');
     		$page_row = mysqli_fetch_assoc($page_result);
-    		$page_form->addObject(['varchar','page_heading','Heading of the page', $page_row['page_heading']]);
-    		$page_form->addObject(['varchar','page_url','URL address of the page', $page_row['page_url']]);
-    		$page_form->addObject(['varchar', 'page_type','Type of Page', $page_row['page_type']]);
-    		$page_form->addObject(['text','page_description', 'Detailed Description of page', $page_row['page_description']]);
-    		$page_form->addObject(['hidden','page_id', '', $page_id]);
+    		$page_form->addObject(['varchar','page_heading','Heading of the page', $page_row['page_heading']],true);
+    		$page_form->addObject(['varchar','page_url','URL address of the page', $page_row['page_url']],true);
+    		$page_form->addObject(['varchar', 'page_type','Type of Page', $page_row['page_type']],true);
+    		$page_form->addObject(['text','page_description', 'Detailed Description of page', $page_row['page_description']],true);
+    		$page_form->addObject(['hidden','page_id', '', $page_id],true);
     	}
     	$page_form->addSubmit(ucfirst($action).' Page');
     	$form_structure .= $page_form->renderForm();

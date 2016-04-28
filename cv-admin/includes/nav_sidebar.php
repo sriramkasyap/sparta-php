@@ -49,6 +49,34 @@
             <?php
                     } 
                 }
+                
+                $all_plugin_query = "SELECT * FROM `site_plugins` ORDER BY `plugin_id` ASC";
+                $plugin_result = mysqli_query($link, $all_plugin_query);
+                while($plugin_row = mysqli_fetch_assoc($plugin_result)) {
+                           ?>
+                
+                            <li>
+                                <a href="#"><i class="fa <?= $plugin_row['plugin_icon'] ?> fa-fw"></i><?= "  " .  ucwords($plugin_row['plugin_name']) ?><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                            <?php 
+                                        $items_raw = $plugin_row['plugin_sub_menus'];
+                                        $items_list = explode(";", $items_raw);
+                                        foreach($items_list as $item_element) {
+                                            $item = explode(",", $item_element);
+                                            //echo $item[0]. "<br/>" . $item[1]. "<br/>" ;
+                            ?>
+                                    <li>
+                                        <a class="plugin-sidenav" href="plugins/<?= $item[1] ?>"><?= "  " . ucwords($item[0]) ?></a>
+                                    </li>     
+                            <?php
+                                        }
+                            ?>
+                                   </ul>
+                                 
+                            </li>
+                            <?php
+                                     
+                                }
             ?>
         </ul>
     </div>
