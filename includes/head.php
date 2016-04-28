@@ -45,4 +45,5 @@
     <script>
 		var abs_path = '<?= ABS_PATH ?>'; 
     </script>
+    <script type="text/javascript" src="http://localhost:8000/t8_cms/js/jquery.min.js"></script>
 </head>

@@ -172,7 +172,7 @@
 		protected function addInput($type,$name,$placeholder,$value,$repeatable, $mandatory) {
 			$form_structure = '
 					<div class="form-group">
-    					<label for="' . $name . '">' . $placeholder . '</label>
+    					<label for="' .  $name . '">' . ($type == 'hidden' ? '' : $placeholder) . '</label>
     					<div class="input-group">
 							<input required class="form-control"  type="' . $type . '" name="' . $name . '" id="' . $name . '" placeholder="' . $placeholder. '" value="' . $value . '">';
 			if(!$mandatory) {

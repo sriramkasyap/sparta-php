@@ -9,66 +9,67 @@ include '../includes/functions.php';
         	$task = 'list';
         }
         switch($task) {
-        	case 'edit':    $page['title'] = 'Edit Portfolio';
-        					edit_portfolio($_GET['lid']);
+        	case 'edit':    $page['title'] = 'Edit Blog';
+        					edit_blog($_GET['lid']);
         					break;
-        	case 'add':    	$page['title'] = 'Add New Portfolio';
-        					add_portfolio();
+        	case 'add':    	$page['title'] = 'Add New Blog article';
+        					add_blog();
         					break;
         
-        	case 'delete':  delete_portfolio($_GET['lid']);
+        	case 'delete':  delete_blog($_GET['lid']);
         					break;
-        	case 'view':  	view_portfolio_front($_GET);
+        	case 'view_all':  	view_blog_list($_GET);
         					break;
+        	case 'view_single': view_single_blog($_GET);
         					 
         	default:		view_list();
         	
         }
         
-		function add_portfolio(){
+		function add_blog(){
     		
-			create_form_portfolio(-1);	
+			create_form_blog(-1);	
     	}
     	
-    	function edit_portfolio($id) {
-    		create_form_portfolio($id);
+    	function edit_blog($id) {
+    		create_form_blog($id);
     	}
     	
-    	function delete_portfolio($id) {
+    	function delete_blog($id) {
     		$link = connect_db();
-    		$delete_query = "DELETE FROM `plugin_portfolio` WHERE `portfolio_id`='".$id."'";
+    		$delete_query = "DELETE FROM `plugin_blog` WHERE `blog_id`='".$id."'";
     		if(mysqli_query($link, $delete_query)) {
-    			echo success_message('Portfolio Item has been deleted successfully.');
+    			echo success_message('Blog Item has been deleted successfully.');
     	
     		}
     		else {
-    			echo warning_message('Portfolio Item has not been deleted. Please Try Again');
+    			echo warning_message('Blog Item has not been deleted. Please Try Again');
     		}
     	}
     	
-    	function create_form_portfolio($id) {
+    	function create_form_blog($id) {
     		$link = connect_db();
     		if($id!=-1) {
-    			$form_query = "SELECT * FROM `plugin_portfolio` WHERE `portfolio_id` = '".$id."'";
+    			$form_query = "SELECT * FROM `plugin_blog` WHERE `blog_id` = '".$id."'";
     			$result_form = mysqli_query($link,$form_query);
     			$row_form = mysqli_fetch_assoc($result_form);
-    			$task = 'edit_portfolio';
+    			$task = 'edit_blog';
     		}
     		else {
-    			$task = 'add_portfolio';
+    			$task = 'add_blog';
     		}
-    		$form_builder = new FormBuilder(['plugins/portfolio_action.php?task='.$task,'post','multipart/form-data']);
-    		$form_builder->addObject(['varchar','portfolio_name','Portfolio Name',(isset($row_form['portfolio_name']) ? $row_form['portfolio_name'] : '')], true);
-    		$form_builder->addObject(['image','portfolio_image','Portfolio Image',(isset($row_form['portfolio_image']) ? $row_form['portfolio_image'] : '')], true);
-    		$form_builder->addObject(['varchar','portfolio_text','Portfolio text',(isset($row_form['portfolio_text']) ? $row_form['portfolio_text'] : '')], true);
-    		$form_builder->addObject(['hidden','portfolio_id','Portfolio ID',(isset($row_form['portfolio_id']) ? $row_form['portfolio_id'] : '')], true);
+    		$form_builder = new FormBuilder(['plugins/blog_action.php?task='.$task,'post','multipart/form-data']);
+    		$form_builder->addObject(['varchar','blog_name','Blog Name',(isset($row_form['blog_name']) ? $row_form['blog_name'] : '')], true);
+    		$form_builder->addObject(['image','blog_image','Blog Image',(isset($row_form['blog_image']) ? $row_form['blog_image'] : '')], true);
+    		$form_builder->addObject(['varchar','blog_text','Blog text',(isset($row_form['blog_text']) ? $row_form['blog_text'] : '')], true);
+    		$form_builder->addObject(['hidden','blog_id','Blog ID',(isset($row_form['blog_id']) ? $row_form['blog_id'] : '')], true);
     		$form_builder->addSubmit('Submit');
     		$form_output = $form_builder->renderForm();
    ?>
     										
     		               			<div class="panel panel-primary">
     			                    	<div class="panel-heading">
-    			                    		Portfolio Item Parameters
+    			                    		Blog Item Parameters
     			                    	</div>
     			                    	<div class="panel-body">
     				                    	<?= $form_output  ?>
@@ -97,21 +98,21 @@ include '../includes/functions.php';
     	    	
     	    	function view_list() {
     	    		$link = connect_db();
-    	    		$page['title'] = 'Portfolio Items';
+    	    		$page['title'] = 'Blog Items';
     	    		//         	include '../header.php';
     	    	   
     	    		?>
     	    	    	
     	    	    	                <div class="row">
     	    	    	                    <div class="col-lg-12">
-    	    	    	                        <h1 class="page-header">Portfolio Items</h1>
+    	    	    	                        <h1 class="page-header">Blog Items</h1>
     	    	    	                    </div>
     	    	    	                    <!-- /.col-lg-12 -->
     	    	    	                </div>
     	    	    	               	<div class="row">
     	    	    	               		<div  id="portfolio-form"></div>
     	    	    	               		<div class="form-group">
-    	    	    	                    	<a href="#" class="portfolio-task btn btn-success" data-task="add" data-lid="0" title="Add"><i class="fa fa-plus"></i> Add New Portfolio Item</a>
+    	    	    	                    	<a href="#" class="portfolio-task btn btn-success" data-task="add" data-lid="0" title="Add"><i class="fa fa-plus"></i> Add New Blog Item</a>
     	    	    	                    </div>
     	    	    	                    <div class="col-lg-12" id="cv-post-content">
     	    	    	                    	
@@ -119,28 +120,28 @@ include '../includes/functions.php';
     	    	    							    <thead>
     	    	    							        <tr>
     	    	    							            <th>S.No.</th>
-    	    	    							            <th>Portfolio Item Name</th>
-    	    	    							            <th>Portfolio Image</th>
-    	    	    							            <th>Portfolio Item Text</th>
+    	    	    							            <th>Blog Item Name</th>
+    	    	    							            <th>Blog Image</th>
+    	    	    							            <th>Blog Item Text</th>
     	    	    							            <th colspan="2">Actions</th>
     	    	    							        </tr>
     	    	    							    </thead>
     	    	    							    <tbody>
     	    	    	<?php 
-    	    	    	            $view_query = "SELECT * FROM `plugin_portfolio`";
+    	    	    	            $view_query = "SELECT * FROM `plugin_blog`";
     	    	    	            //echo $query;
     	    	    	            $all_posts_result = mysqli_query($link, $view_query);
     	    	    	            if(mysqli_num_rows($all_posts_result)>0) {
     	    	    	                while($row=mysqli_fetch_assoc($all_posts_result)) {
-    	    	    	                    $all_items[$row['portfolio_id']] = $row;
+    	    	    	                    $all_items[$row['blog_id']] = $row;
     	    	    	                    echo '<tr>
     	    	    	                                <td></td>
-    	    	    	                                <td>' . $row['portfolio_name'] . '</td>
-    	    	    	                                <td>' . $row['portfolio_image'] . '</td>
-    	    	    	                                <td>' . $row['portfolio_text'] . '</td>
+    	    	    	                                <td>' . $row['blog_name'] . '</td>
+    	    	    	                                <td>' . $row['blog_image'] . '</td>
+    	    	    	                                <td>' . $row['blog_text'] . '</td>
     	    	    	                                <td><div class="btn-group" role="group">
-    	    	    		                                <a href="#" class="portfolio-task btn btn-warning" data-task="edit" data-sid="' . $row['portfolio_id'] . '" title="Edit"><i class="fa fa-pencil"></i></a>
-    	    	    		                                <a href="#" class="portfolio-task btn btn-danger" data-task="delete" data-sid="' . $row['portfolio_id'] . '" title="Delete"><i class="fa fa-trash"></i></a></div>
+    	    	    		                                <a href="#" class="portfolio-task btn btn-warning" data-task="edit" data-sid="' . $row['blog_id'] . '" title="Edit"><i class="fa fa-pencil"></i></a>
+    	    	    		                                <a href="#" class="portfolio-task btn btn-danger" data-task="delete" data-sid="' . $row['blog_id'] . '" title="Delete"><i class="fa fa-trash"></i></a></div>
     	    	    					                </td>
     	    	    				                </tr>';
     	    	    	                }
@@ -199,7 +200,7 @@ include '../includes/functions.php';
     	    	    	// 			include '../includes/footer.php'; 
     	    	    	        }
     	    	    	        
-		function view_portfolio_front($args) {
+		function view_blog_front($args) {
 			$link = connect_db();
 			if(isset($args['limit'])){
 				$limit=$args['limit'];
@@ -226,24 +227,24 @@ include '../includes/functions.php';
 					<div class="row cws-multi-col" id="portfoio_post" style="min-height:300px">
 	<?php 
 			}
-				$query = "SELECT * FROM `plugin_portfolio` ".$limit_query;
+				$query = "SELECT * FROM `plugin_blog` ".$limit_query;
 // 				echo $query;
-				$portfolio_result = mysqli_query($link,$query);
-				$portfolio_count = mysqli_query($link,"SELECT COUNT(`portfolio_id`) as `portfolio_count` FROM `plugin_portfolio` ");
-				$p_count = mysqli_fetch_assoc($portfolio_count);
-				$portfolio_count=$p_count['portfolio_count'];
-// 				echo $portfolio_count;
-				$all_portfolios = array();
-				while($portfolio = mysqli_fetch_assoc($portfolio_result)) {
-					$all_portfolios[] = $portfolio;
+				$blog_result = mysqli_query($link,$query);
+				$blog_count = mysqli_query($link,"SELECT COUNT(`blog_id`) as `blog_count` FROM `plugin_blog` ");
+				$p_count = mysqli_fetch_assoc($blog_count);
+				$blog_count=$p_count['blog_count'];
+// 				echo $blog_count;
+				$all_blogs = array();
+				while($portfolio = mysqli_fetch_assoc($blog_result)) {
+					$all_blogs[] = $portfolio;
 	?>
 						<div class="col-md-3 col-sm-6">
 						<!-- portfolio item-->
 							<div class="portfolio-item text-center mb-30">
 							<!-- media-->
-								<div class="pic"><img src="<?= $portfolio['portfolio_image'] ?>" data-at2x="<?= $portfolio['portfolio_image'] ?>" alt="<?= $portfolio['portfolio_text'] ?>">
+								<div class="pic"><img src="<?= $portfolio['blog_image'] ?>" data-at2x="<?= $portfolio['blog_image'] ?>" alt="<?= $portfolio['blog_text'] ?>">
 								<div class="hover-effect alt"></div>
-								<div class="links"><a href="<?= $portfolio['portfolio_image'] ?>" class="link-icon alt flaticon-magnifying-glass84 fancy"></a></div>
+								<div class="links"><a href="<?= $portfolio['blog_image'] ?>" class="link-icon alt flaticon-magnifying-glass84 fancy"></a></div>
 								</div>
 							<!-- ! media-->
 							</div>
@@ -251,7 +252,7 @@ include '../includes/functions.php';
 						</div>
 	<?php 
 				}
-				$pagin_count = $portfolio_count/$limit;
+				$pagin_count = $blog_count/$limit;
 	?>
 					</div>
 					<!-- pagination-->
